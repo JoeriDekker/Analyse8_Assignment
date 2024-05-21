@@ -12,4 +12,12 @@
 # STUDENT NUMBER:
 # ===================================
 
+from db.db_connection import ConnectToDB
+import classes.user as u
+
+conn = ConnectToDB()
+
+u = u.User("Jo", "123")
+
 print("This is a very epic python project biatches")
+print(u)
