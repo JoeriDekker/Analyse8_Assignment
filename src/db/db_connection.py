@@ -2,8 +2,12 @@ import sqlite3
 import classes.user as u
 import uuid
 
-
 def ConnectToDB():
+    conn = sqlite3.connect('src/assignment.db')
+    return conn
+
+
+def CreateDB():
     conn = sqlite3.connect('src/assignment.db')
 
     # Create a cursor object

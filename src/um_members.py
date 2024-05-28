@@ -13,12 +13,14 @@
 # ===================================
 
 import os
-from db.db_connection import ConnectToDB
+from db.db_connection import CreateDB, ConnectToDB
 from classes.consultant import Consultant
 from classes.menu import Menu
+from functions.login import Login
 import sys
 
 def authenticate():
+    # Login()
     # This function will authenticate the user
     username = input("Enter your username: ")
 
@@ -91,7 +93,7 @@ def main():
 
 if __name__ == "__main__":
     
-    conn = ConnectToDB()
+    conn = CreateDB()
 
     print("This is a very epic python project biatches")
 
