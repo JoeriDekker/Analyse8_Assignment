@@ -1,0 +1,7 @@
+
+*.db
+*.pyc
+src/assignment.db
+src/classes/__pycache__/consultant.cpython-312.pyc
+src/classes/__pycache__/menu.cpython-312.pyc
+src/classes/__pycache__/user.cpython-312.pyc
