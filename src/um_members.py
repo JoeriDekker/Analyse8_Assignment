@@ -13,10 +13,14 @@
 # ===================================
 
 import os
+import sys
+
 from db.db_connection import ConnectToDB
 from classes.consultant import Consultant
+from classes.admin import Admin
+from classes.super_admin import SuperAdmin
 from classes.menu import Menu
-import sys
+
 
 def authenticate():
     # This function will authenticate the user
@@ -32,10 +36,10 @@ def authenticate():
             user = Consultant(username, level)
             user.display_menu()
         elif level == "1":
-            user = Consultant(username, level)
+            user = Admin(username, level)
             user.display_menu()
         elif level == "2":
-            user = Consultant(username, level)
+            user = SuperAdmin(username, level)
             user.display_menu()
     else:
         print("Invalid credentials")

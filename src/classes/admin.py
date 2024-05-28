@@ -7,18 +7,34 @@
 
 # (inherited from consultant)
 
-# ● To add a new member to the system.
+    # ● To update their own password.
 
-# ● To modify or update the information of a member in the system.
+    # ● To add a new member to the system.
 
-# ● To search and retrieve the information of a member.
+    # ● To modify or update the information of a member in the system.
 
-from consultant import Consultant
+    # ● To search and retrieve the information of a member.
+
+from classes.menu import Menu
+from classes.consultant import Consultant
 
 class Admin(Consultant):
     def __init__(self, username, level):
         super().__init__(username, level)
-
+        admin_options = [
+            "Check users", "Add consultant", "Update consultant", "Delete consultant",
+            "Reset consultant password", "Backup system", "Restore backup",
+            "See logs", "Delete member"
+        ]
+        admin_functions = [
+            self.check_users, self.add_consultant, self.update_consultant, self.delete_consultant,
+            self.reset_consultant_password, self.backup_system, self.restore_backup,
+            self.see_logs, self.delete_member
+        ]
+        self.menu_options += admin_options
+        self.menu_functions += admin_functions
+        self.menu = Menu(options=self.menu_options, functions=self.menu_functions)
+        
     # ● To check the list of users and their roles. (member to admin??)
     def check_users(self):
         pass
@@ -29,10 +45,6 @@ class Admin(Consultant):
 
     # ● To modify or update an existing consultant’s account and profile.
     def update_consultant(self):
-        pass
-    
-    # ● To update their own password.
-    def update_password(self):
         pass
 
     # ● To delete an existing consultant’s account.
