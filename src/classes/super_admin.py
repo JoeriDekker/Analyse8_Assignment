@@ -13,6 +13,16 @@
 
 # FUNCTIONS TO DO:
 
+# (inherited from consultant)
+
+# ● To add a new member to the system.
+
+# ● To modify or update the information of a member in the system.
+
+# ● To search and retrieve the information of a member.
+
+# (inherited from admin)
+
 # ● To check the list of users and their roles.
 
 # ● To define and add a new consultant to the system.
@@ -23,25 +33,11 @@
 
 # ● To reset an existing consultant password (a temporary password).
 
-# ● To define and add a new admin to the system.
-
-# ● To modify or update an existing admin’s account and profile.
-
-# ● To delete an existing admin’s account.
-
-# ● To reset an existing admin’s password (a temporary password).
-
 # ● To make a backup of the system and restore a backup (members information and users’ data).
 
 # ● To see the logs file of the system.
 
-# ● To add a new member to the system.
-
-# ● To modify or update the information of a member in the system.
-
 # ● To delete a member's record from the database (note that a consultant cannot delete a record but can only modify or update a member’s information).
-
-# ● To search and retrieve the information of a member.
 
 from admin import Admin
 
@@ -49,14 +45,18 @@ class SuperAdmin(Admin):
     def __init__(self, username, level):
         super().__init__(username, level)
 
+    # ● To define and add a new admin to the system.
     def add_admin(self):
         pass
 
+    # ● To modify or update an existing admin’s account and profile.
     def update_admin(self):
         pass
 
+    # ● To delete an existing admin’s account.
     def delete_admin(self):
         pass
 
+    # ● To reset an existing admin’s password (a temporary password).
     def reset_admin_password(self):
         pass

@@ -5,27 +5,11 @@
 
 # FUNCTIONS TO DO:
 
-# ● To update their own password.
-
-# ● To check the list of users and their roles.
-
-# ● To define and add a new consultant to the system.
-
-# ● To modify or update an existing consultant’s account and profile.
-
-# ● To delete an existing consultant’s account.
-
-# ● To reset an existing consultant’s password (a temporary password).
-
-# ● To make a backup of the system and restore a backup (members information and users’ data).
-
-# ● To see the logs file(s) of the system.
+# (inherited from consultant)
 
 # ● To add a new member to the system.
 
 # ● To modify or update the information of a member in the system.
-
-# ● To delete a member's record from the database (note that a consultant cannot delete a record but can only modify or update a member’s information).
 
 # ● To search and retrieve the information of a member.
 
@@ -35,29 +19,42 @@ class Admin(Consultant):
     def __init__(self, username, level):
         super().__init__(username, level)
 
+    # ● To check the list of users and their roles. (member to admin??)
     def check_users(self):
         pass
-
+    
+    # ● To define and add a new consultant to the system.
     def add_consultant(self):
         pass
 
+    # ● To modify or update an existing consultant’s account and profile.
     def update_consultant(self):
         pass
+    
+    # ● To update their own password.
+    def update_password(self):
+        pass
 
+    # ● To delete an existing consultant’s account.
     def delete_consultant(self):
         pass
 
+    # ● To reset an existing consultant’s password (a temporary password).
     def reset_consultant_password(self):
         pass
 
+    # ● To make a backup of the system... 
     def backup_system(self):
         pass
 
+    # ...and restore a backup (members information and users’ data).
     def restore_backup(self):
         pass
 
+    # ● To see the logs file(s) of the system.
     def see_logs(self):
         pass
 
+    # ● To delete a member's record from the database (note that a consultant cannot delete a record but can only modify or update a member’s information).
     def delete_member(self):
         pass
