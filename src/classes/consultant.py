@@ -12,8 +12,8 @@ class Consultant:
         self.username = username
         self.level = level
         self.menu = Menu(
-            options=["Update password", "Add member", "Update member info", "Search member"],
-            functions=[self.update_password, self.add_member, self.update_member_info, self.search_member]
+            options=["Update password", "Add member", "Update member", "Search member"],
+            functions=[self.update_password, self.add_member, self.update_member, self.search_member]
         )
 
     # ● To update their own password
