@@ -16,9 +16,11 @@ import os
 from db.db_connection import CreateDB, ConnectToDB
 import sys
 
+from db.db_connection import ConnectToDB
 from classes.consultant import Consultant
 from classes.admin import Admin
 from classes.super_admin import SuperAdmin
+
 from classes.menu import Menu
 from functions.login import Login
 
@@ -28,8 +30,7 @@ def authenticate():
     # This function will authenticate the user
     username = input("Enter your username: ")
 
-    print("Enter your password: ", end='', flush=True)
-    password = get_masked_password()
+    password = input("Enter your password: ")
     
     level = input("Enter your level: ")
 
@@ -46,44 +47,7 @@ def authenticate():
     else:
         print("Invalid credentials")
 
-# get single character from input
-def getch():
-    # if windows system
-    if os.name == 'nt':
-        import msvcrt
-        return msvcrt.getch().decode('utf-8')
-    # if unix based system
-    else:
-        import tty
-        import termios
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(fd)
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
 
-# masks password while asking for input with asterisks
-def get_masked_password():
-    password = ''
-    while True:
-        ch = getch()
-        # if enter is pressed, break
-        if ch == '\n' or ch == '\r':
-            break
-        # if backspace is pressed
-        elif ch == '\x08' or ch == '\x7f':
-            if len(password) > 0:
-                password = password[:-1]
-                print('\b \b', end='', flush=True)
-        # if pressed char is printable, add asterisks, else dont
-        elif 32 <= ord(ch) <= 126:
-            password += ch
-            print('*', end='', flush=True)
-    print()
-    return password
 
 def exit():
     print("Goodbye!")
