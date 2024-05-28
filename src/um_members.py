@@ -15,9 +15,37 @@
 from db.db_connection import ConnectToDB
 import classes.user as u
 
-conn = ConnectToDB()
+def authenticate():
+    # This function will authenticate the user
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
 
-u = u.User("Jo", "123")
+    if username == "Jo" and password == "123":
+        print("Welcome!")
+    else:
+        print("Invalid credentials")
 
-print("This is a very epic python project biatches")
-print(u)
+
+
+
+def main():
+    while True:
+        print("1. Login")
+        print("2. Exit")
+        menuOption = input("Choose an option: ")
+        if menuOption == "1":
+            authenticate()
+        elif menuOption == "2":
+            break
+        else:
+            print("Invalid option")
+
+if __name__ == "__main__":
+    
+    conn = ConnectToDB()
+
+    u = u.User("Jo", "123")
+
+    print("This is a very epic python project biatches")
+
+    main()
