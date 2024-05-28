@@ -14,7 +14,7 @@
     # ● To modify or update the information of a member in the system.
 
     # ● To search and retrieve the information of a member.
-
+import sqlite3
 from classes.menu import Menu
 from classes.consultant import Consultant
 
@@ -35,9 +35,29 @@ class Admin(Consultant):
         self.menu_functions += admin_functions
         self.menu = Menu(options=self.menu_options, functions=self.menu_functions)
         
+    @staticmethod
+    def connect_to_db():
+        return sqlite3.connect('src/assignment.db')
+
     # ● To check the list of users and their roles. (member to admin??)
     def check_users(self):
-        pass
+        conn = self.connect_to_db()
+        c = conn.cursor()
+        c.execute("SELECT id, name, level FROM users")
+        users = c.fetchall()
+        conn.close()
+        
+        print("List of users:")
+        for user in users:
+            if user[2] == 0:
+                print(f"Name: {user[1]}, Role: Member")
+            elif user[2] == 1:
+                print(f"Name: {user[1]}, Role: Consultant")
+            
+            elif user[2] == 2:
+                print(f"Name: {user[1]}, Role: Admin")
+            else:
+                print(f"Name: {user[1]}, Role: Super Admin")
     
     # ● To define and add a new consultant to the system.
     def add_consultant(self):
