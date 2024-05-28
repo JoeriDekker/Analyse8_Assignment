@@ -5,7 +5,9 @@
 
 # FUNCTIONS TO DO:
 
+import uuid
 from classes.menu import Menu
+from db.db_connection import ConnectToDB
 
 class Consultant:
     def __init__(self, username, level):
@@ -24,7 +26,32 @@ class Consultant:
 
     # ● To add a new member to the system
     def add_member(self):
-        print("Adding member...")
+        print("Enter the info of the new Member:")
+        id = uuid.uuid4()
+        name = input("Name: ")
+        password = input("Password: ")
+        level = 0
+        gender = input("Gender: ")
+        weight = input("Weight: ")
+        email = input("Email: ")
+
+        # TODO: Mobile Phone (+31-6-DDDDDDDD) – only DDDDDDDD to be entered by the user.
+        mobile = input("Mobile: ")
+
+        # wat is het nut van eerst dit maken en daarna in de execute te zetten als het ook direct kan??
+        Member = {"id": id, "name": name, "password": password, "level": level, "gender": gender, "weight": weight, "email": email, "mobile": mobile}
+
+        print("Now adding Member...")
+
+        # TODO: also ask and add address
+        c = ConnectToDB()
+        c.execute("INSERT INTO users (id, name, password, level, gender, weight, email, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (str(Member['id']), Member['name'], Member['password'], Member['level'], Member['gender'], Member['weight'], Member['email'], Member['mobile']))
+        c.commit()
+        c.close()
+
+        print("Adding Member successful!")
+        input("Press Enter to Continue")
 
     # ● To modify or update the information of a member in the system
     def update_member(self):

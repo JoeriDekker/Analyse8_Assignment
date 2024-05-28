@@ -16,7 +16,6 @@ import os
 from db.db_connection import CreateDB, ConnectToDB
 import sys
 
-from db.db_connection import ConnectToDB
 from classes.consultant import Consultant
 from classes.admin import Admin
 from classes.super_admin import SuperAdmin
@@ -35,19 +34,18 @@ def authenticate():
     level = input("Enter your level: ")
 
     if username == "Jo" and password == "123":
-        if level == "0":
+        if level == "1":
             user = Consultant(username, level)
             user.display_menu()
-        elif level == "1":
+        elif level == "2":
             user = Admin(username, level)
             user.display_menu()
-        elif level == "2":
+        elif level == "3":
             user = SuperAdmin(username, level)
             user.display_menu()
     else:
         print("Invalid credentials")
-
-
+        input()
 
 def exit():
     print("Goodbye!")
@@ -55,12 +53,13 @@ def exit():
 
 def main():
     while True:
+        Menu.clear_screen(Menu)
+
         menu = Menu(["Login", "Exit"], [authenticate, exit])
         menu.display()
         menu.execute_choice()
 
 if __name__ == "__main__":
-    
     conn = CreateDB()
 
     print("This is a very epic python project biatches")

@@ -18,7 +18,7 @@ def CreateDB():
     id = uuid.uuid4()
     name = "super_admin"
     password = "Admin_123"
-    level = 2
+    level = 3
     SuperAdmin = {"id": id, "name": name, "password": password, "level": level}
 
     id = uuid.uuid4()
@@ -33,6 +33,8 @@ def CreateDB():
     level = 1
     Consultant = {"id": id, "name": name, "password": password, "level": level}
 
+
+	# TODO: members have age, first and last name for input. aslo registration date. the ID also has a specific structure (see page 2 assignment)
     id = uuid.uuid4()
     name = "member"
     password = "mem"
