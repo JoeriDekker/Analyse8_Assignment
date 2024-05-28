@@ -11,9 +11,11 @@ class Consultant:
     def __init__(self, username, level):
         self.username = username
         self.level = level
+        self.menu_options = ["Update password", "Add member", "Update member", "Search member"]
+        self.menu_functions = [self.update_password, self.add_member, self.update_member, self.search_member]
         self.menu = Menu(
-            options=["Update password", "Add member", "Update member", "Search member"],
-            functions=[self.update_password, self.add_member, self.update_member, self.search_member]
+            options=self.menu_options,
+            functions=self.menu_functions
         )
 
     # ● To update their own password
@@ -25,7 +27,6 @@ class Consultant:
         print("Adding member...")
 
     # ● To modify or update the information of a member in the system
-
     def update_member(self):
         print("Updating member info...")
 

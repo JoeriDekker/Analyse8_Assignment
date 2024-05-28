@@ -15,35 +15,47 @@
 
 # (inherited from consultant)
 
-# ● To add a new member to the system.
+    # ● To add a new member to the system.
 
-# ● To modify or update the information of a member in the system.
+    # ● To modify or update the information of a member in the system.
 
-# ● To search and retrieve the information of a member.
+    # ● To search and retrieve the information of a member.
 
 # (inherited from admin)
 
-# ● To check the list of users and their roles.
+    # ● To check the list of users and their roles.
 
-# ● To define and add a new consultant to the system.
+    # ● To define and add a new consultant to the system.
 
-# ● To modify or update an existing consultant’s account and profile.
+    # ● To modify or update an existing consultant’s account and profile.
 
-# ● To delete an existing consultant account.
+    # ● To delete an existing consultant account.
 
-# ● To reset an existing consultant password (a temporary password).
+    # ● To reset an existing consultant password (a temporary password).
 
-# ● To make a backup of the system and restore a backup (members information and users’ data).
+    # ● To make a backup of the system and restore a backup (members information and users’ data).
 
-# ● To see the logs file of the system.
+    # ● To see the logs file of the system.
 
-# ● To delete a member's record from the database (note that a consultant cannot delete a record but can only modify or update a member’s information).
+    # ● To delete a member's record from the database (note that a consultant cannot delete a record but can only modify or update a member’s information).
 
-from admin import Admin
+from classes.menu import Menu
+from classes.admin import Admin
 
 class SuperAdmin(Admin):
     def __init__(self, username, level):
         super().__init__(username, level)
+        super_admin_options = [
+            "Add admin", "Update admin", "Delete admin",
+            "Reset admin password"
+        ]
+        super_admin_functions = [
+            self.add_admin, self.update_admin, self.delete_admin,
+            self.reset_admin_password
+        ]
+        self.menu_options += super_admin_options
+        self.menu_functions += super_admin_functions
+        self.menu = Menu(options=self.menu_options, functions=self.menu_functions)
 
     # ● To define and add a new admin to the system.
     def add_admin(self):

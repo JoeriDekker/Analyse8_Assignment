@@ -14,10 +14,14 @@
 
 import os
 from db.db_connection import CreateDB, ConnectToDB
+import sys
+
 from classes.consultant import Consultant
+from classes.admin import Admin
+from classes.super_admin import SuperAdmin
 from classes.menu import Menu
 from functions.login import Login
-import sys
+
 
 def authenticate():
     # Login()
@@ -34,10 +38,10 @@ def authenticate():
             user = Consultant(username, level)
             user.display_menu()
         elif level == "1":
-            user = Consultant(username, level)
+            user = Admin(username, level)
             user.display_menu()
         elif level == "2":
-            user = Consultant(username, level)
+            user = SuperAdmin(username, level)
             user.display_menu()
     else:
         print("Invalid credentials")
