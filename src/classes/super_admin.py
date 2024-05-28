@@ -42,3 +42,21 @@
 # ● To delete a member's record from the database (note that a consultant cannot delete a record but can only modify or update a member’s information).
 
 # ● To search and retrieve the information of a member.
+
+from admin import Admin
+
+class SuperAdmin(Admin):
+    def __init__(self, username, level):
+        super().__init__(username, level)
+
+    def add_admin(self):
+        pass
+
+    def update_admin(self):
+        pass
+
+    def delete_admin(self):
+        pass
+
+    def reset_admin_password(self):
+        pass

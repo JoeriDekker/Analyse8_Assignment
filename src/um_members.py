@@ -13,38 +13,42 @@
 # ===================================
 
 from db.db_connection import ConnectToDB
-import classes.user as u
+from classes.consultant import Consultant
+from classes.menu import Menu
 
 def authenticate():
     # This function will authenticate the user
     username = input("Enter your username: ")
     password = input("Enter your password: ")
+    level = input("Enter your level: ")
 
     if username == "Jo" and password == "123":
-        print("Welcome!")
+        if level == "0":
+            user = Consultant(username, level)
+            user.display_menu()
+        elif level == "1":
+            user = Consultant(username, level)
+            user.display_menu()
+        elif level == "2":
+            user = Consultant(username, level)
+            user.display_menu()
     else:
         print("Invalid credentials")
 
 
-
+def exit():
+    print("Goodbye!")
+    quit()
 
 def main():
     while True:
-        print("1. Login")
-        print("2. Exit")
-        menuOption = input("Choose an option: ")
-        if menuOption == "1":
-            authenticate()
-        elif menuOption == "2":
-            break
-        else:
-            print("Invalid option")
+        menu = Menu(["Login", "Exit"], [authenticate, exit])
+        menu.display()
+        menu.execute_choice()
 
 if __name__ == "__main__":
     
     conn = ConnectToDB()
-
-    u = u.User("Jo", "123")
 
     print("This is a very epic python project biatches")
 
