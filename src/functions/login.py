@@ -72,8 +72,6 @@ def Login():
               ██                                    ██    
               ████████████████████████████████████████
               """)
-        print(f"Welcome {users[0]['name']}!")
-        print("/////////////////////////")
         return users[0]
     
     else:
