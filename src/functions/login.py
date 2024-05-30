@@ -54,6 +54,7 @@ def Login():
         return
 
     conn = sqlite3.connect('src/assignment.db')
+    conn.row_factory = sqlite3.Row
     c = conn.cursor()
     c.execute("SELECT * FROM users WHERE name = ? AND password = ?", (username, password))
     users = c.fetchall()
@@ -61,7 +62,23 @@ def Login():
 
     if len(users) > 0:
         print("Login successful!")
+        # Show nice user and role
+        print(f"""
+              ████████████████████████████████████████
+              ██                                    ██                                   
+                      User: {users[0]['name']}         
+                                                 
+                      Role: {users[0]['level']}   
+              ██                                    ██    
+              ████████████████████████████████████████
+              """)
+        print(f"Welcome {users[0]['name']}!")
+        print("/////////////////////////")
         return users[0]
+    
+    else:
+        print("Login failed")
+        return None
     
 
 
@@ -69,16 +86,16 @@ def CheckUsername(username):
     if len(username) < 4:
         return False
     
-    if username.length() > 20:
+    if len(username) > 20:
         return False
     
     return True
 
 def CheckPassword(password):
-    if len(password) < 8:
-        return False
+    # if len(password) < 8:
+    #     return False
     
-    if password.length() > 20:
+    if len(password) > 20:
         return False
     
     return True

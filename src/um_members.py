@@ -25,36 +25,52 @@ from functions.login import Login
 
 
 def authenticate():
-    # Login()
-    # This function will authenticate the user
-    username = input("Enter your username: ")
+    user = Login()
 
-    password = input("Enter your password: ")
-    
-    level = input("Enter your level: ")
+    if user == None:
+        print("Invalid credentials. Please try again.")
+        input("Press Enter to Continue")
+        return
 
-    if username == "Jo" and password == "123":
-        if level == "1":
-            user = Consultant(username, level)
-            user.display_menu()
-        elif level == "2":
-            user = Admin(username, level)
-            user.display_menu()
-        elif level == "3":
-            user = SuperAdmin(username, level)
-            user.display_menu()
+    if str(user['level']) == "1":
+        user = Consultant(user['name'], user['level'])
+        user.display_menu()
+    elif str(user['level']) == "2":
+        user = Admin(user['name'], user['level'])
+        user.display_menu()
+    elif str(user['level']) == "3":
+        user = SuperAdmin(user['name'], user['level'])
+        user.display_menu()
     else:
-        print("Invalid credentials")
-        input()
+        print("Something went wrong, please try again.")
+        input("Press Enter to Continue")
+  
 
 def exit():
     print("Goodbye!")
     quit()
 
 def main():
-    while True:
-        Menu.clear_screen(Menu)
+    Menu.clear_screen(Menu)
 
+    print("""
+        ░█████╗░███╗░░██╗░█████╗░██╗░░░░░██╗░░░██╗░██████╗███████╗  ░█████╗░
+        ██╔══██╗████╗░██║██╔══██╗██║░░░░░╚██╗░██╔╝██╔════╝██╔════╝  ██╔══██╗
+        ███████║██╔██╗██║███████║██║░░░░░░╚████╔╝░╚█████╗░█████╗░░  ╚█████╔╝
+        ██╔══██║██║╚████║██╔══██║██║░░░░░░░╚██╔╝░░░╚═══██╗██╔══╝░░  ██╔══██╗
+        ██║░░██║██║░╚███║██║░░██║███████╗░░░██║░░░██████╔╝███████╗  ╚█████╔╝
+        ╚═╝░░╚═╝╚═╝░░╚══╝╚═╝░░╚═╝╚══════╝░░░╚═╝░░░╚═════╝░╚══════╝  ░╚════╝░
+
+        ░█████╗░░██████╗░██████╗██╗░██████╗░███╗░░██╗███╗░░░███╗███████╗███╗░░██╗████████╗
+        ██╔══██╗██╔════╝██╔════╝██║██╔════╝░████╗░██║████╗░████║██╔════╝████╗░██║╚══██╔══╝
+        ███████║╚█████╗░╚█████╗░██║██║░░██╗░██╔██╗██║██╔████╔██║█████╗░░██╔██╗██║░░░██║░░░
+        ██╔══██║░╚═══██╗░╚═══██╗██║██║░░╚██╗██║╚████║██║╚██╔╝██║██╔══╝░░██║╚████║░░░██║░░░
+        ██║░░██║██████╔╝██████╔╝██║╚██████╔╝██║░╚███║██║░╚═╝░██║███████╗██║░╚███║░░░██║░░░
+        ╚═╝░░╚═╝╚═════╝░╚═════╝░╚═╝░╚═════╝░╚═╝░░╚══╝╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░
+        ===================================================================
+          
+          """)
+    while True:
         menu = Menu(["Login", "Exit"], [authenticate, exit])
         menu.display()
         menu.execute_choice()
