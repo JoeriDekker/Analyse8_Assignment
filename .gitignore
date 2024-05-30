@@ -10,3 +10,6 @@ src/classes/__pycache__/consultant.cpython-312.pyc
 src/db/__pycache__/db_connection.cpython-312.pyc
 *.db
 *.pyc
+
+src/assignment.db
+src/classes/__pycache__
