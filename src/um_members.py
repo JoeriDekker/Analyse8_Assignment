@@ -33,13 +33,13 @@ def authenticate():
         return
 
     if str(user['level']) == "1":
-        user = Consultant(user['name'], user['level'])
+        user = Consultant(user['username'], user['level'])
         user.display_menu()
     elif str(user['level']) == "2":
-        user = Admin(user['name'], user['level'])
+        user = Admin(user['username'], user['level'])
         user.display_menu()
     elif str(user['level']) == "3":
-        user = SuperAdmin(user['name'], user['level'])
+        user = SuperAdmin(user['unsername'], user['level'])
         user.display_menu()
     else:
         print("Something went wrong, please try again.")

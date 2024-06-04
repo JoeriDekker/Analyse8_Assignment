@@ -55,7 +55,7 @@ def Login():
     conn = sqlite3.connect('src/assignment.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
-    c.execute("SELECT * FROM users WHERE name = ? AND password = ?", (username, password))
+    c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
     users = c.fetchall()
     conn.close()
 
@@ -65,7 +65,7 @@ def Login():
         print(f"""
               ████████████████████████████████████████
               ██                                    ██                                   
-                      User: {users[0]['name']}         
+                      User: {users[0]['username']}         
                                                  
                       Role: {users[0]['level']}   
               ██                                    ██    

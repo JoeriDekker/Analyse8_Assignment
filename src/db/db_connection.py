@@ -17,34 +17,45 @@ def CreateDB():
       # Create a User object
       # create uuid for each user
       id = generate_membership_id()
-      name = "super_admin"
-      password = "Supersecret123!"
+      first_name = "Sjaak"
+      last_name = "Minton"
+      username = "super_admin"
       level = 3
-      SuperAdmin = {"id": id, "name": name, "password": password, "level": level}
+      password = "Supersecret123!"
+      SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       id = generate_membership_id()
-      name = "admin_acc"
-      password = "Supersecret123!"
+      first_name = "Klaas"
+      last_name = "Jansen"
+      username = "admin_acc"
       level = 2
-      Admin = {"id": id, "name": name, "password": password, "level": level}
+      password = "Supersecret123!"
+      Admin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       id = generate_membership_id()
-      name = "consultant"
-      password = "Supersecret123!"
+      first_name = "Samantha"
+      last_name = "Julias"
+      username = "Consultant"
       level = 1
-      Consultant = {"id": id, "name": name, "password": password, "level": level}
-
+      password = "Supersecret123!"
+      Consultant = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       # TODO: members have age, first and last name for input. aslo registration date. the ID also has a specific structure (see page 2 assignment)
       id = generate_membership_id()
-      name = "member"
-      password = "Supersecret123!"
-      level = 0
-      Member = {"id": id, "name": name, "password": password, "level": level}
+      first_name = "John"
+      last_name = "Doe"
+      age = 25
+      gender = "M"
+      weight = 80
+      email = "joe@doe.com"
+      phone_number = "0612345678"
+
+      Member = {"id": id, "first_name": first_name, "last_name": last_name, "age": age, "gender":gender, "weight": weight, "email": email, "phone_number": phone_number}
 
       # Drop the table if it exists
       c.execute("DROP TABLE IF EXISTS users")
       c.execute("DROP TABLE IF EXISTS address")
+      c.execute("DROP TABLE IF EXISTS members")
 
       # -Users  
       #     First Name, Last Name, Age, Gender, Weight, Email Address, Mobile Phone, Password?
@@ -52,44 +63,51 @@ def CreateDB():
       # -Address
       #     Street name, House number, Zip Code (DDDDXX), City (system should generate a list of 10 city names of your choice predefined in the system
 
+     
+      
       # Create the 'users' table
       c.execute('''CREATE TABLE users
                   (id TEXT PRIMARY KEY, 
-                  name TEXT, 
-                  password TEXT, 
+                  first_name TEXT,
+                  last_name TEXT, 
+                  username TEXT,
                   level INTEGER, 
+                  password TEXT)''')
+      
+      # Create the 'members' table
+      c.execute('''CREATE TABLE members
+                  (id TEXT PRIMARY KEY, 
+                  first_name TEXT,
+                  last_name TEXT, 
+                  age INTEGER,
                   gender TEXT, 
                   weight INTEGER, 
                   email TEXT, 
-                  mobile TEXT)''')
+                  phone_number TEXT)''')
 
       # Create Address Table
       c.execute('''CREATE TABLE address
                   (id TEXT PRIMARY KEY, 
-                  user_id TEXT,
+                  member_id TEXT,
                   street TEXT, 
                   house_number INTEGER, 
                   zip_code TEXT, 
                   city TEXT,
-                  FOREIGN KEY(user_id) REFERENCES users(id))''')
+                  FOREIGN KEY(member_id) REFERENCES members(id))''')
 
       # Insert the user data into the 'users' table
-      c.execute("INSERT INTO users (id, name, password, level, gender, weight, email, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (str(SuperAdmin['id']), SuperAdmin['name'], SuperAdmin['password'], SuperAdmin['level'], '', 0, '', ''))
-      c.execute("INSERT INTO users (id, name, password, level, gender, weight, email, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (str(Admin['id']), Admin['name'], Admin['password'], Admin['level'], '', 0, '', ''))
-      c.execute("INSERT INTO users (id, name, password, level, gender, weight, email, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (str(Consultant['id']), Consultant['name'], Consultant['password'], Consultant['level'], '', 0, '', ''))
-      c.execute("INSERT INTO users (id, name, password, level, gender, weight, email, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (str(Member['id']), Member['name'], Member['password'], Member['level'], '', 0, '', ''))
+      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
+            (str(SuperAdmin['id']), SuperAdmin['first_name'], SuperAdmin['last_name'], SuperAdmin['username'], SuperAdmin['password'], SuperAdmin['level']))
+      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
+            (str(Admin['id']), Admin['first_name'], Admin['last_name'], Admin['username'], Admin['password'], Admin['level']))
+      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
+            (str(Consultant['id']), Consultant['first_name'], Consultant['last_name'], Consultant['username'], Consultant['password'], Consultant['level']))
+      
 
-      c.execute("INSERT INTO address (id, user_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
-            (str(uuid.uuid4()), str(SuperAdmin['id']), "teststreet", 58, "1029AB", "Rotterdam"))
-      c.execute("INSERT INTO address (id, user_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
-            (str(uuid.uuid4()), str(Admin['id']), "teststreet", 58, "1029AB", "Rotterdam"))
-      c.execute("INSERT INTO address (id, user_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
-            (str(uuid.uuid4()), str(Consultant['id']), "teststreet", 58, "1029AB", "Rotterdam"))
-      c.execute("INSERT INTO address (id, user_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
+      c.execute("INSERT INTO members (id, first_name, last_name, age, gender, weight, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (str(Member['id']), Member['first_name'], Member['last_name'], Member['age'], Member['gender'], Member['weight'], Member['email'], Member['phone_number']))
+
+      c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
             (str(uuid.uuid4()), str(Member['id']), "teststreet", 58, "1029AB", "Rotterdam"))
 
       # Commit the changes
