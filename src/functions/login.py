@@ -1,6 +1,8 @@
 import os
 import sqlite3
 
+import functions.input_checks as input_check
+
 # get single character from input
 def getch():
     # if windows system
@@ -38,21 +40,18 @@ def get_masked_password():
             password += ch
             print('*', end='', flush=True)
     print()
-    return password
+    return str(password)
 
 def Login():
-    username = input("Enter username: ")
+    print("Enter username: ")
+    username = input("")
 
-    password = input("Enter password: ")
+    print("Enter password: ")
+    password = get_masked_password()
 
-    if not CheckUsername(username):
-        print("Invalid username")
+    if not input_check.username_check(username) or not input_check.password_check(password):
         return
     
-    if not CheckPassword(password):
-        print("Invalid password")
-        return
-
     conn = sqlite3.connect('src/assignment.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -79,21 +78,3 @@ def Login():
         return None
     
 
-
-def CheckUsername(username):
-    if len(username) < 4:
-        return False
-    
-    if len(username) > 20:
-        return False
-    
-    return True
-
-def CheckPassword(password):
-    # if len(password) < 8:
-    #     return False
-    
-    if len(password) > 20:
-        return False
-    
-    return True

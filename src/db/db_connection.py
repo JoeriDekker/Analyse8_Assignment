@@ -18,19 +18,19 @@ def CreateDB():
       # create uuid for each user
       id = generate_membership_id()
       name = "super_admin"
-      password = "Admin_123"
+      password = "Supersecret123!"
       level = 3
       SuperAdmin = {"id": id, "name": name, "password": password, "level": level}
 
       id = generate_membership_id()
-      name = "admin"
-      password = "admin"
+      name = "admin_acc"
+      password = "Supersecret123!"
       level = 2
       Admin = {"id": id, "name": name, "password": password, "level": level}
 
       id = generate_membership_id()
       name = "consultant"
-      password = "con"
+      password = "Supersecret123!"
       level = 1
       Consultant = {"id": id, "name": name, "password": password, "level": level}
 
@@ -38,7 +38,7 @@ def CreateDB():
       # TODO: members have age, first and last name for input. aslo registration date. the ID also has a specific structure (see page 2 assignment)
       id = generate_membership_id()
       name = "member"
-      password = "mem"
+      password = "Supersecret123!"
       level = 0
       Member = {"id": id, "name": name, "password": password, "level": level}
 
