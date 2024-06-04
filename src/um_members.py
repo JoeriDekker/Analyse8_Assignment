@@ -78,6 +78,5 @@ def main():
 if __name__ == "__main__":
     conn = CreateDB()
 
-    print("This is a very epic python project biatches")
 
     main()
