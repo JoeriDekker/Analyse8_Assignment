@@ -24,6 +24,7 @@ def getch():
 
 # masks password while asking for input with asterisks
 def get_masked_password():
+    # TODO: if else statement with second part for unix based
     password = ''
     while True:
         ch = getch()

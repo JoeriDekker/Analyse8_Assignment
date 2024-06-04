@@ -38,6 +38,11 @@ def phone_number_check(phone_number):
 # print(zip_code_check("1234A"))
 # print(zip_code_check("1234ABC"))
 
+# print (phone_number_check("12345678"))
+# print (phone_number_check("1345678"))
+# print (phone_number_check("123456789292"))
+# print (phone_number_check("1234awfsg5678"))
+# print (phone_number_check("12c45678"))
 
 # print(username_check("_hallo12'"))
 # print(username_check("Hallo12_"))

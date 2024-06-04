@@ -7,6 +7,10 @@
 
 import uuid
 from classes.menu import Menu
+from functions.input_checks import Checks
+from db.db_connection import db
+
+
 from db.db_connection import ConnectToDB
 
 class Consultant:
@@ -27,26 +31,35 @@ class Consultant:
     # ● To add a new member to the system
     def add_member(self):
         print("Enter the info of the new Member:")
-        id = uuid.uuid4()
-        name = input("Name: ")
-        password = input("Password: ")
-        level = 0
+
+        member_id = db.generate_membership_id()
+        first_name = input("First name: ")
+        last_name = input("Last name: ")
+
+        age = input("Age: ")
         gender = input("Gender: ")
         weight = input("Weight: ")
+
+        street = input("Street name: ")
+        house_number = input("House number: ")
+        zip_code = input("Zip code: ")
+        
+        # TODO: can only choose between 10 predecided cities
+        city = input("City: ")
+
         email = input("Email: ")
-
-        # TODO: Mobile Phone (+31-6-DDDDDDDD) – only DDDDDDDD to be entered by the user.
         mobile = input("Mobile: ")
-
-        # wat is het nut van eerst dit maken en daarna in de execute te zetten als het ook direct kan??
-        Member = {"id": id, "name": name, "password": password, "level": level, "gender": gender, "weight": weight, "email": email, "mobile": mobile}
+        if not Checks.phone_number_check(mobile):
+            print("phone number in wrong format, try again.")
+            return
 
         print("Now adding Member...")
 
-        # TODO: also ask and add address
         c = ConnectToDB()
-        c.execute("INSERT INTO users (id, name, password, level, gender, weight, email, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (str(Member['id']), Member['name'], Member['password'], Member['level'], Member['gender'], Member['weight'], Member['email'], Member['mobile']))
+        c.execute("INSERT INTO users (id, first_name, last_name, age, gender, weight, email, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (str(member_id), first_name, last_name, age, gender, weight, email, mobile))
+        c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (str(uuid.uuid4()), member_id, street, house_number, zip_code, city))
         c.commit()
         c.close()
 
@@ -57,7 +70,7 @@ class Consultant:
     def update_member(self):
         print("Updating member info...")
 
-    # ● To search and retrieve the information of a member (check note 2 below).
+    # ● To search and retrieve the information of a member.
     def search_member(self):
         print("Searching member...")
 
