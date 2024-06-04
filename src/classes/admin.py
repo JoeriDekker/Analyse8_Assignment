@@ -15,8 +15,13 @@
 
     # ● To search and retrieve the information of a member.
 import sqlite3
+import uuid
 from classes.menu import Menu
 from classes.consultant import Consultant
+import functions.input_checks as input_check
+# import db.db_connection as id
+from db.db_connection import generate_membership_id
+
 
 class Admin(Consultant):
     def __init__(self, username, level):
@@ -61,7 +66,33 @@ class Admin(Consultant):
     
     # ● To define and add a new consultant to the system.
     def add_consultant(self):
-        pass
+        print("=== ADD CONSULTANT ===\n")
+
+        print("Enter username: ")
+        username = input("")
+        print("Enter password: ")
+        password = input("")
+        
+        if (input_check.username_check(username) & input_check.password_check(password)):
+            print("Enter first name: ")
+            firstName = input("")
+            print("Enter last name: ")
+            lastName = input("")
+            conID = generate_membership_id()
+
+            if conID is not None:
+            # conn = self.connect_to_db()
+            # c = conn.cursor()
+            # c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
+            #           (str(id.generate_membership_id), firstName, lastName, username, password, 1))
+            # conn.commit()
+
+                print(str(conID), firstName, lastName, username, password, 1)
+            else:
+                print("Failed to generate a valid membership ID.")
+                return   
+        else:
+            return
 
     # ● To modify or update an existing consultant’s account and profile.
     def update_consultant(self):
