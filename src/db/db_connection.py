@@ -1,7 +1,6 @@
 import sqlite3
 import uuid
-import datetime
-import random
+from functions.id_functions import IdFunc
 
 def ConnectToDB():
     conn = sqlite3.connect('src/assignment.db')
@@ -16,7 +15,7 @@ def CreateDB():
 
       # Create a User object
       # create uuid for each user
-      id = generate_membership_id()
+      id = IdFunc.generate_membership_id()
       first_name = "Sjaak"
       last_name = "Minton"
       username = "super_admin"
@@ -24,7 +23,7 @@ def CreateDB():
       password = "Supersecret123!"
       SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
-      id = generate_membership_id()
+      id = IdFunc.generate_membership_id()
       first_name = "Klaas"
       last_name = "Jansen"
       username = "admin_acc"
@@ -32,7 +31,7 @@ def CreateDB():
       password = "Supersecret123!"
       Admin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
-      id = generate_membership_id()
+      id = IdFunc.generate_membership_id()
       first_name = "Samantha"
       last_name = "Julias"
       username = "Consultant"
@@ -41,7 +40,7 @@ def CreateDB():
       Consultant = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       # TODO: members have age, first and last name for input. aslo registration date. the ID also has a specific structure (see page 2 assignment)
-      id = generate_membership_id()
+      id = IdFunc.generate_membership_id()
       first_name = "John"
       last_name = "Doe"
       age = 25
@@ -114,50 +113,6 @@ def CreateDB():
       conn.commit()
 
       return conn
-
-def generate_membership_id():
-      # Get the current year
-      current_year = datetime.datetime.now().year
-
-      # Get first two digits of the current year
-      first_two_digits = str(current_year)[2:]
-
-      # Create 7 random digits
-      random_digits = ''.join([str(random.randint(0, 9)) for _ in range(7)])
-
-      # calculate the checksum for last digit
-      checksum = sum(int(digit) for digit in first_two_digits + random_digits) % 10
-
-      # Return the membership ID
-      finalnumber = first_two_digits + random_digits + str(checksum)
-
-      if is_valid_membership_id(finalnumber):
-            return finalnumber
-      else:
-            print("Error: Invalid membership ID generated")
-            return None
-      
-
-def is_valid_membership_id(id):
-    # Check if the length is correct
-    if len(id) != 10:
-        return False
-
-    # Check if the first two digits are less than or equal to the current year
-    if int(id[:2]) > int(str(datetime.datetime.now().year)[2:]):
-        return False
-
-    # Calculate the checksum
-    checksum = sum(int(digit) for digit in id[:9]) % 10
-
-    # Check if the checksum is correct
-    if checksum != int(id[9]):
-        return False
-
-    # If all checks passed, the ID is valid
-    return True
-
-
 
 if __name__ == "__main__":
     conn = CreateDB()

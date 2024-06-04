@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-import functions.input_checks as input_check
+from functions.input_checks import Checks
 
 # get single character from input
 def getch():
@@ -50,7 +50,7 @@ def Login():
     print("Enter password: ")
     password = get_masked_password()
 
-    if not input_check.username_check(username) or not input_check.password_check(password):
+    if not Checks.username_check(username) or not Checks.password_check(password):
         return
     
     conn = sqlite3.connect('src/assignment.db')
@@ -78,4 +78,3 @@ def Login():
         print("Login failed")
         return None
     
-

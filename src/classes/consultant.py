@@ -8,7 +8,7 @@
 import uuid
 from classes.menu import Menu
 from functions.input_checks import Checks
-from db.db_connection import db
+from functions.id_functions import IdFunc
 
 
 from db.db_connection import ConnectToDB
@@ -32,33 +32,50 @@ class Consultant:
     def add_member(self):
         print("Enter the info of the new Member:")
 
-        member_id = db.generate_membership_id()
+        # TODO: checks for the string inputs? they cant inject, so is there reason to?
+
+        member_id = IdFunc.generate_membership_id()
         first_name = input("First name: ")
         last_name = input("Last name: ")
 
         age = input("Age: ")
+        if not Checks.number_check(age):
+            print("not a number, try again.")
+            return
         gender = input("Gender: ")
         weight = input("Weight: ")
+        if not Checks.number_check(weight):
+            print("not a number, try again.")
+            return
 
         street = input("Street name: ")
         house_number = input("House number: ")
+        if not Checks.number_check(house_number):
+            print("not a number, try again.")
+            return
         zip_code = input("Zip code: ")
+        if not Checks.zip_code_check(zip_code):
+            print("zip code in wrong format, try again.")
+            return
         
         # TODO: can only choose between 10 predecided cities
         city = input("City: ")
 
         email = input("Email: ")
-        mobile = input("Mobile: ")
-        if not Checks.phone_number_check(mobile):
+        if not Checks.email_check(email):
+            print("email in wrong format, try again.")
+            return
+        phone_number = input("Phone number: ")
+        if not Checks.phone_number_check(phone_number):
             print("phone number in wrong format, try again.")
             return
 
         print("Now adding Member...")
 
         c = ConnectToDB()
-        c.execute("INSERT INTO users (id, first_name, last_name, age, gender, weight, email, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (str(member_id), first_name, last_name, age, gender, weight, email, mobile))
-        c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        c.execute("INSERT INTO members (id, first_name, last_name, age, gender, weight, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (str(member_id), first_name, last_name, age, gender, weight, email, phone_number))
+        c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
             (str(uuid.uuid4()), member_id, street, house_number, zip_code, city))
         c.commit()
         c.close()
