@@ -2,6 +2,7 @@ import os
 import sqlite3
 
 from functions.input_checks import Checks
+from functions.hash_functions import HashFunctions
 
 # get single character from input
 def getch():
@@ -56,25 +57,26 @@ def Login():
     conn = sqlite3.connect('src/assignment.db')
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
-    c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
+    c.execute("SELECT * FROM users WHERE username=?", (username,))
     users = c.fetchall()
     conn.close()
 
     if len(users) > 0:
-        print("Login successful!")
-        # Show nice user and role
-        print(f"""
-              ████████████████████████████████████████
-              ██                                    ██                                   
-                      User: {users[0]['username']}         
-                                                 
-                      Role: {users[0]['level']}   
-              ██                                    ██    
-              ████████████████████████████████████████
-              """)
-        return users[0]
+        if HashFunctions.check_password(password, users[0]['password']):
+            print("Login successful!")
+            # Show nice user and role
+            print(f"""
+                ████████████████████████████████████████
+                ██                                    ██                                   
+                        User: {users[0]['username']}         
+                                                    
+                        Role: {users[0]['level']}   
+                ██                                    ██    
+                ████████████████████████████████████████
+                """)
+            return users[0]
+            
     
-    else:
-        print("Login failed")
-        return None
+    print("Login failed")
+    return None
     

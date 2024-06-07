@@ -15,6 +15,7 @@
 import os
 from db.db_connection import CreateDB, ConnectToDB
 import sys
+import setup
 
 from classes.consultant import Consultant
 from classes.admin import Admin

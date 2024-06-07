@@ -20,7 +20,8 @@ from classes.menu import Menu
 from classes.consultant import Consultant
 import functions.input_checks as input_check
 # import db.db_connection as id
-from db.db_connection import generate_membership_id
+from functions.input_checks import Checks
+from functions.id_functions import IdFunc
 
 
 class Admin(Consultant):
@@ -36,8 +37,8 @@ class Admin(Consultant):
             self.reset_consultant_password, self.backup_system, self.restore_backup,
             self.see_logs, self.delete_member
         ]
-        self.menu_options += admin_options
-        self.menu_functions += admin_functions
+        self.menu_options += admin_options + ["Logout"]
+        self.menu_functions += admin_functions + [self.logout]
         self.menu = Menu(options=self.menu_options, functions=self.menu_functions)
         
     @staticmethod

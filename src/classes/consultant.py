@@ -20,8 +20,8 @@ class Consultant:
         self.menu_options = ["Update password", "Add member", "Update member", "Search member"]
         self.menu_functions = [self.update_password, self.add_member, self.update_member, self.search_member]
         self.menu = Menu(
-            options=self.menu_options,
-            functions=self.menu_functions
+            options=self.menu_options + ["Logout"],
+            functions=self.menu_functions + [self.logout]
         )
 
     # ● To update their own password
@@ -94,3 +94,7 @@ class Consultant:
     def display_menu(self):
         self.menu.display()
         self.menu.execute_choice()
+
+    def logout(self):
+        print("Logging out...")
+        quit()
