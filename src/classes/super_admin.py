@@ -42,6 +42,10 @@
 from classes.menu import Menu
 from classes.admin import Admin
 
+from functions.input_checks import Checks
+from functions.id_functions import IdFunc
+from db.db_connection import ConnectToDB
+
 class SuperAdmin(Admin):
     def __init__(self, username, level):
         super().__init__(username, level)
@@ -59,8 +63,24 @@ class SuperAdmin(Admin):
 
     # ● To define and add a new admin to the system.
     def add_admin(self):
-        pass
+        member_id = IdFunc.generate_membership_id()
 
+        first_name = input("First name: ")
+        last_name = input("Last name: ")
+        username = input("Username: ")
+        password = input("Password: ")
+
+        if not Checks.username_check(username) or not Checks.password_check(password):
+            print("Invalid username or password")
+            return
+
+
+        c = ConnectToDB()
+        c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
+          (member_id, "john", "doe", "admin", "Admin_123?", "2"))
+        c.commit()
+        c.close()
+        
     # ● To modify or update an existing admin’s account and profile.
     def update_admin(self):
         pass

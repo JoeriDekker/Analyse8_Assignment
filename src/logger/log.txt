@@ -35,3 +35,9 @@ No., Date, Time, Username, Description of activity, Additional Information, Susp
 34, 2024-06-09, 15:34:30, ..., Unsuccesful login, multiple login fails from single user, yes
 35, 2024-06-09, 15:35:32, admin_acc, Succesful login, , no
 36, 2024-06-09, 15:43:48, admin_acc, Succesful login, , no
+37, 2024-06-09, 15:48:36, admin_acc, Succesful login, , no
+38, 2024-06-09, 15:49:29, admin_acc, Succesful login, , no
+39, 2024-06-09, 16:07:44, super_admin, Succesful login, , no
+40, 2024-06-09, 16:11:20, super_admin, Succesful login, , no
+41, 2024-06-09, 16:17:52, super_admin, Succesful login, , no
+42, 2024-06-09, 16:24:29, super_admin, Succesful login, , no

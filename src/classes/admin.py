@@ -50,7 +50,7 @@ class Admin(Consultant):
     def check_users(self):
         conn = self.connect_to_db()
         c = conn.cursor()
-        c.execute("SELECT id, name, level FROM users")
+        c.execute("SELECT id, username, level FROM users")
         users = c.fetchall()
         conn.close()
         

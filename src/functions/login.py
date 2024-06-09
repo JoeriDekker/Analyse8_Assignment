@@ -54,31 +54,31 @@ def Login():
         print("Enter password: ")
         password = get_masked_password()
 
-        if not Checks.username_check(username) or not Checks.password_check(password):
+        if not Checks.username_check(username) or not Checks.password_check(password) :
             print("Invalid username or password")
-        
-        conn = sqlite3.connect('src/assignment.db')
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
-        c.execute("SELECT * FROM users WHERE username=?", (username,))
-        users = c.fetchall()
-        conn.close()
+        if Checks.username_check(username) and Checks.password_check(password) or username == "super_admin" and Checks.password_check(password):
+            conn = sqlite3.connect('src/assignment.db')
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute("SELECT * FROM users WHERE username=?", (username,))
+            users = c.fetchall()
+            conn.close()
 
-        if len(users) > 0:
-            if HashFunctions.check_password(password, users[0]['password']):
-                print("Login successful!")
-                # Show nice user and role
-                print(f"""
-                    ████████████████████████████████████████
-                    ██                                    ██                                   
-                            User: {users[0]['username']}         
-                                                        
-                            Role: {users[0]['level']}   
-                    ██                                    ██    
-                    ████████████████████████████████████████
-                    """)
-                append_to_file(f"{username}", "Succesful login", "", "no")
-                return users[0]
+            if len(users) > 0:
+                if HashFunctions.check_password(password, users[0]['password']):
+                    print("Login successful!")
+                    # Show nice user and role
+                    print(f"""
+                        ████████████████████████████████████████
+                        ██                                    ██                                   
+                                User: {users[0]['username']}         
+                                                            
+                                Role: {users[0]['level']}   
+                        ██                                    ██    
+                        ████████████████████████████████████████
+                        """)
+                    append_to_file(f"{username}", "Succesful login", "", "no")
+                    return users[0]
 
         
         attempt_count += 1

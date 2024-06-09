@@ -40,7 +40,7 @@ def authenticate():
         while user.logged_in:
             user.display_menu()
     elif str(user['level']) == "3":
-        user = SuperAdmin(user['unsername'], user['level'])
+        user = SuperAdmin(user['username'], user['level'])
         while user.logged_in:
             user.display_menu()
     else:
@@ -51,6 +51,27 @@ def authenticate():
 def exit():
     print("Goodbye!")
     quit()
+
+def easy_login():
+
+    print("1. Consultant \n2. Admin \n3. Super Admin")
+    user = input("Enter level:")
+
+    if user == "1":
+        user = Consultant("consultant", "1")
+        while user.logged_in:
+            user.display_menu()
+    elif user == "2":
+        user = Admin("admin", "1")
+        while user.logged_in:
+            user.display_menu()
+    elif user == "3":
+        user = SuperAdmin("super admin", "1")
+        while user.logged_in:
+            user.display_menu()
+    else:
+        print("Something went wrong, please try again.")
+        input("Press Enter to Continue")
 
 def main():
     Menu.clear_screen(Menu)
@@ -72,10 +93,12 @@ def main():
         ===================================================================
           
           """)
-    while True:
-        menu = Menu(["Login", "Exit"], [authenticate, exit])
-        menu.display()
-        menu.execute_choice()
+    # while True:
+    #     menu = Menu(["Login", "Exit"], [authenticate, exit])
+    #     menu.display()
+    #     menu.execute_choice()
+
+    easy_login()
 
 if __name__ == "__main__":
     conn = CreateDB()
