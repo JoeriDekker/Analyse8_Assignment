@@ -45,7 +45,7 @@ from classes.admin import Admin
 from functions.input_checks import Checks
 from functions.id_functions import IdFunc
 from functions.hash_functions import HashFunctions
-from functions.mask_functions import MaskFunc
+from functions.login import get_masked_password 
 
 from db.db_connection import ConnectToDB
 
@@ -73,7 +73,7 @@ class SuperAdmin(Admin):
         first_name = input("First name: ")
         last_name = input("Last name: ")
         username = input("Username: ")
-        password = MaskFunc.get_masked_password()
+        password = get_masked_password()
 
         if not Checks.username_check(username) :
             print("Invalid username")
