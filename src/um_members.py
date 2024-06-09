@@ -64,11 +64,11 @@ def easy_login():
         while user.logged_in:
             user.display_menu()
     elif user == "2":
-        user = Admin("admin", "1")
+        user = Admin("admin", "2")
         while user.logged_in:
             user.display_menu()
     elif user == "3":
-        user = SuperAdmin("super admin", "1")
+        user = SuperAdmin("super admin", "3")
         while user.logged_in:
             user.display_menu()
     else:
