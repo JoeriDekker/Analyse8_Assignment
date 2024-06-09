@@ -60,7 +60,7 @@ def easy_login():
     user = input("Enter level:")
 
     if user == "1":
-        user = Consultant("consultant", "1")
+        user = Consultant("Consultant", "1")
         while user.logged_in:
             user.display_menu()
     elif user == "2":

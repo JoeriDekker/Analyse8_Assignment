@@ -10,6 +10,7 @@ from classes.menu import Menu
 from functions.input_checks import Checks
 from functions.id_functions import IdFunc
 from functions.hash_functions import HashFunctions
+import functions.login as Login
 
 
 from db.db_connection import ConnectToDB
@@ -29,11 +30,9 @@ class Consultant:
     # ● To update their own password
     def update_password(self):
         
-        old_password = HashFunctions.get_masked_password("Enter your old password: ")
-
         # Connect to the database and fetch the hashed password for the current user
-        c = ConnectToDB()
-        c.execute("SELECT password FROM users WHERE username=?", (self.username,))
+        c = ConnectToDB().cursor()
+        c.execute("SELECT * FROM users WHERE username=?", (self.username,))
         result = c.fetchone()
         c.close()
 
@@ -41,14 +40,20 @@ class Consultant:
             print("User not found in the database.")
             return
         
-        hashed_password = result[0]
+        print("Enter your old password: ")
+        old_password = Login.get_masked_password()
+        hashed_password = result[5]
 
         if not HashFunctions.check_password(old_password, hashed_password):
             print("Old password does not match. Password update failed.")
             return
         
         # Get the new password
-        new_password = HashFunctions.get_masked_password("New password: ")
+        print("- must have a length of at least 12 characters\n- must be no longer than 30 characters\n- must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character")
+        print("New password: ")
+        new_password = Login.get_masked_password()
+        if not Checks.password_check():
+            print("Invalid password")
 
         # Hash the new password
         hashed_password = HashFunctions.hash_password(new_password)
