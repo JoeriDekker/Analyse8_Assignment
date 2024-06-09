@@ -1,6 +1,7 @@
 import re
 
 class Checks:
+  
     def password_check(password):
         if len(password) >= 12 and len(password) <= 30:
             low_case = re.search(r"[a-z]", password)
@@ -41,16 +42,31 @@ class Checks:
         return False
     
     def number_check(input):
+        if len(input) >= 50:
+                return False
         try:
-            float(input)
+            float(input) 
             return True
         except ValueError:
+            return False
+    
+    def string_check(input):
+        if len(input) <= 50:
+            return True
+        else:
             return False
         
     def email_check(email):
         if re.fullmatch(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
             return True
         return False
+    
+    def city_check(input, cities):
+                choice = int(input)
+                if 1 <= choice <= len(cities):
+                    return choice
+                else:
+                    return -1
 
     # print(zip_code_check("1234AB"))
     # print(zip_code_check("A2342B"))
