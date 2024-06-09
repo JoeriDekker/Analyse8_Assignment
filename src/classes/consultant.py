@@ -17,6 +17,7 @@ class Consultant:
     def __init__(self, username, level):
         self.username = username
         self.level = level
+        self.logged_in = True
         self.menu_options = ["Update password", "Add member", "Update member", "Search member"]
         self.menu_functions = [self.update_password, self.add_member, self.update_member, self.search_member]
         self.menu = Menu(
@@ -97,4 +98,4 @@ class Consultant:
 
     def logout(self):
         print("Logging out...")
-        quit()
+        self.logged_in = False

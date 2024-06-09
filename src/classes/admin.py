@@ -22,6 +22,7 @@ import functions.input_checks as input_check
 # import db.db_connection as id
 from functions.input_checks import Checks
 from functions.id_functions import IdFunc
+from logger.log import read_log
 
 
 class Admin(Consultant):
@@ -117,7 +118,7 @@ class Admin(Consultant):
 
     # ● To see the logs file(s) of the system.
     def see_logs(self):
-        pass
+        read_log()
 
     # ● To delete a member's record from the database (note that a consultant cannot delete a record but can only modify or update a member’s information).
     def delete_member(self):

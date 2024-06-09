@@ -29,19 +29,20 @@ def authenticate():
     user = Login()
 
     if user == None:
-        print("Invalid credentials. Please try again.")
-        input("Press Enter to Continue")
         return
 
     if str(user['level']) == "1":
         user = Consultant(user['username'], user['level'])
-        user.display_menu()
+        while user.logged_in:
+            user.display_menu()
     elif str(user['level']) == "2":
         user = Admin(user['username'], user['level'])
-        user.display_menu()
+        while user.logged_in:
+            user.display_menu()
     elif str(user['level']) == "3":
         user = SuperAdmin(user['unsername'], user['level'])
-        user.display_menu()
+        while user.logged_in:
+            user.display_menu()
     else:
         print("Something went wrong, please try again.")
         input("Press Enter to Continue")

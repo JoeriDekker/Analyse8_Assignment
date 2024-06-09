@@ -12,7 +12,6 @@ def append_to_file(username, activity, additional_info, suspicious):
         file.write(log_entry)
     return
 
-append_to_file("admin", "login", "successful", "no")
 
 def wrap_text(text, width):
     lines = []
@@ -47,4 +46,3 @@ def read_log():
                         row.append('')
                 print("| {:<5} | {:<12} | {:<10} | {:<15} | {:<30} | {:<30} | {:<10} |".format(*row))
             print("-"*134)
-read_log()
