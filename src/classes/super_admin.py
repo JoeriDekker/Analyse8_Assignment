@@ -48,6 +48,7 @@ from functions.hash_functions import HashFunctions
 from functions.login import get_masked_password 
 
 from db.db_connection import ConnectToDB
+import sqlite3
 
 class SuperAdmin(Admin):
     def __init__(self, username, level):
@@ -75,19 +76,19 @@ class SuperAdmin(Admin):
         username = input("Username: ")
         password = get_masked_password()
 
-        if not Checks.username_check(username) :
+        if not Checks.username_check(username):
             print("Invalid username")
             return
         
-        if not Checks.password_check(password) :
+        if not Checks.password_check(password):
             print("Invalid password")
             return
         
-        if not Checks.name_check(first_name) :
+        if not Checks.name_check(first_name):
             print("Invalid first name")
             return
         
-        if not Checks.name_check(last_name) :
+        if not Checks.name_check(last_name):
             print("Invalid last name")
             return
         
@@ -106,7 +107,48 @@ class SuperAdmin(Admin):
 
     # ● To delete an existing admin’s account.
     def delete_admin(self):
-        pass
+        
+        # TODO make genaric function for this if we have time
+        if int(self.level) < 3:
+            print("You do not have permission to delete an admin.")
+            return
+        
+        print("\n------ Delete Admin ------\n")
+
+        conn = ConnectToDB()
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute("SELECT username FROM users WHERE level=?", ("2",))
+        users = c.fetchall()
+        c.close()
+
+        if len(users) == 0:
+            print("0 admin's found in db \n")
+            return
+        
+        print("Admin's in db:")
+        for user in users:
+            print(f"- {user[0]}")
+
+        username = input("Username: ")
+        if not Checks.username_check(username) :
+            print("Invalid username")
+            return
+
+        # Check if the user is deleted
+        conn = ConnectToDB()
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute("DELETE FROM users WHERE username=?", (username,))
+        deleted_user = c.fetchone()
+        c.close()
+
+        if deleted_user is None:
+            print(f"Admin '{username}' has been deleted successfully.")
+        else:
+            print(f"Failed to delete admin '{username}'. Please try again.")
+
+
 
     # ● To reset an existing admin’s password (a temporary password).
     def reset_admin_password(self):
