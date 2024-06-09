@@ -1,49 +1,10 @@
-import os
 import sqlite3
 
 from functions.input_checks import Checks
 from functions.hash_functions import HashFunctions
+from functions.mask_functions import MaskFunc
+
 from logger.log import append_to_file
-
-# get single character from input
-def getch():
-    # if windows system
-    if os.name == 'nt':
-        import msvcrt
-        return msvcrt.getch().decode('utf-8')
-    # if unix based system
-    else:
-        import tty
-        import termios
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(fd)
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
-
-# masks password while asking for input with asterisks
-def get_masked_password():
-    # TODO: if else statement with second part for unix based
-    password = ''
-    while True:
-        ch = getch()
-        # if enter is pressed, break
-        if ch == '\n' or ch == '\r':
-            break
-        # if backspace is pressed
-        elif ch == '\x08' or ch == '\x7f':
-            if len(password) > 0:
-                password = password[:-1]
-                print('\b \b', end='', flush=True)
-        # if pressed char is printable, add asterisks, else dont
-        elif 32 <= ord(ch) <= 126:
-            password += ch
-            print('*', end='', flush=True)
-    print()
-    return str(password)
 
 def Login():
     attempt_count = 0
@@ -52,7 +13,7 @@ def Login():
         username = input("")
 
         print("Enter password: ")
-        password = get_masked_password()
+        password = MaskFunc.get_masked_password()
 
         if not Checks.username_check(username) or not Checks.password_check(password) :
             print("Invalid username or password")

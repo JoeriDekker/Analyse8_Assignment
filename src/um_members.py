@@ -12,10 +12,12 @@
 # STUDENT NUMBER:
 # ===================================
 
-import os
+from setup import Setup
+
+setup = Setup()
+setup.install_required_packages()
+    
 from db.db_connection import CreateDB, ConnectToDB
-import sys
-import setup
 
 from classes.consultant import Consultant
 from classes.admin import Admin

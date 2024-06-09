@@ -44,6 +44,9 @@ from classes.admin import Admin
 
 from functions.input_checks import Checks
 from functions.id_functions import IdFunc
+from functions.hash_functions import HashFunctions
+from functions.mask_functions import MaskFunc
+
 from db.db_connection import ConnectToDB
 
 class SuperAdmin(Admin):
@@ -63,21 +66,37 @@ class SuperAdmin(Admin):
 
     # ● To define and add a new admin to the system.
     def add_admin(self):
+
+        print("\n------ Add Admin ------\n")
         member_id = IdFunc.generate_membership_id()
 
         first_name = input("First name: ")
         last_name = input("Last name: ")
         username = input("Username: ")
-        password = input("Password: ")
+        password = MaskFunc.get_masked_password()
 
-        if not Checks.username_check(username) or not Checks.password_check(password):
-            print("Invalid username or password")
+        if not Checks.username_check(username) :
+            print("Invalid username")
             return
+        
+        if not Checks.password_check(password) :
+            print("Invalid password")
+            return
+        
+        if not Checks.name_check(first_name) :
+            print("Invalid first name")
+            return
+        
+        if not Checks.name_check(last_name) :
+            print("Invalid last name")
+            return
+        
+        password = HashFunctions.hash_password(password)
 
 
         c = ConnectToDB()
         c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
-          (member_id, "john", "doe", "admin", "Admin_123?", "2"))
+          (member_id, first_name, last_name, username, password, "2"))
         c.commit()
         c.close()
         
