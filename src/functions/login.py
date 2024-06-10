@@ -4,7 +4,7 @@ import os
 from functions.input_checks import Checks
 from functions.hash_functions import HashFunctions
 
-from logger.log import append_to_file
+from functions.log_functions import LogFunc
 
 def getch():
         # if windows system
@@ -77,17 +77,17 @@ def Login():
                         ██                                    ██    
                         ████████████████████████████████████████
                         """)
-                    append_to_file(f"{username}", "Succesful login", "", "no")
+                    LogFunc.append_to_file(f"{username}", "Succesful login", "", "no")
                     return users[0]
 
         
         attempt_count += 1
         if attempt_count == 3:
             print("----------\nToo many failed login attempts. going back.\n----------")
-            append_to_file("...", "Unsuccesful login", f"username: '{username}' is used for a login attempt with a wrong password ", "no")
+            LogFunc.append_to_file("...", "Unsuccesful login", f"username: '{username}' is used for a login attempt with a wrong password ", "no")
             return None
         else:
-            append_to_file("...", "Unsuccesful login", f"multiple login fails from single user", "yes")
+            LogFunc.append_to_file("...", "Unsuccesful login", f"multiple login fails from single user", "yes")
         
         print("1. Try again")
         print("2. Return to menu")

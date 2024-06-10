@@ -25,11 +25,11 @@ from classes.super_admin import SuperAdmin
 
 from classes.menu import Menu
 from functions.login import Login
+from functions.file_funcions import FileFunc
 
 
 def authenticate():
     user = Login()
-
     if user == None:
         return
 
@@ -50,12 +50,9 @@ def authenticate():
         input("Press Enter to Continue")
   
 
-def exit():
-    print("Goodbye!")
-    quit()
+
 
 def easy_login():
-
     print("1. Consultant \n2. Admin \n3. Super Admin")
     user = input("Enter level:")
 
@@ -95,12 +92,19 @@ def main():
         ===================================================================
           
           """)
-    # while True:
-    #     menu = Menu(["Login", "Exit"], [authenticate, exit])
-    #     menu.display()
-    #     menu.execute_choice()
+    while True:
+        menu = Menu(["Login", "Exit"], [authenticate, exit])
+        menu.display()
+        menu.execute_choice()
 
-    easy_login()
+    # FileFunc.generate_key()
+    # FileFunc.encrypt_file()
+    # input("Press Enter to Continue")
+    # FileFunc.decrypt_file()
+    # input("Press Enter to Continue")
+    # FileFunc.encrypt_file()
+    
+
 
 if __name__ == "__main__":
     conn = CreateDB()

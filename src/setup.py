@@ -8,7 +8,8 @@ class Setup:
     def install_required_packages(self):
         # List of required packages
         required_packages = [
-            "bcrypt"
+            "bcrypt",
+            "cryptography"
         ]
 
         # Install required packages
