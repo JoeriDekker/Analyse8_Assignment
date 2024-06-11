@@ -92,12 +92,14 @@ def main():
         ===================================================================
           
           """)
-    while True:
-        menu = Menu(["Login", "Exit"], [authenticate, exit])
-        menu.display()
-        menu.execute_choice()
+    # while True:
+    #     menu = Menu(["Login", "Exit"], [authenticate, exit])
+    #     menu.display()
+    #     menu.execute_choice()
 
     easy_login()
+
+    
     
     # FileFunc.generate_key()
     # FileFunc.encrypt_file()

@@ -9,6 +9,7 @@ import uuid
 from classes.menu import Menu
 from functions.input_checks import Checks
 from functions.id_functions import IdFunc
+from functions.log_functions import LogFunc
 from functions.hash_functions import HashFunctions
 import functions.login as Login
 
@@ -92,9 +93,11 @@ class Consultant:
         if not Checks.number_check(age):
             print("not a number, try again.")
             return
-        gender = input("Gender: ")
-        if not Checks.string_check(gender):
-            print("gender too long, try again.")
+        
+        
+        gender = input("What is the Gender: \nM = Male\nF = Female\nO = Other\nN = Prefer not to say\n W = Who knows\nChoice: ")
+        if not Checks.gender_check(gender):
+            print("Wrong gender input, try again.")
             return
         weight = input("Weight: ")
         if not Checks.number_check(weight):
@@ -143,6 +146,7 @@ class Consultant:
         c.close()
 
         print("Adding Member successful!")
+        LogFunc.append_to_file(f"{self.username}", "Member added", f"{self.username} addeded member named: {first_name} {last_name}", "no")
         input("Press Enter to Continue")
 
     # ● To modify or update the information of a member in the system
@@ -221,7 +225,7 @@ class Consultant:
                 return
         updated_gender = input("Gender: ").strip()
         if updated_gender:
-            if not Checks.string_check(updated_gender):
+            if not Checks.gender_check(updated_gender):
                 print("gender too long, try again.")
                 return
         updated_weight = input("Weight: ").strip()

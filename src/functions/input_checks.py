@@ -62,11 +62,16 @@ class Checks:
         return False
     
     def city_check(input, cities):
-                choice = int(input)
-                if 1 <= choice <= len(cities):
-                    return choice
-                else:
-                    return -1
+        choice = int(input)
+        if 1 <= choice <= len(cities):
+            return choice
+        else:
+            return -1
+        
+    def gender_check(input):
+        if input == "M" or input == "F" or input == "O" or input == "N" or input == "W":
+            return True
+        return False
 
     # print(zip_code_check("1234AB"))
     # print(zip_code_check("A2342B"))

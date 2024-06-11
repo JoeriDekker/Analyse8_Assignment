@@ -21,7 +21,7 @@ def CreateDB():
       last_name = "Minton"
       username = "super_admin"
       level = 3
-      password = HashFunctions.hash_password("Admin_123?")
+      password = HashFunctions.hash_value("Admin_123?")
       SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       id = IdFunc.generate_membership_id()
@@ -29,7 +29,7 @@ def CreateDB():
       last_name = "Jansen"
       username = "admin_acc"
       level = 2
-      password = HashFunctions.hash_password("Supersecret123!")
+      password = HashFunctions.hash_value("Supersecret123!")
       Admin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       id = IdFunc.generate_membership_id()
@@ -37,7 +37,7 @@ def CreateDB():
       last_name = "Julias"
       username = "Consultant"
       level = 1
-      password = HashFunctions.hash_password("Supersecret123!")
+      password = HashFunctions.hash_value("Supersecret123!")
       Consultant = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       # TODO: members have age, first and last name for input. aslo registration date. the ID also has a specific structure (see page 2 assignment)

@@ -46,6 +46,7 @@ from functions.input_checks import Checks
 from functions.id_functions import IdFunc
 from functions.hash_functions import HashFunctions
 from functions.login import get_masked_password 
+from functions.log_functions import LogFunc
 
 from db.db_connection import ConnectToDB
 import sqlite3
@@ -209,6 +210,7 @@ class SuperAdmin(Admin):
 
         if deleted_user is None:
             print(f"Admin '{username}' has been deleted successfully.")
+            LogFunc.append_to_file(f"{self.username}", "Admin deleted", f"{self.username} deleted admin: {username}", "no")
         else:
             print(f"Failed to delete admin '{username}'. Please try again.")
 
