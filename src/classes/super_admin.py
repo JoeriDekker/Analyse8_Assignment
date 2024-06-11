@@ -102,8 +102,72 @@ class SuperAdmin(Admin):
         c.close()
         
     # ● To modify or update an existing admin’s account and profile.
-    def update_admin(self):
-        pass
+    def update_admin(self):                
+        last_name_input = input("Enter the last name of the admin you want to update: ")
+        if not Checks.string_check(last_name_input):
+            print("invalid input, try again.")
+            return
+
+        # Check if the member exists
+        query = """
+        SELECT * FROM users
+        WHERE last_name=?
+        """
+        c = ConnectToDB().cursor()
+        c.execute(query, (last_name_input,))
+        members = c.fetchall()
+        if members:
+            member = members[0]
+        else:
+            print("no member found with the provided search input. try again")
+            return
+        
+        if members[0][4] != 2:
+            print("you do not have the right to delete.")
+            return
+
+        # Display member's current information
+        print("Current Admin Information:")
+        print("ID:", member[0])
+        print("First Name:", member[1])
+        print("Last Name:", member[2])
+        print("Username:", member[3])
+
+        # Ask for updated information
+        print("\nEnter the updated information (leave blank if not updating):")
+
+        updated_first_name = input("First name: ").strip()
+        if updated_first_name:
+            if not Checks.string_check(updated_first_name):
+                print("name too long, try again.")
+                return
+        updated_last_name = input("Last name: ").strip()
+        if updated_last_name:
+            if not Checks.string_check(updated_last_name):
+                print("name too long, try again.")
+                return
+        updated_username = input("Username: ").strip()
+        if updated_username:
+            if not Checks.username_check(updated_username):
+                print("username too long, try again.")
+                return
+
+        print("Updating member info...")
+
+        # Update member's information in the database
+        c = ConnectToDB()
+        if updated_first_name:
+            c.execute("UPDATE users SET first_name=? WHERE id=?", (updated_first_name, member[0]))
+        if updated_last_name:
+            c.execute("UPDATE users SET last_name=? WHERE id=?", (updated_last_name, member[0]))
+        if updated_username:
+            c.execute("UPDATE users SET username=? WHERE id=?", (updated_username, member[0]))
+
+        c.commit()
+        c.close()
+
+        print("Admin information updated successfully!")
+        input("Press Enter to Continue")
 
     # ● To delete an existing admin’s account.
     def delete_admin(self):

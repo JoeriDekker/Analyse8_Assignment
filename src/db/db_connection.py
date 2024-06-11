@@ -21,7 +21,7 @@ def CreateDB():
       last_name = "Minton"
       username = "super_admin"
       level = 3
-      password = HashFunctions.hash_password("Admin_123")
+      password = HashFunctions.hash_password("Admin_123?")
       SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       id = IdFunc.generate_membership_id()

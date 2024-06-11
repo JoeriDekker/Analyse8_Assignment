@@ -98,7 +98,7 @@ def main():
     #     menu.execute_choice()
 
     easy_login()
-
+    
     # FileFunc.generate_key()
     # FileFunc.encrypt_file()
     # input("Press Enter to Continue")
