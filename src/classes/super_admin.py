@@ -47,6 +47,7 @@ from functions.id_functions import IdFunc
 from functions.hash_functions import HashFunctions
 from functions.login import get_masked_password 
 from functions.log_functions import LogFunc
+from functions.encrypt_functions import EncryptFunc
 
 from db.db_connection import ConnectToDB
 import sqlite3
@@ -183,7 +184,7 @@ class SuperAdmin(Admin):
         conn = ConnectToDB()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
-        c.execute("SELECT username FROM users WHERE level=?", ("2",))
+        c.execute("SELECT id, username FROM users WHERE level=?", ("2",))
         users = c.fetchall()
         c.close()
 
@@ -193,18 +194,30 @@ class SuperAdmin(Admin):
         
         print("Admin's in db:")
         for user in users:
-            print(f"- {user[0]}")
+            print(f"- {EncryptFunc.decrypt_value(user[1])}")
 
         username = input("Username: ")
         if not Checks.username_check(username) :
             print("Invalid username")
             return
+        
+        user_to_delete = None
 
+        for user in users:
+            if EncryptFunc.decrypt_value(user[1]) == username:
+                user_to_delete = user[1]
+                break
         # Check if the user is deleted
         conn = ConnectToDB()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
-        c.execute("DELETE FROM users WHERE username=?", (username,))
+        c.execute("DELETE FROM users WHERE username=?", (user_to_delete,))
+        conn.commit()  # Commit the changes
+        c.close()
+
+        # Check if the user is deleted
+        c = conn.cursor()
+        c.execute("SELECT id FROM users WHERE username=?", (user_to_delete,))
         deleted_user = c.fetchone()
         c.close()
 

@@ -24,6 +24,7 @@ from functions.input_checks import Checks
 from functions.id_functions import IdFunc
 from functions.log_functions import LogFunc
 from functions.hash_functions import HashFunctions
+from functions.encrypt_functions import EncryptFunc
 
 
 from db.db_connection import ConnectToDB
@@ -132,7 +133,7 @@ class Admin(Consultant):
         conn = ConnectToDB()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
-        c.execute("SELECT username FROM users WHERE level=?", ("1",))
+        c.execute("SELECT id, username FROM users WHERE level=?", ("1",))
         users = c.fetchall()
         c.close()
 
@@ -142,18 +143,30 @@ class Admin(Consultant):
         
         print("Consultant's in db:")
         for user in users:
-            print(f"- {user[0]}")
+            print(f"- {EncryptFunc.decrypt_value(user[1])}")
 
         username = input("Username: ")
         if not Checks.username_check(username) :
             print("Invalid username")
             return
+        
+        user_to_delete = None
 
+        for user in users:
+            if EncryptFunc.decrypt_value(user[1]) == username:
+                user_to_delete = user[1]
+                break
         # Check if the user is deleted
         conn = ConnectToDB()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
-        c.execute("DELETE FROM users WHERE username=?", (username))
+        c.execute("DELETE FROM users WHERE username=?", (user_to_delete,))
+        conn.commit()  # Commit the changes
+        c.close()
+
+        # Check if the user is deleted
+        c = conn.cursor()
+        c.execute("SELECT id FROM users WHERE username=?", (user_to_delete,))
         deleted_user = c.fetchone()
         c.close()
 
