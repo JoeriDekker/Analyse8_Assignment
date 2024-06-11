@@ -41,9 +41,9 @@ class Admin(Consultant):
             self.reset_consultant_password, self.backup_system, self.restore_backup,
             self.see_logs, self.delete_member
         ]
-        self.menu_options += admin_options + ["Logout"]
-        self.menu_functions += admin_functions + [self.logout]
-        self.menu = Menu(options=self.menu_options, functions=self.menu_functions)
+        self.menu_options += admin_options 
+        self.menu_functions += admin_functions 
+        self.menu = Menu(options=self.menu_options + ["Logout"], functions=self.menu_functions + [self.logout])
         
     @staticmethod
     def connect_to_db():

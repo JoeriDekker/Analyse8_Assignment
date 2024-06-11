@@ -25,7 +25,7 @@ from classes.super_admin import SuperAdmin
 
 from classes.menu import Menu
 from functions.login import Login
-from functions.file_funcions import FileFunc
+from functions.file_functions import FileFunc
 
 
 def authenticate():
@@ -92,10 +92,12 @@ def main():
         ===================================================================
           
           """)
-    while True:
-        menu = Menu(["Login", "Exit"], [authenticate, exit])
-        menu.display()
-        menu.execute_choice()
+    # while True:
+    #     menu = Menu(["Login", "Exit"], [authenticate, exit])
+    #     menu.display()
+    #     menu.execute_choice()
+
+    easy_login()
 
     # FileFunc.generate_key()
     # FileFunc.encrypt_file()

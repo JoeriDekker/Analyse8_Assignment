@@ -1,8 +1,15 @@
 from datetime import datetime
 
+from functions.file_functions import FileFunc
+
+import os
+
 class LogFunc:
     @staticmethod
     def append_to_file(username, activity, additional_info, suspicious):
+        
+        FileFunc.decrypt_file()
+
         with open("src/log.txt", 'a+') as file:
             file.seek(0)
             if not file.readline().startswith('No.'):
@@ -12,10 +19,12 @@ class LogFunc:
             time = datetime.now().strftime('%H:%M:%S')
             log_entry = f"{no}, {date}, {time}, {username}, {activity}, {additional_info}, {suspicious}\n"
             file.write(log_entry)
+        
+        FileFunc.encrypt_file()
         return
 
     @staticmethod
-    def wrap_text(text, width):
+    def text_wrapper(text, width):
         lines = []
         while len(text) > width:
             space_index = text.rfind(' ', 0, width)
@@ -28,13 +37,18 @@ class LogFunc:
 
     @staticmethod
     def read_log():
+        FileFunc.decrypt_file()
+        if not os.path.exists('src/log.txt'):
+            print("Log file not found.")
+            return
+        
         with open("src/log.txt", 'r') as file:
             lines = file.readlines()
             # Define the headers manually
             widths = [5, 12, 10, 15, 30, 30, 10]
             for line in lines:
                 fields = line.strip().split(', ')
-                wrapped_fields = [wrap_text(field, width) for field, width in zip(fields, widths)]
+                wrapped_fields = [LogFunc.text_wrapper(field, width) for field, width in zip(fields, widths)]
                 
                 # Find the maximum number of lines for the current row
                 max_lines = max(len(field) for field in wrapped_fields)
@@ -49,3 +63,4 @@ class LogFunc:
                             row.append('')
                     print("| {:<5} | {:<12} | {:<10} | {:<15} | {:<30} | {:<30} | {:<10} |".format(*row))
                 print("-"*134)
+        FileFunc.encrypt_file()

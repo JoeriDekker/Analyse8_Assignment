@@ -4,6 +4,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.fernet import Fernet
+import os
 
 
 class FileFunc:
@@ -64,15 +65,24 @@ class FileFunc:
         with open('src/encrypted_key.pem', 'wb') as filekey:
             filekey.write(encrypted_key)
 
+        input("Press Enter to Continue")
+
         # overwrite the original file with the encrypted content
         with open('src/log.txt', 'wb') as filekey:
             filekey.write(encrypted_file)
+
+        input("Press Enter to Continue")
 
         print("File encrypted successfully.")
 
     @staticmethod
     def decrypt_file():
         # load the private key
+
+        if not os.path.exists('src/log.txt'):
+            print("Log file not found.")
+            return
+
         with open('src/private_key.pem', 'rb') as filekey:
             private_key = serialization.load_pem_private_key(
                 filekey.read(),
@@ -102,5 +112,7 @@ class FileFunc:
         # overwrite the original file with the decrypted content
         with open('src/log.txt', 'wb') as filekey:
             filekey.write(decrypted_file)
+
+        input("Press Enter to Continue")
 
         print("File decrypted successfully.")

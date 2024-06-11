@@ -115,6 +115,7 @@ def CreateDB():
 
       return conn
 
+
 if __name__ == "__main__":
     conn = CreateDB()
     print("Database created successfully!")

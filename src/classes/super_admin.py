@@ -61,9 +61,9 @@ class SuperAdmin(Admin):
             self.add_admin, self.update_admin, self.delete_admin,
             self.reset_admin_password
         ]
-        self.menu_options += super_admin_options + ["Logout"]
-        self.menu_functions += super_admin_functions + [self.logout]
-        self.menu = Menu(options=self.menu_options, functions=self.menu_functions)
+        self.menu_options += super_admin_options 
+        self.menu_functions += super_admin_functions 
+        self.menu = Menu(options=self.menu_options + ["Logout"], functions=self.menu_functions + [self.logout])
 
     # ● To define and add a new admin to the system.
     def add_admin(self):
