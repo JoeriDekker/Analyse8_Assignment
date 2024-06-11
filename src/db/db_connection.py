@@ -2,6 +2,7 @@ import sqlite3
 import uuid
 from functions.id_functions import IdFunc
 from functions.hash_functions import HashFunctions
+from functions.encrypt_functions import EncryptFunc
 
 def ConnectToDB():
     conn = sqlite3.connect('src/assignment.db')
@@ -17,38 +18,38 @@ def CreateDB():
       # Create a User object
       # create uuid for each user
       id = IdFunc.generate_membership_id()
-      first_name = "Sjaak"
-      last_name = "Minton"
-      username = "super_admin"
+      first_name = EncryptFunc.encrypt_value("Sjaak")
+      last_name = EncryptFunc.encrypt_value("Minton")
+      username = EncryptFunc.encrypt_value("super_admin")
       level = 3
       password = HashFunctions.hash_value("Admin_123?")
       SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       id = IdFunc.generate_membership_id()
-      first_name = "Klaas"
-      last_name = "Jansen"
-      username = "admin_acc"
+      first_name = EncryptFunc.encrypt_value("Klaas")
+      last_name = EncryptFunc.encrypt_value("Jansen")
+      username = EncryptFunc.encrypt_value("admin_acc")
       level = 2
       password = HashFunctions.hash_value("Supersecret123!")
       Admin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       id = IdFunc.generate_membership_id()
-      first_name = "Samantha"
-      last_name = "Julias"
-      username = "Consultant"
+      first_name = EncryptFunc.encrypt_value("Samantha")
+      last_name = EncryptFunc.encrypt_value("Julias")
+      username = EncryptFunc.encrypt_value("Consultant")
       level = 1
       password = HashFunctions.hash_value("Supersecret123!")
       Consultant = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       # TODO: members have age, first and last name for input. aslo registration date. the ID also has a specific structure (see page 2 assignment)
       id = IdFunc.generate_membership_id()
-      first_name = "John"
-      last_name = "Doe"
-      age = 25
-      gender = "M"
-      weight = 80
-      email = "joe@doe.com"
-      phone_number = "0612345678"
+      first_name = EncryptFunc.encrypt_value("John")
+      last_name = EncryptFunc.encrypt_value("Doe")
+      age = EncryptFunc.encrypt_value(25)
+      gender = EncryptFunc.encrypt_value("M")
+      weight = EncryptFunc.encrypt_value(80)
+      email = EncryptFunc.encrypt_value("joe@doe.com")
+      phone_number = EncryptFunc.encrypt_value("0612345678")
 
       Member = {"id": id, "first_name": first_name, "last_name": last_name, "age": age, "gender":gender, "weight": weight, "email": email, "phone_number": phone_number}
 
@@ -108,7 +109,7 @@ def CreateDB():
             (str(Member['id']), Member['first_name'], Member['last_name'], Member['age'], Member['gender'], Member['weight'], Member['email'], Member['phone_number']))
 
       c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
-            (str(uuid.uuid4()), str(Member['id']), "teststreet", 58, "1029AB", "Rotterdam"))
+            (str(uuid.uuid4()), str(Member['id']), EncryptFunc.encrypt_value("teststreet"), EncryptFunc.encrypt_value(58), EncryptFunc.encrypt_value("1029AB"), EncryptFunc.encrypt_value("Rotterdam")))
 
       # Commit the changes
       conn.commit()

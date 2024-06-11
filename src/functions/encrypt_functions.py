@@ -7,7 +7,7 @@ from cryptography.fernet import Fernet
 import os
 
 
-class FileFunc:
+class EncryptFunc:
 
     @staticmethod
     def generate_key():
@@ -107,3 +107,74 @@ class FileFunc:
         # overwrite the original file with the decrypted content
         with open('src/log.txt', 'wb') as filekey:
             filekey.write(decrypted_file)
+
+    def encrypt_value(value):
+        # load the public key
+        with open('src/public_key.pem', 'rb') as filekey:
+            public_key = serialization.load_pem_public_key(
+                filekey.read(),
+                backend=default_backend()
+            )
+
+        if isinstance(value, int):
+            value = str(value)
+
+        # use the public key to encrypt the value
+        encrypted_value = public_key.encrypt(
+            value.encode(),
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            )
+        )
+
+        return encrypted_value
+    
+    def encrypt_int_value(value):
+        # load the public key
+        with open('src/public_key.pem', 'rb') as filekey:
+            public_key = serialization.load_pem_public_key(
+                filekey.read(),
+                backend=default_backend()
+            )
+
+        # use the public key to encrypt the value
+        encrypted_value = public_key.encrypt(
+            str(value).encode(),
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            )
+        )
+
+        return encrypted_value
+    
+    def decrypt_value(value):
+        # load the private key
+        with open('src/private_key.pem', 'rb') as filekey:
+            private_key = serialization.load_pem_private_key(
+                filekey.read(),
+                password=None,
+                backend=default_backend()
+            )
+
+
+        # use the private key to decrypt the value
+        decrypted_value = private_key.decrypt(
+            value,
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            )
+        )
+
+        # Check if value could be int if so return int
+        try:
+            return int(decrypted_value.decode())
+        except ValueError:
+            pass
+
+        return decrypted_value.decode()

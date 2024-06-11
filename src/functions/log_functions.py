@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from functions.file_functions import FileFunc
+from functions.encrypt_functions import EncryptFunc
 
 import os
 
@@ -8,7 +8,7 @@ class LogFunc:
     @staticmethod
     def append_to_file(username, activity, additional_info, suspicious):
         
-        FileFunc.decrypt_file()
+        EncryptFunc.decrypt_file()
 
         with open("src/log.txt", 'a+') as file:
             file.seek(0)
@@ -20,7 +20,7 @@ class LogFunc:
             log_entry = f"{no}, {date}, {time}, {username}, {activity}, {additional_info}, {suspicious}\n"
             file.write(log_entry)
         
-        FileFunc.encrypt_file()
+        EncryptFunc.encrypt_file()
         return
 
     @staticmethod
@@ -37,7 +37,7 @@ class LogFunc:
 
     @staticmethod
     def read_log():
-        FileFunc.decrypt_file()
+        EncryptFunc.decrypt_file()
         if not os.path.exists('src/log.txt'):
             print("Log file not found.")
             return
@@ -63,4 +63,4 @@ class LogFunc:
                             row.append('')
                     print("| {:<5} | {:<12} | {:<10} | {:<15} | {:<30} | {:<30} | {:<10} |".format(*row))
                 print("-"*134)
-        FileFunc.encrypt_file()
+        EncryptFunc.encrypt_file()

@@ -3,6 +3,7 @@ import os
 
 from functions.input_checks import Checks
 from functions.hash_functions import HashFunctions
+from functions.encrypt_functions import EncryptFunc
 
 from functions.log_functions import LogFunc
 
@@ -60,20 +61,29 @@ def Login():
             conn = sqlite3.connect('src/assignment.db')
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute("SELECT * FROM users WHERE username=?", (username,))
+            c.execute("SELECT * FROM users")
             users = c.fetchall()
             conn.close()
 
-            if len(users) > 0:
-                if HashFunctions.check_password(password, users[0]['password']):
+            found_user = None
+
+            for user in users:
+                user_dict = dict(user)
+                user_dict['username'] = EncryptFunc.decrypt_value(user_dict['username'])
+                if user_dict['username'] == username:
+                    found_user = user_dict
+            
+
+            if not found_user is None:
+                if HashFunctions.check_password(password, found_user['password']):
                     print("Login successful!")
                     # Show nice user and role
                     print(f"""
                         ████████████████████████████████████████
                         ██                                    ██                                   
-                                User: {users[0]['username']}         
+                                User: {found_user['username']}         
                                                             
-                                Role: {users[0]['level']}   
+                                Role: {found_user['level']}   
                         ██                                    ██    
                         ████████████████████████████████████████
                         """)

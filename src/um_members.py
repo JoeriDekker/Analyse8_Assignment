@@ -25,7 +25,7 @@ from classes.super_admin import SuperAdmin
 
 from classes.menu import Menu
 from functions.login import Login
-from functions.file_functions import FileFunc
+from functions.encrypt_functions import EncryptFunc
 
 
 def authenticate():
