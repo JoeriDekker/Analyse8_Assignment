@@ -13,3 +13,6 @@ src/db/__pycache__/db_connection.cpython-312.pyc
 
 src/assignment.db
 src/classes/__pycache__
+*.pyc
+/src/db/__pycache__
+src/db/__pycache__/db_connection.cpython-312.pyc

@@ -18,11 +18,13 @@ import sqlite3
 import uuid
 from classes.menu import Menu
 from classes.consultant import Consultant
-import functions.input_checks as input_check
+# import functions.input_checks as input_check
 # import db.db_connection as id
 from functions.input_checks import Checks
 from functions.id_functions import IdFunc
 from functions.log_functions import LogFunc
+from functions.hash_functions import HashFunctions
+
 
 from db.db_connection import ConnectToDB
 import sqlite3
@@ -63,7 +65,6 @@ class Admin(Consultant):
                 print(f"Name: {user[1]}, Role: Member")
             elif user[2] == 1:
                 print(f"Name: {user[1]}, Role: Consultant")
-            
             elif user[2] == 2:
                 print(f"Name: {user[1]}, Role: Admin")
             else:
@@ -71,37 +72,52 @@ class Admin(Consultant):
     
     # ● To define and add a new consultant to the system.
     def add_consultant(self):
-        print("=== ADD CONSULTANT ===\n")
+        if int(self.level) < 2:
+            print("You do not have permission to add a consultant.")
+            return
+
+        print("------ Add Consultant ------\n")
 
         print("Enter username: ")
         username = input("")
         print("Enter password: ")
         password = input("")
         
-        if (input_check.username_check(username) & input_check.password_check(password)):
+        # TODO: Add check if username does not already exist in db
+        if (Checks.username_check(username) & Checks.password_check(password)):
             print("Enter first name: ")
             firstName = input("")
             print("Enter last name: ")
             lastName = input("")
             conID = IdFunc.generate_membership_id()
+            password = HashFunctions.hash_password(password)
 
             if conID is not None:
-            # conn = self.connect_to_db()
-            # c = conn.cursor()
-            # c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
-            #           (str(id.generate_membership_id), firstName, lastName, username, password, 1))
-            # conn.commit()
+                conn = self.connect_to_db()
+                c = conn.cursor()
+                c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
+                        (str(conID), firstName, lastName, username, password, 1))
+                conn.commit()
 
-                print(str(conID), firstName, lastName, username, password, 1)
             else:
                 print("Failed to generate a valid membership ID.")
                 return   
         else:
+            print("failed adding a consultant")
             return
 
     # ● To modify or update an existing consultant’s account and profile.
     def update_consultant(self):
-        pass
+        print("------ Update Consultant ------\n")
+
+        print("Enter username: ")
+        username = input("")
+
+        conn = self.connect_to_db()
+        c = conn.cursor()
+        c.execute("UPDATE members SET first_name=? WHERE last_name=?", (updated_first_name, last_name_input))
+        conn.commit()
+
 
     # ● To delete an existing consultant’s account.
     def delete_consultant(self):
@@ -137,7 +153,7 @@ class Admin(Consultant):
         conn = ConnectToDB()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
-        c.execute("DELETE FROM users WHERE username=?", (username,))
+        c.execute("DELETE FROM users WHERE username=?", (username))
         deleted_user = c.fetchone()
         c.close()
 
