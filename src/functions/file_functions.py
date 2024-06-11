@@ -65,15 +65,10 @@ class FileFunc:
         with open('src/encrypted_key.pem', 'wb') as filekey:
             filekey.write(encrypted_key)
 
-        input("Press Enter to Continue")
-
         # overwrite the original file with the encrypted content
         with open('src/log.txt', 'wb') as filekey:
             filekey.write(encrypted_file)
 
-        input("Press Enter to Continue")
-
-        print("File encrypted successfully.")
 
     @staticmethod
     def decrypt_file():
@@ -112,7 +107,3 @@ class FileFunc:
         # overwrite the original file with the decrypted content
         with open('src/log.txt', 'wb') as filekey:
             filekey.write(decrypted_file)
-
-        input("Press Enter to Continue")
-
-        print("File decrypted successfully.")
