@@ -108,30 +108,30 @@ class SuperAdmin(Admin):
             print("invalid input, try again.")
             return
 
-        # Check if the member exists
+        # Check if the admin exists
         query = """
         SELECT * FROM users
         WHERE last_name=?
         """
         c = ConnectToDB().cursor()
         c.execute(query, (last_name_input,))
-        members = c.fetchall()
-        if members:
-            member = members[0]
+        admins = c.fetchall()
+        if admin:
+            admin = admins[0]
         else:
-            print("no member found with the provided search input. try again")
+            print("no admin found with the provided search input. try again")
             return
         
-        if members[0][4] != 2:
+        if admins[0][4] != 2:
             print("you do not have the right to delete.")
             return
 
-        # Display member's current information
+        # Display admin's current information
         print("Current Admin Information:")
-        print("ID:", member[0])
-        print("First Name:", member[1])
-        print("Last Name:", member[2])
-        print("Username:", member[3])
+        print("ID:", admin[0])
+        print("First Name:", admin[1])
+        print("Last Name:", admin[2])
+        print("Username:", admin[3])
 
         # Ask for updated information
         print("\nEnter the updated information (leave blank if not updating):")
@@ -139,12 +139,12 @@ class SuperAdmin(Admin):
         updated_first_name = input("First name: ").strip()
         if updated_first_name:
             if not Checks.string_check(updated_first_name):
-                print("name too long, try again.")
+                print("first name too long, try again.")
                 return
         updated_last_name = input("Last name: ").strip()
         if updated_last_name:
             if not Checks.string_check(updated_last_name):
-                print("name too long, try again.")
+                print("last name too long, try again.")
                 return
         updated_username = input("Username: ").strip()
         if updated_username:
@@ -152,16 +152,16 @@ class SuperAdmin(Admin):
                 print("username too long, try again.")
                 return
 
-        print("Updating member info...")
+        print("Updating admin info...")
 
-        # Update member's information in the database
+        # Update admin's information in the database
         c = ConnectToDB()
         if updated_first_name:
-            c.execute("UPDATE users SET first_name=? WHERE id=?", (updated_first_name, member[0]))
+            c.execute("UPDATE users SET first_name=? WHERE id=?", (updated_first_name, admin[0]))
         if updated_last_name:
-            c.execute("UPDATE users SET last_name=? WHERE id=?", (updated_last_name, member[0]))
+            c.execute("UPDATE users SET last_name=? WHERE id=?", (updated_last_name, admin[0]))
         if updated_username:
-            c.execute("UPDATE users SET username=? WHERE id=?", (updated_username, member[0]))
+            c.execute("UPDATE users SET username=? WHERE id=?", (updated_username, admin[0]))
 
         c.commit()
         c.close()
