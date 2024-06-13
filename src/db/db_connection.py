@@ -92,17 +92,17 @@ def CreateDB():
                   FOREIGN KEY(member_id) REFERENCES members(id))''')
 
       
-      # c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      #       (str(Admin['id']), Admin['first_name'], Admin['last_name'], Admin['username'], Admin['password'], Admin['level'], datetime.now()))
-      # c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      #       (str(Consultant['id']), Consultant['first_name'], Consultant['last_name'], Consultant['username'], Consultant['password'], Consultant['level'], datetime.now()))
+      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (str(Admin['id']), Admin['first_name'], Admin['last_name'], Admin['username'], Admin['password'], Admin['level'], datetime.now()))
+      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (str(Consultant['id']), Consultant['first_name'], Consultant['last_name'], Consultant['username'], Consultant['password'], Consultant['level'], datetime.now()))
       
 
-      # c.execute("INSERT INTO members (id, first_name, last_name, age, gender, weight, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      #       (str(Member['id']), Member['first_name'], Member['last_name'], Member['age'], Member['gender'], Member['weight'], Member['email'], Member['phone_number']))
+      c.execute("INSERT INTO members (id, first_name, last_name, age, gender, weight, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (str(Member['id']), Member['first_name'], Member['last_name'], Member['age'], Member['gender'], Member['weight'], Member['email'], Member['phone_number']))
 
-      # c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
-      #       (str(uuid.uuid4()), str(Member['id']), EncryptFunc.encrypt_value("teststreet"), EncryptFunc.encrypt_value(58), EncryptFunc.encrypt_value("1029AB"), EncryptFunc.encrypt_value("Rotterdam")))
+      c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
+            (str(uuid.uuid4()), str(Member['id']), EncryptFunc.encrypt_value("teststreet"), EncryptFunc.encrypt_value(58), EncryptFunc.encrypt_value("1029AB"), EncryptFunc.encrypt_value("Rotterdam")))
 
       # Commit the changes
       conn.commit()
@@ -119,31 +119,37 @@ def CreateSuperAdmin():
       users = c.fetchall()
       conn.close()
 
-      if not len(users) == 0:
+      print(len(users))
 
+      input("Press enter to continue")
+
+      if len(users) > 0:
             for user in users:
+                  print(EncryptFunc.decrypt_value(user[3]) )
                   if EncryptFunc.decrypt_value(user[3]) == "super_admin":
+                        print("Super Admin already exists")
+                        input("Press enter to continue")
                         return
+                  input("Press enter to continue")
                   
-      else:
-            conn = sqlite3.connect('src/assignment.db')
-            c = conn.cursor()
-            id = IdFunc.generate_membership_id()
-            first_name = EncryptFunc.encrypt_value("super")
-            last_name = EncryptFunc.encrypt_value("admin")
-            username = EncryptFunc.encrypt_value("super_admin")
-            level = 3
-            password = HashFunctions.hash_value("Admin_123?")
-            # get current date  
-            SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
-            
-            # Insert the user data into the 'users' table
-            c.execute('''INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?)''',
-                        (str(SuperAdmin['id']), SuperAdmin['first_name'], SuperAdmin['last_name'], SuperAdmin['username'], SuperAdmin['password'], SuperAdmin['level'], datetime.now()))
-            conn.commit()
-            
-            conn.close()
+      conn = sqlite3.connect('src/assignment.db')
+      c = conn.cursor()
+      id = IdFunc.generate_membership_id()
+      first_name = EncryptFunc.encrypt_value("super")
+      last_name = EncryptFunc.encrypt_value("admin")
+      username = EncryptFunc.encrypt_value("super_admin")
+      level = 3
+      password = HashFunctions.hash_value("Admin_123?")
+      # get current date  
+      SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
+      
+      # Insert the user data into the 'users' table
+      c.execute('''INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?)''',
+                  (str(SuperAdmin['id']), SuperAdmin['first_name'], SuperAdmin['last_name'], SuperAdmin['username'], SuperAdmin['password'], SuperAdmin['level'], datetime.now()))
+      conn.commit()
+      
+      conn.close()
 
 
 if __name__ == "__main__":
