@@ -121,16 +121,13 @@ def CreateSuperAdmin():
 
       print(len(users))
 
-      input("Press enter to continue")
 
       if len(users) > 0:
             for user in users:
                   print(EncryptFunc.decrypt_value(user[3]) )
                   if EncryptFunc.decrypt_value(user[3]) == "super_admin":
                         print("Super Admin already exists")
-                        input("Press enter to continue")
                         return
-                  input("Press enter to continue")
                   
       conn = sqlite3.connect('src/assignment.db')
       c = conn.cursor()
