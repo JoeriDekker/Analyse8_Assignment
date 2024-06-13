@@ -19,7 +19,7 @@ def CreateDB():
       first_name = EncryptFunc.encrypt_value("Klaas")
       last_name = EncryptFunc.encrypt_value("Jansen")
       username = EncryptFunc.encrypt_value("admin_acc")
-      level = EncryptFunc.encrypt_value(2)
+      level = 2
       password = HashFunctions.hash_value("Supersecret123!")
       Admin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
@@ -27,7 +27,7 @@ def CreateDB():
       first_name = EncryptFunc.encrypt_value("Samantha")
       last_name = EncryptFunc.encrypt_value("Julias")
       username = EncryptFunc.encrypt_value("Consultant")
-      level = EncryptFunc.encrypt_value(1)
+      level = 1
       password = HashFunctions.hash_value("Supersecret123!")
       Consultant = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
@@ -123,7 +123,6 @@ def CreateSuperAdmin():
 
             for user in users:
                   if EncryptFunc.decrypt_value(user[3]) == "super_admin":
-                        
                         return
                   
       else:
@@ -133,7 +132,7 @@ def CreateSuperAdmin():
             first_name = EncryptFunc.encrypt_value("super")
             last_name = EncryptFunc.encrypt_value("admin")
             username = EncryptFunc.encrypt_value("super_admin")
-            level = EncryptFunc.encrypt_value("3")
+            level = 3
             password = HashFunctions.hash_value("Admin_123?")
             # get current date  
             SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}

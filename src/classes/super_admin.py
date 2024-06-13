@@ -99,12 +99,12 @@ class SuperAdmin(Admin):
             print("Invalid last name")
             return
         
-        password = HashFunctions.hash_password(password)
+        password = HashFunctions.hash_value(password)
 
 
         c = ConnectToDB()
         c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
-          (member_id, first_name, last_name, username, password, "2"))
+          (member_id, EncryptFunc.encrypt_value(first_name), EncryptFunc.encrypt_value(last_name), EncryptFunc.encrypt_value(username), password, "2"))
         c.commit()
         c.close()
         

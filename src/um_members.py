@@ -34,18 +34,17 @@ def authenticate():
     if user == None:
         return
     
-    level = EncryptFunc.decrypt_value(user['level'])
 
-    if level == 1:
-        user = Consultant(user['username'], level)
+    if user['level'] == 1:
+        user = Consultant(EncryptFunc.decrypt_value(user['username']), user['level'])
         while user.logged_in:
             user.display_menu()
-    elif level == 2:
-        user = Admin(user['username'], level)
+    elif user['level'] == 2:
+        user = Admin(EncryptFunc.decrypt_value(user['username']), user['level'])
         while user.logged_in:
             user.display_menu()
-    elif level == 3:
-        user = SuperAdmin(user['username'], level)
+    elif user['level'] == 3:
+        user = SuperAdmin(EncryptFunc.decrypt_value(user['username']), user['level'])
         while user.logged_in:
             user.display_menu()
     else:
@@ -99,7 +98,6 @@ def main():
     #     menu = Menu(["Login", "Exit"], [authenticate, exit])
     #     menu.display()
     #     menu.execute_choice()
-
 
     easy_login()
 

@@ -97,7 +97,7 @@ class Admin(Consultant):
                 conn = self.connect_to_db()
                 c = conn.cursor()
                 c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
-                        (str(conID), firstName, lastName, username, password, 1))
+                        (str(conID), EncryptFunc.encrypt_value(firstName), EncryptFunc.encrypt_value(lastName), EncryptFunc.encrypt_value(username), password, 1))
                 conn.commit()
 
             else:

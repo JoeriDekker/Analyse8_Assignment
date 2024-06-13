@@ -68,7 +68,6 @@ def Login():
             for user in users:
                 user_dict = dict(user)
                 user_dict['username'] = EncryptFunc.decrypt_value(user_dict['username'])
-                user_dict['level'] = EncryptFunc.decrypt_value(user_dict['level'])
                 if user_dict['username'] == username:
                     found_user = user_dict
 
@@ -95,10 +94,9 @@ def Login():
         if attempt_count == 3:
             print("----------\nToo many failed login attempts. going back.\n----------")
             LogFunc.append_to_file("...", "Unsuccesful login", f"multiple login fails from single user", "yes")
-
             return None
         else:
-            LogFunc.append_to_file("...", "Unsuccesful login", f"username: '{username}' is used for a login attempt with a wrong password ", "no")
+            LogFunc.append_to_file("...", "Unsuccesful login", f"username: '{EncryptFunc.decrypt_value(username)}' is used for a login attempt with a wrong password ", "no")
         
         print("1. Try again")
         print("2. Return to menu")
