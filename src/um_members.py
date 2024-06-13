@@ -17,7 +17,7 @@ from setup import Setup
 setup = Setup()
 setup.install_required_packages()
     
-from db.db_connection import CreateDB, ConnectToDB
+from db.db_connection import CreateDB, ConnectToDB, CreateSuperAdmin
 
 from classes.consultant import Consultant
 from classes.admin import Admin
@@ -26,23 +26,26 @@ from classes.super_admin import SuperAdmin
 from classes.menu import Menu
 from functions.login import Login
 from functions.encrypt_functions import EncryptFunc
+import datetime
 
 
 def authenticate():
     user = Login()
     if user == None:
         return
+    
+    level = EncryptFunc.decrypt_value(user['level'])
 
-    if str(user['level']) == "1":
-        user = Consultant(user['username'], user['level'])
+    if level == 1:
+        user = Consultant(user['username'], level)
         while user.logged_in:
             user.display_menu()
-    elif str(user['level']) == "2":
-        user = Admin(user['username'], user['level'])
+    elif level == 2:
+        user = Admin(user['username'], level)
         while user.logged_in:
             user.display_menu()
-    elif str(user['level']) == "3":
-        user = SuperAdmin(user['username'], user['level'])
+    elif level == 3:
+        user = SuperAdmin(user['username'], level)
         while user.logged_in:
             user.display_menu()
     else:
@@ -57,15 +60,15 @@ def easy_login():
     user = input("Enter level:")
 
     if user == "1":
-        user = Consultant("Consultant", "1")
+        user = Consultant("Consultant", 1)
         while user.logged_in:
             user.display_menu()
     elif user == "2":
-        user = Admin("admin", "2")
+        user = Admin("admin", 2)
         while user.logged_in:
             user.display_menu()
     elif user == "3":
-        user = SuperAdmin("super admin", "3")
+        user = SuperAdmin("super admin", 3)
         while user.logged_in:
             user.display_menu()
     else:
@@ -97,6 +100,7 @@ def main():
     #     menu.display()
     #     menu.execute_choice()
 
+
     easy_login()
 
     
@@ -112,6 +116,7 @@ def main():
 
 if __name__ == "__main__":
     conn = CreateDB()
+    
 
 
     main()

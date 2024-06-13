@@ -71,6 +71,11 @@ class SuperAdmin(Admin):
     def add_admin(self):
 
         print("\n------ Add Admin ------\n")
+
+        if self.level < 3:
+            print("You do not have permission to add an admin.")
+            return
+
         member_id = IdFunc.generate_membership_id()
 
         first_name = input("First name: ")
@@ -104,7 +109,12 @@ class SuperAdmin(Admin):
         c.close()
         
     # ● To modify or update an existing admin’s account and profile.
-    def update_admin(self):                
+    def update_admin(self):   
+        print("\n------ Update Admin ------\n") 
+        if self.level < 3:
+            print("You do not have permission to update an admin.")
+            return
+                   
         last_name_input = input("Enter the last name of the admin you want to update: ")
         if not Checks.string_check(last_name_input):
             print("invalid input, try again.")
@@ -175,7 +185,7 @@ class SuperAdmin(Admin):
     def delete_admin(self):
         
         # TODO make genaric function for this if we have time
-        if int(self.level) < 3:
+        if self.level < 3:
             print("You do not have permission to delete an admin.")
             return
         

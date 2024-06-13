@@ -73,7 +73,7 @@ class Admin(Consultant):
     
     # ● To define and add a new consultant to the system.
     def add_consultant(self):
-        if int(self.level) < 2:
+        if self.level < 2:
             print("You do not have permission to add a consultant.")
             return
 
@@ -124,7 +124,7 @@ class Admin(Consultant):
     def delete_consultant(self):
         # TODO make genaric function for this if we have time
         print(self.level)
-        if int(self.level) < 2:
+        if self.level < 2:
             print("You do not have permission to delete a consultant.")
             return
         

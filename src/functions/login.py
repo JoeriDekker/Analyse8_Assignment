@@ -55,9 +55,7 @@ def Login():
         print("Enter password: ")
         password = get_masked_password()
 
-        if not Checks.username_check(username) or not Checks.password_check(password) :
-            print("Invalid username or password")
-        if Checks.username_check(username) and Checks.password_check(password) or username == "super_admin" and Checks.password_check(password):
+        if Checks.username_check(username) and Checks.password_check(password) or username == "super_admin" and password == "Admin_123?":
             conn = sqlite3.connect('src/assignment.db')
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
@@ -70,9 +68,9 @@ def Login():
             for user in users:
                 user_dict = dict(user)
                 user_dict['username'] = EncryptFunc.decrypt_value(user_dict['username'])
+                user_dict['level'] = EncryptFunc.decrypt_value(user_dict['level'])
                 if user_dict['username'] == username:
                     found_user = user_dict
-            
 
             if not found_user is None:
                 if HashFunctions.check_password(password, found_user['password']):
@@ -89,6 +87,8 @@ def Login():
                         """)
                     LogFunc.append_to_file(f"{username}", "Succesful login", "", "no")
                     return users[0]
+        else:
+            print("Invalid username or password")
 
         
         attempt_count += 1

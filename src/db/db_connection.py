@@ -1,5 +1,6 @@
 import sqlite3
 import uuid
+from datetime import datetime
 from functions.id_functions import IdFunc
 from functions.hash_functions import HashFunctions
 from functions.encrypt_functions import EncryptFunc
@@ -13,23 +14,12 @@ def CreateDB():
       conn = sqlite3.connect('src/assignment.db')
 
       # Create a cursor object
-      c = conn.cursor()
-
-      # Create a User object
-      # create uuid for each user
-      id = IdFunc.generate_membership_id()
-      first_name = EncryptFunc.encrypt_value("Sjaak")
-      last_name = EncryptFunc.encrypt_value("Minton")
-      username = EncryptFunc.encrypt_value("super_admin")
-      level = 3
-      password = HashFunctions.hash_value("Admin_123?")
-      SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
       id = IdFunc.generate_membership_id()
       first_name = EncryptFunc.encrypt_value("Klaas")
       last_name = EncryptFunc.encrypt_value("Jansen")
       username = EncryptFunc.encrypt_value("admin_acc")
-      level = 2
+      level = EncryptFunc.encrypt_value(2)
       password = HashFunctions.hash_value("Supersecret123!")
       Admin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
@@ -37,7 +27,7 @@ def CreateDB():
       first_name = EncryptFunc.encrypt_value("Samantha")
       last_name = EncryptFunc.encrypt_value("Julias")
       username = EncryptFunc.encrypt_value("Consultant")
-      level = 1
+      level = EncryptFunc.encrypt_value(1)
       password = HashFunctions.hash_value("Supersecret123!")
       Consultant = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
@@ -53,10 +43,13 @@ def CreateDB():
 
       Member = {"id": id, "first_name": first_name, "last_name": last_name, "age": age, "gender":gender, "weight": weight, "email": email, "phone_number": phone_number}
 
-      # Drop the table if it exists
+      c = conn.cursor()
+
+      # # Drop the table if it exists
       c.execute("DROP TABLE IF EXISTS users")
       c.execute("DROP TABLE IF EXISTS address")
       c.execute("DROP TABLE IF EXISTS members")
+      
 
       # -Users  
       #     First Name, Last Name, Age, Gender, Weight, Email Address, Mobile Phone, Password?
@@ -67,16 +60,17 @@ def CreateDB():
      
       
       # Create the 'users' table
-      c.execute('''CREATE TABLE users
+      c.execute('''CREATE TABLE IF NOT EXISTS users
                   (id TEXT PRIMARY KEY, 
                   first_name TEXT,
                   last_name TEXT, 
                   username TEXT,
                   level INTEGER, 
-                  password TEXT)''')
+                  password TEXT,
+                  registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
       
       # Create the 'members' table
-      c.execute('''CREATE TABLE members
+      c.execute('''CREATE TABLE IF NOT EXISTS members
                   (id TEXT PRIMARY KEY, 
                   first_name TEXT,
                   last_name TEXT, 
@@ -84,10 +78,11 @@ def CreateDB():
                   gender TEXT, 
                   weight INTEGER, 
                   email TEXT, 
-                  phone_number TEXT)''')
+                  phone_number TEXT,
+                  registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
 
       # Create Address Table
-      c.execute('''CREATE TABLE address
+      c.execute('''CREATE TABLE IF NOT EXISTS address
                   (id TEXT PRIMARY KEY, 
                   member_id TEXT,
                   street TEXT, 
@@ -96,25 +91,60 @@ def CreateDB():
                   city TEXT,
                   FOREIGN KEY(member_id) REFERENCES members(id))''')
 
-      # Insert the user data into the 'users' table
-      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
-            (str(SuperAdmin['id']), SuperAdmin['first_name'], SuperAdmin['last_name'], SuperAdmin['username'], SuperAdmin['password'], SuperAdmin['level']))
-      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
-            (str(Admin['id']), Admin['first_name'], Admin['last_name'], Admin['username'], Admin['password'], Admin['level']))
-      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level) VALUES (?, ?, ?, ?, ?, ?)",
-            (str(Consultant['id']), Consultant['first_name'], Consultant['last_name'], Consultant['username'], Consultant['password'], Consultant['level']))
+      
+      # c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      #       (str(Admin['id']), Admin['first_name'], Admin['last_name'], Admin['username'], Admin['password'], Admin['level'], datetime.now()))
+      # c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      #       (str(Consultant['id']), Consultant['first_name'], Consultant['last_name'], Consultant['username'], Consultant['password'], Consultant['level'], datetime.now()))
       
 
-      c.execute("INSERT INTO members (id, first_name, last_name, age, gender, weight, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (str(Member['id']), Member['first_name'], Member['last_name'], Member['age'], Member['gender'], Member['weight'], Member['email'], Member['phone_number']))
+      # c.execute("INSERT INTO members (id, first_name, last_name, age, gender, weight, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      #       (str(Member['id']), Member['first_name'], Member['last_name'], Member['age'], Member['gender'], Member['weight'], Member['email'], Member['phone_number']))
 
-      c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
-            (str(uuid.uuid4()), str(Member['id']), EncryptFunc.encrypt_value("teststreet"), EncryptFunc.encrypt_value(58), EncryptFunc.encrypt_value("1029AB"), EncryptFunc.encrypt_value("Rotterdam")))
+      # c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
+      #       (str(uuid.uuid4()), str(Member['id']), EncryptFunc.encrypt_value("teststreet"), EncryptFunc.encrypt_value(58), EncryptFunc.encrypt_value("1029AB"), EncryptFunc.encrypt_value("Rotterdam")))
 
       # Commit the changes
       conn.commit()
 
+      CreateSuperAdmin()
+
       return conn
+
+def CreateSuperAdmin():
+      conn = sqlite3.connect('src/assignment.db')
+      c = conn.cursor()
+
+      c.execute('''SELECT * FROM users ''')
+      users = c.fetchall()
+      conn.close()
+
+      if not len(users) == 0:
+
+            for user in users:
+                  if EncryptFunc.decrypt_value(user[3]) == "super_admin":
+                        
+                        return
+                  
+      else:
+            conn = sqlite3.connect('src/assignment.db')
+            c = conn.cursor()
+            id = IdFunc.generate_membership_id()
+            first_name = EncryptFunc.encrypt_value("super")
+            last_name = EncryptFunc.encrypt_value("admin")
+            username = EncryptFunc.encrypt_value("super_admin")
+            level = EncryptFunc.encrypt_value("3")
+            password = HashFunctions.hash_value("Admin_123?")
+            # get current date  
+            SuperAdmin = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
+            
+            # Insert the user data into the 'users' table
+            c.execute('''INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?)''',
+                        (str(SuperAdmin['id']), SuperAdmin['first_name'], SuperAdmin['last_name'], SuperAdmin['username'], SuperAdmin['password'], SuperAdmin['level'], datetime.now()))
+            conn.commit()
+            
+            conn.close()
 
 
 if __name__ == "__main__":
