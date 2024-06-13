@@ -1,5 +1,8 @@
 import re
 
+from db.db_connection import ConnectToDB
+from functions.encrypt_functions import EncryptFunc
+
 class Checks:
   
     def password_check(password):
@@ -22,7 +25,22 @@ class Checks:
                 else:
                     return True
         return False
-    
+        
+    def username_available_check(username_input):
+        # gets all usernames
+        c = ConnectToDB().cursor()
+        c.execute("SELECT username FROM users")
+        usernames = c.fetchall()
+        c.close()
+        
+        # checks if username is already taken
+        if usernames:
+            for username in usernames:
+                if username == username_input:
+                    print("username already in use, try again")
+                    return False
+        return True
+        
     def name_check(name):
         if len(name) >= 1 and len(name) <= 50:
             # check if name is only letters 
@@ -44,6 +62,15 @@ class Checks:
     def number_check(input):
         if len(input) >= 50:
                 return False
+        try:
+            float(input) 
+            return True
+        except ValueError:
+            return False
+        
+    def id_check(input):
+        if len(input) != 10:
+            return False
         try:
             float(input) 
             return True
