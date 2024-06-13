@@ -1,10 +1,3 @@
-# Consultants are employees of the Unique Meal who are in direct contact with the members. 
-# They process the requests of the members. Hence, they need to be able to manage the member’s information and data. 
-# For this purpose, when a new client requests for membership, a consultant needs to register the client's information in the system. 
-# So, the minimum required functions of a consultant in the system are summarized as below:
-
-# FUNCTIONS TO DO:
-
 import uuid
 from classes.menu import Menu
 from functions.input_checks import Checks
@@ -13,6 +6,18 @@ from functions.log_functions import LogFunc
 from functions.hash_functions import HashFunctions
 import functions.login as Login
 from functions.encrypt_functions import EncryptFunc
+
+
+# Consultants are employees of the Unique Meal who are in direct contact with the members. 
+# They process the requests of the members. Hence, they need to be able to manage the member’s information and data. 
+# For this purpose, when a new client requests for membership, a consultant needs to register the client's information in the system. 
+# So, the minimum required functions of a consultant in the system are summarized as below:
+
+# FUNCTIONS TO DO:
+    # ● To update their own password (complete)
+    # ● To add a new member to the system (complete)
+    # ● To modify or update the information of a member in the system (complete)
+    # ● To search and retrieve the information of a member (complete)
 
 
 from db.db_connection import ConnectToDB
@@ -29,12 +34,13 @@ class Consultant:
             functions=self.menu_functions + [self.logout]
         )
 
+
     cities = [
     "New York", "Tokyo", "Paris", "London", "Sydney",
     "Dubai", "Moscow", "Rio de Janeiro", "Mumbai", "Cape Town"
     ]
 
-    # ● To update their own password
+
     def update_password(self):
     
         # gets all users
@@ -75,7 +81,6 @@ class Consultant:
             print("Invalid password")
             LogFunc.append_to_file(f"{self.username}", "Tried changing password", f"{self.username} tried to change their own password, but failed", "no")
 
-
         # hashes the new password
         hashed_password = HashFunctions.hash_value(new_password)
 
@@ -92,29 +97,33 @@ class Consultant:
         input("Press Enter to Continue")
 
 
-    # ● To add a new member to the system
     def add_member(self):
 
         # asks member info and address
         print("Enter the info of the new Member:")
 
         member_id = IdFunc.generate_membership_id()
+
         first_name = input("First name: ")
         if not Checks.string_check(first_name):
             print("first name too long or empty, try again.")
             return
+        
         last_name = input("Last name: ")
         if not Checks.string_check(last_name):
             print("last name too long or empty, try again.")
             return
+        
         age = input("Age: ")
         if not Checks.number_check(age):
             print("not a number, try again.")
             return
+        
         gender = input("What is the Gender: \nM = Male\nF = Female\nO = Other\nN = Prefer not to say\nW = Who knows\nChoice: ")
         if not Checks.gender_check(gender):
             print("Wrong gender input, try again.")
             return
+        
         weight = input("Weight: ")
         if not Checks.number_check(weight):
             print("not a number, try again.")
@@ -124,14 +133,17 @@ class Consultant:
         if not Checks.string_check(street):
             print("street too long or empty, try again.")
             return
+        
         house_number = input("House number: ")
         if not Checks.number_check(house_number):
             print("not a number, try again.")
             return
+        
         zip_code = input("Zip code: ")
         if not Checks.zip_code_check(zip_code):
             print("zip code in wrong format, try again.")
             return
+        
         for index, city in enumerate(self.cities, start=1):
             print(f"{index}. {city}")
         city_input = input("City: ")
@@ -145,6 +157,7 @@ class Consultant:
         if not Checks.email_check(email):
             print("email in wrong format, try again.")
             return
+        
         phone_number = input("Phone number: ")
         if not Checks.phone_number_check(phone_number):
             print("phone number in wrong format, try again.")
@@ -178,7 +191,7 @@ class Consultant:
         LogFunc.append_to_file(f"{self.username}", "Member added", f"{self.username} added member named: {first_name} {last_name}", "no")
         input("Press Enter to Continue")
 
-    # ● To modify or update the information of a member in the system
+
     def update_member(self):
 
         # asks member last name  
@@ -237,7 +250,6 @@ class Consultant:
         print("Zip code:", EncryptFunc.decrypt_value(address[4]))
         print("City:", EncryptFunc.decrypt_value(address[5]))
 
-
         print("Email:", EncryptFunc.decrypt_value(member_info[6]))
         print("Phone Number:", EncryptFunc.decrypt_value(member_info[7]))
         print(f"Register Date: {member_info[8]}")
@@ -251,21 +263,25 @@ class Consultant:
             if not Checks.string_check(updated_first_name):
                 print("name too long, try again.")
                 return
+            
         updated_last_name = input("Last name: ").strip()
         if updated_last_name:
             if not Checks.string_check(updated_last_name):
                 print("name too long, try again.")
                 return
+            
         updated_age = input("Age: ").strip()
         if updated_age:
             if not Checks.number_check(updated_age):
                 print("not a number, try again.")
                 return
+            
         updated_gender = input("Gender: ").strip()
         if updated_gender:
             if not Checks.gender_check(updated_gender):
                 print("Wrong gender input, try again.")
                 return
+            
         updated_weight = input("Weight: ").strip()
         if updated_weight:
             if not Checks.number_check(updated_weight):
@@ -277,16 +293,19 @@ class Consultant:
             if not Checks.string_check(updated_street):
                 print("street too long, try again.")
                 return
+            
         updated_house_number = input("House number: ").strip()
         if updated_house_number:
             if not Checks.number_check(updated_house_number):
                 print("not a number, try again.")
                 return
+            
         updated_zip_code = input("Zip code: ").strip()
         if updated_zip_code:
             if not Checks.zip_code_check(updated_zip_code):
                 print("zip code in wrong format, try again.")
                 return
+            
         for index, city in enumerate(self.cities, start=1):
             print(f"{index}. {city}")
         city_input = input("City: ").strip()
@@ -304,6 +323,7 @@ class Consultant:
             if not Checks.email_check(updated_email):
                 print("email in wrong format, try again.")
                 return
+            
         updated_phone_number = input("Phone number: ").strip()
         if updated_phone_number:
             if not Checks.phone_number_check(updated_phone_number):
@@ -357,7 +377,7 @@ class Consultant:
         LogFunc.append_to_file(f"{self.username}", "Member updated", f"{self.username} updated member with Id: {member_info[0]}", "no")
         input("Press Enter to Continue")
 
-    # ● To search and retrieve the information of a member.
+
     def search_member(self):
 
         # asks for search input
@@ -368,7 +388,6 @@ class Consultant:
 
         # gets all members from database
         query = "SELECT * FROM members"
-
         c = ConnectToDB().cursor()
         c.execute(query)
         members = c.fetchall()
