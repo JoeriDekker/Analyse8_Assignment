@@ -56,7 +56,7 @@ def Login():
         password = get_masked_password()
 
         if Checks.username_check(username) and Checks.password_check(password) or username == "super_admin" and password == "Admin_123?":
-            conn = sqlite3.connect('src/assignment.db')
+            conn = sqlite3.connect('assignment.db')
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute("SELECT * FROM users")

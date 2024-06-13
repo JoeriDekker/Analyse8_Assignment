@@ -19,7 +19,7 @@ class EncryptFunc:
         )
         
         # store the private key in a file
-        with open('src/private_key.pem', 'wb') as filekey:
+        with open('private_key.pem', 'wb') as filekey:
             filekey.write(key.private_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PrivateFormat.PKCS8,
@@ -28,7 +28,7 @@ class EncryptFunc:
 
         # store the public key in a file
         public_key = key.public_key()
-        with open('src/public_key.pem', 'wb') as filekey:
+        with open('public_key.pem', 'wb') as filekey:
             filekey.write(public_key.public_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PublicFormat.SubjectPublicKeyInfo
@@ -37,7 +37,7 @@ class EncryptFunc:
     @staticmethod
     def encrypt_file():
         # load the public key
-        with open('src/public_key.pem', 'rb') as filekey:
+        with open('public_key.pem', 'rb') as filekey:
             public_key = serialization.load_pem_public_key(
                 filekey.read(),
                 backend=default_backend()
@@ -48,7 +48,7 @@ class EncryptFunc:
 
         # use the symmetric key to encrypt the file
         cipher_suite = Fernet(symmetric_key)
-        with open('src/log.txt', 'rb') as filekey:
+        with open('log.txt', 'rb') as filekey:
             encrypted_file = cipher_suite.encrypt(filekey.read())
 
         # use the public key to encrypt the symmetric key
@@ -62,11 +62,11 @@ class EncryptFunc:
         )
 
         # write the encrypted symmetric key to a file
-        with open('src/encrypted_key.pem', 'wb') as filekey:
+        with open('encrypted_key.pem', 'wb') as filekey:
             filekey.write(encrypted_key)
 
         # overwrite the original file with the encrypted content
-        with open('src/log.txt', 'wb') as filekey:
+        with open('log.txt', 'wb') as filekey:
             filekey.write(encrypted_file)
 
 
@@ -74,11 +74,11 @@ class EncryptFunc:
     def decrypt_file():
         # load the private key
 
-        if not os.path.exists('src/log.txt'):
+        if not os.path.exists('log.txt'):
             print("Log file not found.")
             return
 
-        with open('src/private_key.pem', 'rb') as filekey:
+        with open('private_key.pem', 'rb') as filekey:
             private_key = serialization.load_pem_private_key(
                 filekey.read(),
                 password=None,
@@ -86,7 +86,7 @@ class EncryptFunc:
             )
 
         # load the encrypted symmetric key
-        with open('src/encrypted_key.pem', 'rb') as filekey:
+        with open('encrypted_key.pem', 'rb') as filekey:
             encrypted_key = filekey.read()
 
         # use the private key to decrypt the symmetric key
@@ -101,16 +101,16 @@ class EncryptFunc:
 
         # use the symmetric key to decrypt the file
         cipher_suite = Fernet(symmetric_key)
-        with open('src/log.txt', 'rb') as filekey:
+        with open('log.txt', 'rb') as filekey:
             decrypted_file = cipher_suite.decrypt(filekey.read())
 
         # overwrite the original file with the decrypted content
-        with open('src/log.txt', 'wb') as filekey:
+        with open('log.txt', 'wb') as filekey:
             filekey.write(decrypted_file)
 
     def encrypt_value(value):
         # load the public key
-        with open('src/public_key.pem', 'rb') as filekey:
+        with open('public_key.pem', 'rb') as filekey:
             public_key = serialization.load_pem_public_key(
                 filekey.read(),
                 backend=default_backend()
@@ -133,7 +133,7 @@ class EncryptFunc:
     
     def encrypt_int_value(value):
         # load the public key
-        with open('src/public_key.pem', 'rb') as filekey:
+        with open('public_key.pem', 'rb') as filekey:
             public_key = serialization.load_pem_public_key(
                 filekey.read(),
                 backend=default_backend()
@@ -153,7 +153,7 @@ class EncryptFunc:
     
     def decrypt_value(value):
         # load the private key
-        with open('src/private_key.pem', 'rb') as filekey:
+        with open('private_key.pem', 'rb') as filekey:
             private_key = serialization.load_pem_private_key(
                 filekey.read(),
                 password=None,

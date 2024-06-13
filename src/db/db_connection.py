@@ -6,12 +6,12 @@ from functions.hash_functions import HashFunctions
 from functions.encrypt_functions import EncryptFunc
 
 def ConnectToDB():
-    conn = sqlite3.connect('src/assignment.db')
+    conn = sqlite3.connect('assignment.db')
     return conn
 
 
 def CreateDB():
-      conn = sqlite3.connect('src/assignment.db')
+      conn = sqlite3.connect('assignment.db')
 
       # Create a cursor object
 
@@ -46,9 +46,9 @@ def CreateDB():
       c = conn.cursor()
 
       # # Drop the table if it exists
-      c.execute("DROP TABLE IF EXISTS users")
-      c.execute("DROP TABLE IF EXISTS address")
-      c.execute("DROP TABLE IF EXISTS members")
+      # c.execute("DROP TABLE IF EXISTS users")
+      # c.execute("DROP TABLE IF EXISTS address")
+      # c.execute("DROP TABLE IF EXISTS members")
       
 
       # -Users  
@@ -112,15 +112,12 @@ def CreateDB():
       return conn
 
 def CreateSuperAdmin():
-      conn = sqlite3.connect('src/assignment.db')
+      conn = sqlite3.connect('assignment.db')
       c = conn.cursor()
 
       c.execute('''SELECT * FROM users ''')
       users = c.fetchall()
       conn.close()
-
-      print(len(users))
-
 
       if len(users) > 0:
             for user in users:
@@ -129,7 +126,7 @@ def CreateSuperAdmin():
                         print("Super Admin already exists")
                         return
                   
-      conn = sqlite3.connect('src/assignment.db')
+      conn = sqlite3.connect('assignment.db')
       c = conn.cursor()
       id = IdFunc.generate_membership_id()
       first_name = EncryptFunc.encrypt_value("super")

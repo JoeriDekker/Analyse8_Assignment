@@ -26,6 +26,8 @@ from classes.super_admin import SuperAdmin
 from classes.menu import Menu
 from functions.login import Login
 from functions.encrypt_functions import EncryptFunc
+from functions.backup_functions import BackupFunc
+from functions.log_functions import LogFunc
 import datetime
 
 
@@ -100,8 +102,18 @@ def main():
     #     menu.execute_choice()
 
     easy_login()
+    # LogFunc.append_to_file("...", "Unsuccesful login", f"username: 'ssdf' is used for a login attempt with a wrong password ", "no")
+    # LogFunc.read_log()
+    # input("Press Enter to Continue")
+    # BackupFunc.CreateBackup()
+    # LogFunc.read_log()
+    # input("Press Enter to Continue")
+    # LogFunc.append_to_file("...", "Unsuccesful login", f"username: 'ssdf22' is used for a login attempt with a wrong password ", "no")
+    # LogFunc.read_log()
+    # input("Press Enter to Continue")
+    # BackupFunc.RestoreBackup()
+    # LogFunc.read_log()
 
-    
     
     # FileFunc.generate_key()
     # FileFunc.encrypt_file()
@@ -113,8 +125,8 @@ def main():
 
 
 if __name__ == "__main__":
+    # EncryptFunc.generate_key()
     conn = CreateDB()
-    
 
 
     main()

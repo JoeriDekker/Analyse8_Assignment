@@ -10,7 +10,7 @@ class LogFunc:
         
         EncryptFunc.decrypt_file()
 
-        with open("src/log.txt", 'a+') as file:
+        with open("log.txt", 'a+') as file:
             file.seek(0)
             if not file.readline().startswith('No.'):
                 file.write('No., Date, Time, Username, Description of activity, Additional Information, Suspicious\n')
@@ -38,11 +38,11 @@ class LogFunc:
     @staticmethod
     def read_log():
         EncryptFunc.decrypt_file()
-        if not os.path.exists('src/log.txt'):
+        if not os.path.exists('log.txt'):
             print("Log file not found.")
             return
         
-        with open("src/log.txt", 'r') as file:
+        with open("log.txt", 'r') as file:
             lines = file.readlines()
             # Define the headers manually
             widths = [5, 12, 10, 15, 30, 30, 10]

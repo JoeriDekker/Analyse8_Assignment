@@ -50,7 +50,7 @@ class Admin(Consultant):
         
     @staticmethod
     def connect_to_db():
-        return sqlite3.connect('src/assignment.db')
+        return sqlite3.connect('assignment.db')
 
     # ● To check the list of users and their roles. (member to admin??)
     def check_users(self):
