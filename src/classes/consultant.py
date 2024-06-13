@@ -194,33 +194,17 @@ class Consultant:
 
     def update_member(self):
 
-        # asks member last name  
-        last_name_input = input("Enter the last name of the member you want to update: ")
-        if not Checks.string_check(last_name_input):
-            print("invalid input, try again.")
+        # asks member id  
+        id_input = input("Enter the id of the member you want to update: ")
+        if not Checks.id_check(id_input):
+            print("invalid id input, try again.")
             return
 
         # gets all members
         c = ConnectToDB().cursor()
-        c.execute("SELECT * FROM members")
-        results = c.fetchall()
+        c.execute("SELECT * FROM members WHERE id=?", (id_input,))
+        member_info = c.fetchone()
         c.close()
-
-        member_info = None
-        
-        # searches member by last name
-        if not results:
-            print("Member not found in the database.")
-            return
-        else:
-            for result in results:
-                if EncryptFunc.decrypt_value(result[2]) == last_name_input:
-                    member_info = result
-                    break
-
-        if member_info == None:
-            print("Member not found between members")
-            return
 
         # gets the matching address
         query = """
@@ -228,7 +212,7 @@ class Consultant:
         WHERE member_id=?
         """
         c = ConnectToDB().cursor()
-        c.execute(query, (member_info[0],))
+        c.execute(query, (id_input,))
         address = c.fetchone()
         c.close()
 
