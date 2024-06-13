@@ -12,6 +12,7 @@ from functions.id_functions import IdFunc
 from functions.log_functions import LogFunc
 from functions.hash_functions import HashFunctions
 import functions.login as Login
+from functions.encrypt_functions import EncryptFunc
 
 
 from db.db_connection import ConnectToDB
@@ -28,74 +29,89 @@ class Consultant:
             functions=self.menu_functions + [self.logout]
         )
 
+    cities = [
+    "New York", "Tokyo", "Paris", "London", "Sydney",
+    "Dubai", "Moscow", "Rio de Janeiro", "Mumbai", "Cape Town"
+    ]
+
     # ● To update their own password
     def update_password(self):
-        
-        # Connect to the database and fetch the hashed password for the current user
+    
+        # gets all users
         c = ConnectToDB().cursor()
-        c.execute("SELECT * FROM users WHERE username=?", (self.username,))
-        result = c.fetchone()
+        c.execute("SELECT * FROM users")
+        results = c.fetchall()
         c.close()
 
-        if not result:
+        user_info = None
+        
+        # searches user by username
+        if not results:
             print("User not found in the database.")
             return
-        
+        else:
+            for result in results:
+                if EncryptFunc.decrypt_value(result[3]) == self.username:
+                    user_info = result
+                    break
+
+        if user_info == None:
+            print("User not found between users")
+            return
+
+        # checks old password
         print("Enter your old password: ")
         old_password = Login.get_masked_password()
-        hashed_password = result[5]
-
+        hashed_password = user_info[5]
         if not HashFunctions.check_password(old_password, hashed_password):
             print("Old password does not match. Password update failed.")
             return
         
-        # Get the new password
+        # gets the new password
         print("- must have a length of at least 12 characters\n- must be no longer than 30 characters\n- must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character")
         print("New password: ")
         new_password = Login.get_masked_password()
-        if not Checks.password_check():
+        if not Checks.password_check(new_password):
             print("Invalid password")
+            LogFunc.append_to_file(f"{self.username}", "Tried changing password", f"{self.username} tried to change their own password, but failed", "no")
 
-        # Hash the new password
-        hashed_password = HashFunctions.hash_password(new_password)
+
+        # hashes the new password
+        hashed_password = HashFunctions.hash_value(new_password)
 
         print("Updating password...")
 
-        # Update the password in the database
+        # updates the password in the database
         c = ConnectToDB()
-        c.execute("UPDATE users SET password=? WHERE username=?", (hashed_password, self.username))
+        c.execute("UPDATE users SET password=? WHERE username=?", (hashed_password, user_info[3]))
         c.commit()
         c.close()
 
         print("Password updated successfully!")
+        LogFunc.append_to_file(f"{self.username}", "Changed password", f"{self.username} changed their own password", "no")
+        input("Press Enter to Continue")
+
 
     # ● To add a new member to the system
     def add_member(self):
-        cities = [
-        "New York", "Tokyo", "Paris", "London", "Sydney",
-        "Dubai", "Moscow", "Rio de Janeiro", "Mumbai", "Cape Town"
-        ]
 
+        # asks member info and address
         print("Enter the info of the new Member:")
 
         member_id = IdFunc.generate_membership_id()
         first_name = input("First name: ")
         if not Checks.string_check(first_name):
-            print("name too long, try again.")
+            print("first name too long or empty, try again.")
             return
-        
         last_name = input("Last name: ")
         if not Checks.string_check(last_name):
-            print("name too long, try again.")
+            print("last name too long or empty, try again.")
             return
-
         age = input("Age: ")
         if not Checks.number_check(age):
             print("not a number, try again.")
             return
-        
-        
-        gender = input("What is the Gender: \nM = Male\nF = Female\nO = Other\nN = Prefer not to say\n W = Who knows\nChoice: ")
+        gender = input("What is the Gender: \nM = Male\nF = Female\nO = Other\nN = Prefer not to say\nW = Who knows\nChoice: ")
         if not Checks.gender_check(gender):
             print("Wrong gender input, try again.")
             return
@@ -106,7 +122,7 @@ class Consultant:
 
         street = input("Street name: ")
         if not Checks.string_check(street):
-            print("street too long, try again.")
+            print("street too long or empty, try again.")
             return
         house_number = input("House number: ")
         if not Checks.number_check(house_number):
@@ -116,15 +132,14 @@ class Consultant:
         if not Checks.zip_code_check(zip_code):
             print("zip code in wrong format, try again.")
             return
-        
-        for index, city in enumerate(cities, start=1):
+        for index, city in enumerate(self.cities, start=1):
             print(f"{index}. {city}")
         city_input = input("City: ")
-        city_number = Checks.city_check(city_input, cities)
+        city_number = Checks.city_check(city_input, self.cities)
         if city_number == -1:
             print("no valid number, try again.")
             return
-        city = cities[city_number - 1]
+        city = self.cities[city_number - 1]
 
         email = input("Email: ")
         if not Checks.email_check(email):
@@ -137,75 +152,98 @@ class Consultant:
 
         print("Now adding Member...")
 
+        # encrypts all given data and adds to database
+        encrypted_first_name = EncryptFunc.encrypt_value(first_name)
+        encrypted_last_name = EncryptFunc.encrypt_value(last_name)
+        encrypted_age = EncryptFunc.encrypt_int_value(age)
+        encrypted_gender = EncryptFunc.encrypt_value(gender)
+        encrypted_weight = EncryptFunc.encrypt_int_value(weight)
+        encrypted_email = EncryptFunc.encrypt_value(email)
+        encrypted_phone_number = EncryptFunc.encrypt_value(phone_number)
+
+        encrypted_street = EncryptFunc.encrypt_value(street)
+        encrypted_house_number = EncryptFunc.encrypt_int_value(house_number)
+        encrypted_zip_code = EncryptFunc.encrypt_value(zip_code)
+        encrypted_city = EncryptFunc.encrypt_value(city)
+        
         c = ConnectToDB()
         c.execute("INSERT INTO members (id, first_name, last_name, age, gender, weight, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (str(member_id), first_name, last_name, age, gender, weight, email, phone_number))
+            (str(member_id), encrypted_first_name, encrypted_last_name, encrypted_age, encrypted_gender, encrypted_weight, encrypted_email, encrypted_phone_number))
         c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
-            (str(uuid.uuid4()), member_id, street, house_number, zip_code, city))
+            (str(uuid.uuid4()), member_id, encrypted_street, encrypted_house_number, encrypted_zip_code, encrypted_city))
         c.commit()
         c.close()
 
         print("Adding Member successful!")
-        LogFunc.append_to_file(f"{self.username}", "Member added", f"{self.username} addeded member named: {first_name} {last_name}", "no")
+        LogFunc.append_to_file(f"{self.username}", "Member added", f"{self.username} added member named: {first_name} {last_name}", "no")
         input("Press Enter to Continue")
 
     # ● To modify or update the information of a member in the system
     def update_member(self):
-        cities = [
-        "New York", "Tokyo", "Paris", "London", "Sydney",
-        "Dubai", "Moscow", "Rio de Janeiro", "Mumbai", "Cape Town"
-        ]
-                
+
+        # asks member last name  
         last_name_input = input("Enter the last name of the member you want to update: ")
         if not Checks.string_check(last_name_input):
             print("invalid input, try again.")
             return
 
-        # Check if the member exists
-        query = """
-        SELECT * FROM members
-        WHERE last_name=?
-        """
+        # gets all members
         c = ConnectToDB().cursor()
-        c.execute(query, (last_name_input,))
-        members = c.fetchall()
-        if members:
-            member = members[0]
+        c.execute("SELECT * FROM members")
+        results = c.fetchall()
+        c.close()
+
+        member_info = None
+        
+        # searches member by last name
+        if not results:
+            print("Member not found in the database.")
+            return
         else:
-            print("no member found with the provided search input. try again")
+            for result in results:
+                if EncryptFunc.decrypt_value(result[2]) == last_name_input:
+                    member_info = result
+                    break
+
+        if member_info == None:
+            print("Member not found between members")
             return
 
+        # gets the matching address
         query = """
         SELECT * FROM address
         WHERE member_id=?
         """
-        c.execute(query, (member[0],))
-        address = c.fetchall()[0]
+        c = ConnectToDB().cursor()
+        c.execute(query, (member_info[0],))
+        address = c.fetchone()
         c.close()
 
         if not address:
             print("Address not found with the provided ID.")
             return
 
-        # Display member's current information
+        # displays member info
         print("Current Member Information:")
-        print("ID:", member[0])
-        print("First Name:", member[1])
-        print("Last Name:", member[2])
-        print("Age:", member[3])
-        print("Gender:", member[4])
-        print("Weight:", member[5])
+        print("ID:", member_info[0])
+        print("First Name:", EncryptFunc.decrypt_value(member_info[1]))
+        print("Last Name:", EncryptFunc.decrypt_value(member_info[2]))
+        print("Age:", EncryptFunc.decrypt_value(member_info[3]))
+        print("Gender:", EncryptFunc.decrypt_value(member_info[4]))
+        print("Weight:", EncryptFunc.decrypt_value(member_info[5]))
 
-        print("Street name:", address[2])
-        print("House number:", address[3])
-        print("Zip code:", address[4])
-        print("City:", address[5])
+        print("Street name:", EncryptFunc.decrypt_value(address[2]))
+        print("House number:", EncryptFunc.decrypt_value(address[3]))
+        print("Zip code:", EncryptFunc.decrypt_value(address[4]))
+        print("City:", EncryptFunc.decrypt_value(address[5]))
 
 
-        print("Email:", member[6])
-        print("Phone Number:", member[7])
+        print("Email:", EncryptFunc.decrypt_value(member_info[6]))
+        print("Phone Number:", EncryptFunc.decrypt_value(member_info[7]))
+        print(f"Register Date: {member_info[8]}")
 
-        # Ask for updated information
+
+        # asks for updated information
         print("\nEnter the updated information (leave blank if not updating):")
 
         updated_first_name = input("First name: ").strip()
@@ -226,7 +264,7 @@ class Consultant:
         updated_gender = input("Gender: ").strip()
         if updated_gender:
             if not Checks.gender_check(updated_gender):
-                print("gender too long, try again.")
+                print("Wrong gender input, try again.")
                 return
         updated_weight = input("Weight: ").strip()
         if updated_weight:
@@ -249,15 +287,15 @@ class Consultant:
             if not Checks.zip_code_check(updated_zip_code):
                 print("zip code in wrong format, try again.")
                 return
-        for index, city in enumerate(cities, start=1):
+        for index, city in enumerate(self.cities, start=1):
             print(f"{index}. {city}")
         city_input = input("City: ").strip()
         if city_input:
-            city_number = Checks.city_check(city_input, cities)
+            city_number = Checks.city_check(city_input, self.cities)
             if city_number == -1:
                 print("no valid number, try again.")
                 return
-            updated_city = cities[city_number - 1]
+            updated_city = self.cities[city_number - 1]
         else:
             updated_city = None
 
@@ -274,66 +312,110 @@ class Consultant:
 
         print("Updating member info...")
 
-        # Update member's information in the database
+        # updates member info in database
         c = ConnectToDB()
         if updated_first_name:
-            c.execute("UPDATE members SET first_name=? WHERE last_name=?", (updated_first_name, last_name_input))
+            encrypted_first_name = EncryptFunc.encrypt_value(updated_first_name)
+            c.execute("UPDATE members SET first_name=? WHERE last_name=?", (encrypted_first_name, member_info[2]))
         if updated_last_name:
-            c.execute("UPDATE members SET last_name=? WHERE last_name=?", (updated_last_name, last_name_input))
+            encrypted_last_name = EncryptFunc.encrypt_value(updated_last_name)
+            c.execute("UPDATE members SET last_name=? WHERE last_name=?", (encrypted_last_name, member_info[2]))
         if updated_age:
-            c.execute("UPDATE members SET age=? WHERE last_name=?", (updated_age, last_name_input))
+            encrypted_age = EncryptFunc.encrypt_int_value(updated_age)
+            c.execute("UPDATE members SET age=? WHERE last_name=?", (encrypted_age, member_info[2]))
         if updated_gender:
-            c.execute("UPDATE members SET gender=? WHERE last_name=?", (updated_gender, last_name_input))
+            encrypted_gender = EncryptFunc.encrypt_value(updated_gender)
+            c.execute("UPDATE members SET gender=? WHERE last_name=?", (encrypted_gender, member_info[2]))
         if updated_weight:
-            c.execute("UPDATE members SET weight=? WHERE last_name=?", (updated_weight, last_name_input))
+            encrypted_weight = EncryptFunc.encrypt_int_value(updated_weight)
+            c.execute("UPDATE members SET weight=? WHERE last_name=?", (encrypted_weight, member_info[2]))
         if updated_email:
-            c.execute("UPDATE members SET email=? WHERE last_name=?", (updated_email, last_name_input))
+            encrypted_email = EncryptFunc.encrypt_value(updated_email)
+            c.execute("UPDATE members SET email=? WHERE last_name=?", (encrypted_email, member_info[2]))
         if updated_phone_number:
-            c.execute("UPDATE members SET phone_number=? WHERE last_name=?", (updated_phone_number, last_name_input))
+            encrypted_phone_number = EncryptFunc.encrypt_value(updated_phone_number)
+            c.execute("UPDATE members SET phone_number=? WHERE last_name=?", (encrypted_phone_number, member_info[2]))
 
+        # updates address info of member in database
         if updated_street:
-            c.execute("UPDATE address SET street=? WHERE member_id=?", (updated_street, member[0]))
+            encrypted_street = EncryptFunc.encrypt_value(updated_street)
+            c.execute("UPDATE address SET street=? WHERE member_id=?", (encrypted_street, member_info[0]))
         if updated_house_number:
-            c.execute("UPDATE address SET house_number=? WHERE member_id=?", (updated_house_number, member[0]))
+            encrypted_house_number = EncryptFunc.encrypt_int_value(updated_house_number)
+            c.execute("UPDATE address SET house_number=? WHERE member_id=?", (encrypted_house_number, member_info[0]))
         if updated_zip_code:
-            c.execute("UPDATE address SET zip_code=? WHERE member_id=?", (updated_zip_code, member[0]))
+            encrypted_zip_code = EncryptFunc.encrypt_value(updated_zip_code)
+            c.execute("UPDATE address SET zip_code=? WHERE member_id=?", (encrypted_zip_code, member_info[0]))
         if updated_city:
-            c.execute("UPDATE address SET city=? WHERE member_id=?", (updated_city, member[0]))
+            encrypted_city = EncryptFunc.encrypt_value(updated_city)
+            c.execute("UPDATE address SET city=? WHERE member_id=?", (encrypted_city, member_info[0]))
 
         c.commit()
         c.close()
 
         print("Member information updated successfully!")
+        LogFunc.append_to_file(f"{self.username}", "Member updated", f"{self.username} updated member with Id: {member_info[0]}", "no")
         input("Press Enter to Continue")
 
     # ● To search and retrieve the information of a member.
     def search_member(self):
+
+        # asks for search input
         search_input = input("Search: ")
         if not Checks.string_check(search_input):
-            print("input too long, try again.")
+            print("input too long or empty, try again.")
             return
-    
-        search_term = f"%{search_input}%"
-        query = """
-        SELECT * FROM members
-        WHERE id LIKE ? OR
-              first_name LIKE ? OR
-              last_name LIKE ? OR
-              age LIKE ? OR
-              gender LIKE ? OR
-              weight LIKE ? OR
-              email LIKE ? OR
-              phone_number LIKE ?
-        """
+
+        # gets all members from database
+        query = "SELECT * FROM members"
 
         c = ConnectToDB().cursor()
-        c.execute(query, (search_term, search_term, search_term, search_term, search_term, search_term, search_term, search_term))
-        results = c.fetchall()
+        c.execute(query)
+        members = c.fetchall()
         c.close()
-        
-        if results:
-            for row in results:
-                print(row)
+
+        # sees if there are any members that match the search on any of the fields
+        found_members = []
+        for member in members:
+            for value in member[1:-1]:
+                if search_input in str(EncryptFunc.decrypt_value(value)):
+                    found_members.append(member)
+                    break
+
+        # loops thru the found members if there are any
+        if found_members:
+            for member in found_members:
+
+                # gets the matching address
+                query = """
+                SELECT * FROM address
+                WHERE member_id=?
+                """
+                c = ConnectToDB().cursor()
+                c.execute(query, (member[0],))
+                address = c.fetchone()
+                c.close()
+
+                if not address:
+                    print("Address not found with the provided ID.")
+                    return
+                
+                # prints all found members that matched the search 
+                print(f"ID: {member[0]}")
+                print(f"First Name: {EncryptFunc.decrypt_value(member[1])}")
+                print(f"Last Name: {EncryptFunc.decrypt_value(member[2])}")
+                print(f"Age: {EncryptFunc.decrypt_value(member[3])}")
+                print(f"Gender: {EncryptFunc.decrypt_value(member[4])}")
+                print(f"Weight: {EncryptFunc.decrypt_value(member[5])}")
+
+                print("Street name:", EncryptFunc.decrypt_value(address[2]))
+                print("House number:", EncryptFunc.decrypt_value(address[3]))
+                print("Zip code:", EncryptFunc.decrypt_value(address[4]))
+                print("City:", EncryptFunc.decrypt_value(address[5]))
+
+                print(f"Email: {EncryptFunc.decrypt_value(member[6])}")
+                print(f"Phone Number: {EncryptFunc.decrypt_value(member[7])}")
+                print(f"Register Date: {member[8]}\n")
         else:
             print("no member found with the provided search input. try again")
 

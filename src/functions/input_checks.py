@@ -51,7 +51,7 @@ class Checks:
             return False
     
     def string_check(input):
-        if len(input) <= 50:
+        if len(input) <= 50 and len(input) > 0:
             return True
         else:
             return False
