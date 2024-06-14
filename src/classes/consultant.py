@@ -432,6 +432,10 @@ class Consultant:
                 print(f"Register Date: {member[8]}\n")
         else:
             print("No member found with the provided search input, try again.")
+            return
+        
+        input("Press Enter to Continue")
+
 
     def display_menu(self):
         self.menu.display()

@@ -67,7 +67,7 @@ class Admin(Consultant):
         conn.close()
         
         if users:
-            print("List of users:")
+            print("List of users:\n")
             for user in users:
                 if user[2] == 1:
                     print(f"Username: {EncryptFunc.decrypt_value(user[1])}\nRole: Consultant\n")
@@ -76,6 +76,9 @@ class Admin(Consultant):
         else:
             print("no users found")
             return
+        
+        input("Press Enter to Continue")
+
 
     def add_consultant(self):
 
@@ -276,16 +279,19 @@ class Admin(Consultant):
         input("Press Enter to Continue")
 
     def reset_consultant_password(self):
+
+        consultant_user = input("Enter the username of the consultant you want to delete: ")
+        if not Checks.username_check(consultant_user):
+            print("invalid input username, try again.")
+            return
+        
         conn = ConnectToDB()
         c = conn.cursor()
         c.execute("SELECT * FROM users")
         consultants = c.fetchall()
         conn.close()
 
-        consultant_user = input("Enter the username of the consultant you want to reset the password for: ")
-        if not consultant_user:
-            print("Cancelling password reset...")
-            return
+        consult_info = None
 
         if not consultants:
             print("No users in database.")
@@ -304,13 +310,13 @@ class Admin(Consultant):
             print("Consultant not found between users")
             return
 
-        # displays consultant info
-        print("Current Consultant Information:")
-        print("ID:", consult_info[0])
-        print("First Name:", EncryptFunc.decrypt_value(consult_info[1]))
-        print("Last Name:", EncryptFunc.decrypt_value(consult_info[2]))
-        print("Username:", EncryptFunc.decrypt_value(consult_info[3]))
-        print("Registration Date:", consult_info[6])
+        # # displays consultant info (necessary)
+        # print("Current Consultant Information:")
+        # print("ID:", consult_info[0])
+        # print("First Name:", EncryptFunc.decrypt_value(consult_info[1]))
+        # print("Last Name:", EncryptFunc.decrypt_value(consult_info[2]))
+        # print("Username:", EncryptFunc.decrypt_value(consult_info[3]))
+        # print("Registration Date:", consult_info[6])
 
         print("New password: ")    
         password = Login.get_masked_password()
@@ -328,7 +334,7 @@ class Admin(Consultant):
         conn.close()
 
         print("Consultant password reset successfully!")
-        print(f"New password: {password}")
+        # print(f"New password: {password}")
         LogFunc.append_to_file(f"{self.username}", "Consultant password reset", f"{self.username} updated consultant with Id: {consult_info[0]}", "no")
         input("Press Enter to Continue")
 
