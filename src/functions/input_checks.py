@@ -40,14 +40,6 @@ class Checks:
                     return False
         return True
         
-    def name_check(name):
-        if len(name) >= 1 and len(name) <= 50:
-            # check if name is only letters 
-            if re.fullmatch(r'^[a-zA-Z]+$', name):
-                return True
-                
-        return False
-
     def zip_code_check(zip_code):
         if re.fullmatch(r'^\d{4}[A-Z]{2}$', zip_code):
             return True
@@ -77,10 +69,11 @@ class Checks:
             return False
     
     def string_check(input):
-        if len(input) <= 50 and len(input) > 0:
-            return True
-        else:
-            return False
+        if len(input) >= 1 and len(input) <= 50:
+            if re.fullmatch(r'^[a-zA-Z\'-]+$', input):
+                return True
+                
+        return False
         
     def email_check(email):
         if re.fullmatch(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
