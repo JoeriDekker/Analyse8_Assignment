@@ -346,18 +346,28 @@ class Admin(Consultant):
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
         c.execute("DELETE FROM members WHERE id=?", (member_to_delete[0],))
+        c.execute("DELETE FROM address WHERE member_id=?", (member_to_delete[0],))
         conn.commit()
         c.close()
 
-        # checks if the user is deleted
+        # checks if the member is deleted
         c = conn.cursor()
         c.execute("SELECT id FROM members WHERE id=?", (member_to_delete[0],))
         deleted_member = c.fetchone()
         c.close()
-
         if deleted_member:
             print(f"Failed to delete member with Id '{id_input}'. Please try again.")
             return
+        
+        # checks if the address is deleted
+        c = conn.cursor()
+        c.execute("SELECT id FROM address WHERE member_id=?", (member_to_delete[0],))
+        deleted_address = c.fetchone()
+        c.close()
+        if deleted_address:
+            print(f"Failed to delete adress with Member Id '{id_input}'. Please try again.")
+            return
+
         
         print(f"Consultant with Id '{id_input}' has been deleted successfully.")
         LogFunc.append_to_file(f"{self.username}", "Member deleted", f"{self.username} deleted member with Id: {id_input}", "no")

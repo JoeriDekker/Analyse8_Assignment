@@ -13,7 +13,6 @@ def ConnectToDB():
 def CreateDB():
       conn = sqlite3.connect('assignment.db')
 
-      # Create a cursor object
 
       id = IdFunc.generate_membership_id()
       first_name = EncryptFunc.encrypt_value("Klaas")
@@ -31,7 +30,6 @@ def CreateDB():
       password = HashFunctions.hash_value("Supersecret123!")
       Consultant = {"id": id, "first_name": first_name, "last_name": last_name, "username": username, "level": level, "password": password}
 
-      # TODO: members have age, first and last name for input. aslo registration date. the ID also has a specific structure (see page 2 assignment)
       id = IdFunc.generate_membership_id()
       first_name = EncryptFunc.encrypt_value("John")
       last_name = EncryptFunc.encrypt_value("Doe")
@@ -45,19 +43,11 @@ def CreateDB():
 
       c = conn.cursor()
 
-      # # Drop the table if it exists
-      # c.execute("DROP TABLE IF EXISTS users")
-      # c.execute("DROP TABLE IF EXISTS address")
-      # c.execute("DROP TABLE IF EXISTS members")
-      
-
-      # -Users  
-      #     First Name, Last Name, Age, Gender, Weight, Email Address, Mobile Phone, Password?
-      #         - Mobile Phone (+31-6-DDDDDDDD) – only DDDDDDDD to be entered by the user.
-      # -Address
-      #     Street name, House number, Zip Code (DDDDXX), City (system should generate a list of 10 city names of your choice predefined in the system
-
-     
+      # Drop the table if it exists
+      c.execute("DROP TABLE IF EXISTS users")
+      c.execute("DROP TABLE IF EXISTS address")
+      c.execute("DROP TABLE IF EXISTS members")
+         
       
       # Create the 'users' table
       c.execute('''CREATE TABLE IF NOT EXISTS users
