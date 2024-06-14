@@ -54,7 +54,7 @@ class Consultant:
         
         # searches user by username
         if not results:
-            print("User not found in the database.")
+            print("No users found in the database.")
             return
         else:
             for result in results:
@@ -63,7 +63,7 @@ class Consultant:
                     break
 
         if user_info == None:
-            print("User not found between users")
+            print("User not found.")
             return
 
         # checks old password
@@ -80,12 +80,12 @@ class Consultant:
             return
 
         # gets the new password
-        print("- must have a length of at least 12 characters\n- must be no longer than 30 characters\n- must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character")
+        print("Constraints: - Must have a length of at least 12 characters.\n- Must be no longer than 30 characters.\n- Must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character.")
         print("New password: ")
         new_password = Login.get_masked_password()
         if not Checks.password_check(new_password):
-            print("Invalid password")
-            LogFunc.append_to_file(f"{self.username}", "Tried changing password", f"{self.username} tried to change their own password, but failed", "no")
+            print("Invalid password formatting.")
+            LogFunc.append_to_file(f"{self.username}", "Tried changing password", f"{self.username} tried to change their own password, but failed.", "no")
 
         # hashes the new password
         hashed_password = HashFunctions.hash_value(new_password)
@@ -99,7 +99,7 @@ class Consultant:
         c.close()
 
         print("Password updated successfully!")
-        LogFunc.append_to_file(f"{self.username}", "Changed password", f"{self.username} changed their own password", "no")
+        LogFunc.append_to_file(f"{self.username}", "Changed password", f"{self.username} changed their own password.", "no")
         input("Press Enter to Continue")
 
 
@@ -112,42 +112,43 @@ class Consultant:
 
         first_name = input("First name: ")
         if not Checks.string_check(first_name):
-            print("first name too long or empty, try again.")
+            print("First name too long or empty, try again.")
             return
         
         last_name = input("Last name: ")
         if not Checks.string_check(last_name):
-            print("last name too long or empty, try again.")
+            print("Last name too long or empty, try again.")
             return
         
         age = input("Age: ")
         if not Checks.number_check(age):
-            print("not a number, try again.")
+            print("Not a number, try again.")
             return
         
-        gender = input("What is the Gender: \nM = Male\nF = Female\nO = Other\nN = Prefer not to say\nW = Who knows\nChoice: ")
+        gender = input("M = Male\nF = Female\nO = Other\nN = Prefer not to say\nW = Who knows\nGender: ")
         if not Checks.gender_check(gender):
             print("Wrong gender input, try again.")
             return
         
         weight = input("Weight: ")
         if not Checks.number_check(weight):
-            print("not a number, try again.")
+            print("Not a number, try again.")
             return
 
         street = input("Street name: ")
         if not Checks.string_check(street):
-            print("street too long or empty, try again.")
+            print("Street too long or empty, try again.")
             return
         
         house_number = input("House number: ")
         if not Checks.number_check(house_number):
-            print("not a number, try again.")
+            print("Not a number, try again.")
             return
         
+        print("Formatting: [2345EK], case sensitive.")
         zip_code = input("Zip code: ")
         if not Checks.zip_code_check(zip_code):
-            print("zip code in wrong format, try again.")
+            print("Zip code in wrong format, try again.")
             return
         
         for index, city in enumerate(self.cities, start=1):
@@ -155,18 +156,19 @@ class Consultant:
         city_input = input("City: ")
         city_number = Checks.city_check(city_input, self.cities)
         if city_number == -1:
-            print("no valid number, try again.")
+            print("No valid number, try again.")
             return
         city = self.cities[city_number - 1]
 
         email = input("Email: ")
         if not Checks.email_check(email):
-            print("email in wrong format, try again.")
+            print("Email in wrong format, try again.")
             return
         
+        print("Formatting: 06 [12345678], only give the numbers after 06.")
         phone_number = input("Phone number: ")
         if not Checks.phone_number_check(phone_number):
-            print("phone number in wrong format, try again.")
+            print("Phone number in wrong format, try again.")
             return
 
         print("Now adding Member...")
@@ -194,16 +196,16 @@ class Consultant:
         c.close()
 
         print("Adding Member successful!")
-        LogFunc.append_to_file(f"{self.username}", "Member added", f"{self.username} added member named: {first_name} {last_name}", "no")
+        LogFunc.append_to_file(f"{self.username}", "Member added", f"{self.username} added member named: {first_name} {last_name}.", "no")
         input("Press Enter to Continue")
 
 
     def update_member(self):
 
         # asks member id  
-        id_input = input("Enter the id of the member you want to update: ")
+        id_input = input("Enter the ID of the member you want to update: ")
         if not Checks.id_check(id_input):
-            print("invalid id input, try again.")
+            print("Invalid ID input, try again.")
             return
 
         # gets all members
@@ -246,27 +248,27 @@ class Consultant:
 
 
         # asks for updated information
-        print("\nEnter the updated information (leave blank if not updating):")
+        print("\nEnter the updated information (leave blank if not updating).")
 
         updated_first_name = input("First name: ").strip()
         if updated_first_name:
             if not Checks.string_check(updated_first_name):
-                print("name too long, try again.")
+                print("First name too long or empty, try again.")
                 return
             
         updated_last_name = input("Last name: ").strip()
         if updated_last_name:
             if not Checks.string_check(updated_last_name):
-                print("name too long, try again.")
+                print("Last name too long or empty, try again.")
                 return
             
         updated_age = input("Age: ").strip()
         if updated_age:
             if not Checks.number_check(updated_age):
-                print("not a number, try again.")
+                print("Not a number, try again.")
                 return
             
-        updated_gender = input("Gender: ").strip()
+        updated_gender = input("M = Male\nF = Female\nO = Other\nN = Prefer not to say\nW = Who knows\nGender: ")
         if updated_gender:
             if not Checks.gender_check(updated_gender):
                 print("Wrong gender input, try again.")
@@ -275,25 +277,26 @@ class Consultant:
         updated_weight = input("Weight: ").strip()
         if updated_weight:
             if not Checks.number_check(updated_weight):
-                print("not a number, try again.")
+                print("Not a number, try again.")
                 return
 
         updated_street = input("Street name: ").strip()
         if updated_street:
             if not Checks.string_check(updated_street):
-                print("street too long, try again.")
+                print("Street too long or empty, try again.")
                 return
             
         updated_house_number = input("House number: ").strip()
         if updated_house_number:
             if not Checks.number_check(updated_house_number):
-                print("not a number, try again.")
+                print("Not a number, try again.")
                 return
-            
+        
+        print("Formatting: [2345EK], case sensitive.")
         updated_zip_code = input("Zip code: ").strip()
         if updated_zip_code:
             if not Checks.zip_code_check(updated_zip_code):
-                print("zip code in wrong format, try again.")
+                print("Zip code in wrong format, try again.")
                 return
             
         for index, city in enumerate(self.cities, start=1):
@@ -302,7 +305,7 @@ class Consultant:
         if city_input:
             city_number = Checks.city_check(city_input, self.cities)
             if city_number == -1:
-                print("no valid number, try again.")
+                print("No valid number, try again.")
                 return
             updated_city = self.cities[city_number - 1]
         else:
@@ -311,16 +314,17 @@ class Consultant:
         updated_email = input("Email: ").strip()
         if updated_email:
             if not Checks.email_check(updated_email):
-                print("email in wrong format, try again.")
+                print("Email in wrong format, try again.")
                 return
             
+        print("Formatting: 06 [12345678], only give the numbers after 06.")
         updated_phone_number = input("Phone number: ").strip()
         if updated_phone_number:
             if not Checks.phone_number_check(updated_phone_number):
-                print("phone number in wrong format, try again.")
+                print("Phone number in wrong format, try again.")
                 return
 
-        print("Updating member info...")
+        print("Updating Member info...")
 
         # updates member info in database
         c = ConnectToDB()
@@ -364,7 +368,7 @@ class Consultant:
         c.close()
 
         print("Member information updated successfully!")
-        LogFunc.append_to_file(f"{self.username}", "Member updated", f"{self.username} updated member with Id: {member_info[0]}", "no")
+        LogFunc.append_to_file(f"{self.username}", "Member updated", f"{self.username} updated member with ID: {member_info[0]}.", "no")
         input("Press Enter to Continue")
 
 
@@ -373,7 +377,7 @@ class Consultant:
         # asks for search input
         search_input = input("Search: ")
         if not Checks.string_check(search_input):
-            print("input too long or empty, try again.")
+            print("Input too long or empty, try again.")
             return
 
         # gets all members from database
@@ -391,6 +395,7 @@ class Consultant:
                     found_members.append(member)
                     break
 
+        print("Members:\n")
         # loops thru the found members if there are any
         if found_members:
             for member in found_members:
@@ -426,7 +431,7 @@ class Consultant:
                 print(f"Phone Number: {EncryptFunc.decrypt_value(member[7])}")
                 print(f"Register Date: {member[8]}\n")
         else:
-            print("no member found with the provided search input. try again")
+            print("No member found with the provided search input, try again.")
 
     def display_menu(self):
         self.menu.display()
