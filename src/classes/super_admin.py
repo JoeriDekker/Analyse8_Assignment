@@ -34,10 +34,12 @@ import sqlite3
     # ● To make a backup of the system and...
     # ● ...restore a backup (members information and users’ data).
     # ● To see the logs file of the system.
-    # ● To delete a member's record from the database (note that a consultant cannot delete a record but can only modify or update a member’s information).
+    # ● To delete a member's record from the database.
 # (super admin)
     # ● To define and add a new admin to the system. (complete)
     # ● To modify or update an existing admin’s account and profile. (complete)
+    # ● To delete an existing admin’s account. (complete)
+    # ● To reset an existing admin’s password (a temporary password).
 
 
 
@@ -198,64 +200,62 @@ class SuperAdmin(Admin):
         input("Press Enter to Continue")
         
 
-    # ● To delete an existing admin’s account.
     def delete_admin(self):
-        
-        # TODO make genaric function for this if we have time
-        if self.level < 3:
-            print("You do not have permission to delete an admin.")
-            return
-        
-        print("\n------ Delete Admin ------\n")
 
-        conn = ConnectToDB()
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
-        c.execute("SELECT id, username FROM users WHERE level=?", ("2",))
+        # asks admin username  
+        username_input = input("Enter the username of the admin you want to delete: ")
+        if not Checks.username_check(username_input):
+            print("invalid input username, try again.")
+            return
+
+        # gets all users
+        c = ConnectToDB().cursor()
+        c.execute("SELECT * FROM users")
         users = c.fetchall()
         c.close()
 
-        if len(users) == 0:
-            print("0 admin's found in db \n")
+        admin_to_delete = None
+        
+        # searches admin by username
+        if not users:
+            print("user not found in the database.")
+            return
+        else:
+            for user in users:
+                if EncryptFunc.decrypt_value(user[3]) == username_input:
+                    if user[4] == 2:
+                        admin_to_delete = user
+                        break
+                    else:
+                        print("user is not an admin, try again")
+                        return
+
+        if admin_to_delete == None:
+            print("user not found between users")
             return
         
-        print("Admin's in db:")
-        for user in users:
-            print(f"- {EncryptFunc.decrypt_value(user[1])}")
-
-        username = input("Username: ")
-        if not Checks.username_check(username) :
-            print("Invalid username")
-            return
-        
-        user_to_delete = None
-
-        for user in users:
-            if EncryptFunc.decrypt_value(user[1]) == username:
-                user_to_delete = user[1]
-                break
-        # Check if the user is deleted
+        # deletes the admin
         conn = ConnectToDB()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
-        c.execute("DELETE FROM users WHERE username=?", (user_to_delete,))
-        conn.commit()  # Commit the changes
+        c.execute("DELETE FROM users WHERE id=?", (admin_to_delete[0],))
+        conn.commit()
         c.close()
 
-        # Check if the user is deleted
+        # checks if the user is deleted
         c = conn.cursor()
-        c.execute("SELECT id FROM users WHERE username=?", (user_to_delete,))
+        c.execute("SELECT id FROM users WHERE id=?", (admin_to_delete[0],))
         deleted_user = c.fetchone()
         c.close()
 
-        if deleted_user is None:
-            print(f"Admin '{username}' has been deleted successfully.")
-            LogFunc.append_to_file(f"{self.username}", "Admin deleted", f"{self.username} deleted admin: {username}", "no")
-        else:
-            print(f"Failed to delete admin '{username}'. Please try again.")
+        if deleted_user:
+            print(f"Failed to delete admin '{username_input}'. Please try again.")
+            return
+        
+        print(f"Admin '{username_input}' has been deleted successfully.")
+        LogFunc.append_to_file(f"{self.username}", "Admin deleted", f"{self.username} deleted admin: {username_input}", "no")
+        input("Press Enter to Continue")
 
 
-
-    # ● To reset an existing admin’s password (a temporary password).
     def reset_admin_password(self):
         pass

@@ -23,9 +23,15 @@ import functions.login as Login
     # ● To modify or update the information of a member in the system.
     # ● To search and retrieve the information of a member.
 # (admin)
-
+    # ● To check the list of users and their roles.
     # ● To define and add a new consultant to the system. (complete)
     # ● To modify or update an existing consultant’s account and profile. (complete)
+    # ● To delete an existing consultant’s account. (complete)
+    # ● To reset an existing consultant’s password (a temporary password).
+    # ● To make a backup of the system... 
+    # ...and restore a backup (members information and users’ data).
+    # ● To see the logs file(s) of the system.
+    # ● To delete a member's record from the database.
 
 
 class Admin(Consultant):
@@ -49,7 +55,7 @@ class Admin(Consultant):
     def connect_to_db():
         return sqlite3.connect('assignment.db')
 
-    # ● To check the list of users and their roles. (member to admin??) (no member i think)
+
     def check_users(self):
         conn = self.connect_to_db()
         c = conn.cursor()
@@ -210,81 +216,76 @@ class Admin(Consultant):
         input("Press Enter to Continue")
 
 
-    # ● To delete an existing consultant’s account.
     def delete_consultant(self):
-        # TODO make genaric function for this if we have time
-        print(self.level)
-        if int(self.level) < 2:
-            print("You do not have permission to delete a consultant.")
-            return
-        
-        print("\n------ Delete Consultant ------\n")
 
-        conn = ConnectToDB()
-        conn.row_factory = sqlite3.Row
-        c = conn.cursor()
-        c.execute("SELECT id, username FROM users WHERE level=?", ("1",))
+        # asks consultant username  
+        username_input = input("Enter the username of the consultant you want to delete: ")
+        if not Checks.username_check(username_input):
+            print("invalid input username, try again.")
+            return
+
+        # gets all users
+        c = ConnectToDB().cursor()
+        c.execute("SELECT * FROM users")
         users = c.fetchall()
         c.close()
 
-        if len(users) == 0:
-            print("0 Consultant's found in db \n")
+        consult_to_delete = None
+        
+        # searches consultant by username
+        if not users:
+            print("user not found in the database.")
+            return
+        else:
+            for user in users:
+                if EncryptFunc.decrypt_value(user[3]) == username_input:
+                    if user[4] == 1:
+                        consult_to_delete = user
+                        break
+                    else:
+                        print("user is not an consultant, try again")
+                        return
+
+        if consult_to_delete == None:
+            print("user not found between users")
             return
         
-        print("Consultant's in db:")
-        for user in users:
-            print(f"- {EncryptFunc.decrypt_value(user[1])}")
-
-        username = input("Username: ")
-        if not Checks.username_check(username) :
-            print("Invalid username")
-            return
-        
-        user_to_delete = None
-
-        for user in users:
-            if EncryptFunc.decrypt_value(user[1]) == username:
-                user_to_delete = user[1]
-                break
-        # Check if the user is deleted
+        # deletes the consultant
         conn = ConnectToDB()
         conn.row_factory = sqlite3.Row
         c = conn.cursor()
-        c.execute("DELETE FROM users WHERE username=?", (user_to_delete,))
-        conn.commit()  # Commit the changes
+        c.execute("DELETE FROM users WHERE id=?", (consult_to_delete[0],))
+        conn.commit()
         c.close()
 
-        # Check if the user is deleted
+        # checks if the user is deleted
         c = conn.cursor()
-        c.execute("SELECT id FROM users WHERE username=?", (user_to_delete,))
+        c.execute("SELECT id FROM users WHERE id=?", (consult_to_delete[0],))
         deleted_user = c.fetchone()
         c.close()
 
+        if deleted_user:
+            print(f"Failed to delete consultant '{username_input}'. Please try again.")
+            return
+        
+        print(f"Consultant '{username_input}' has been deleted successfully.")
+        LogFunc.append_to_file(f"{self.username}", "Consultant deleted", f"{self.username} deleted consultant: {username_input}", "no")
+        input("Press Enter to Continue")
 
-        if deleted_user is None:
-            print(f"Consultant '{username}' has been deleted successfully.")
-        else:
-            print(f"Failed to delete Consultant '{username}'. Please try again.")
-
-    # ● To reset an existing consultant’s password (a temporary password).
     def reset_consultant_password(self):
         pass
 
-    # ● To make a backup of the system... 
     def backup_system(self):
         print("\n--- Backup System ---\n")
         BackupFunc.CreateBackup()
         LogFunc.append_to_file(self.username, "Backup system", f"{self.username} has created an backup of the system", "no")
         input("Press Enter to Continue")
 
-    # ...and restore a backup (members information and users’ data).
     def restore_backup(self):
         pass
 
-    # ● To see the logs file(s) of the system.
     def see_logs(self):
         LogFunc.read_log()
 
-    # ● To delete a member's record from the database (note that a consultant cannot delete a record but can only modify or update a member’s information).
     def delete_member(self):
         pass
