@@ -43,10 +43,10 @@ def CreateDB():
 
       c = conn.cursor()
 
-      # # Drop the table if it exists
-      # c.execute("DROP TABLE IF EXISTS users")
-      # c.execute("DROP TABLE IF EXISTS address")
-      # c.execute("DROP TABLE IF EXISTS members")
+      # Drop the table if it exists
+      c.execute("DROP TABLE IF EXISTS users")
+      c.execute("DROP TABLE IF EXISTS address")
+      c.execute("DROP TABLE IF EXISTS members")
          
       
       # Create the 'users' table
@@ -82,17 +82,17 @@ def CreateDB():
                   FOREIGN KEY(member_id) REFERENCES members(id))''')
 
       
-      # c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      #       (str(Admin['id']), Admin['first_name'], Admin['last_name'], Admin['username'], Admin['password'], Admin['level'], datetime.now()))
-      # c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      #       (str(Consultant['id']), Consultant['first_name'], Consultant['last_name'], Consultant['username'], Consultant['password'], Consultant['level'], datetime.now()))
+      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (str(Admin['id']), Admin['first_name'], Admin['last_name'], Admin['username'], Admin['password'], Admin['level'], datetime.now()))
+      c.execute("INSERT INTO users (id, first_name, last_name, username, password, level, registration_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (str(Consultant['id']), Consultant['first_name'], Consultant['last_name'], Consultant['username'], Consultant['password'], Consultant['level'], datetime.now()))
       
 
-      # c.execute("INSERT INTO members (id, first_name, last_name, age, gender, weight, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      #       (str(Member['id']), Member['first_name'], Member['last_name'], Member['age'], Member['gender'], Member['weight'], Member['email'], Member['phone_number']))
+      c.execute("INSERT INTO members (id, first_name, last_name, age, gender, weight, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (str(Member['id']), Member['first_name'], Member['last_name'], Member['age'], Member['gender'], Member['weight'], Member['email'], Member['phone_number']))
 
-      # c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
-      #       (str(uuid.uuid4()), str(Member['id']), EncryptFunc.encrypt_value("teststreet"), EncryptFunc.encrypt_value(58), EncryptFunc.encrypt_value("1029AB"), EncryptFunc.encrypt_value("Rotterdam")))
+      c.execute("INSERT INTO address (id, member_id, street, house_number, zip_code, city) VALUES (?, ?, ?, ?, ?, ?)",
+            (str(uuid.uuid4()), str(Member['id']), EncryptFunc.encrypt_value("teststreet"), EncryptFunc.encrypt_value(58), EncryptFunc.encrypt_value("1029AB"), EncryptFunc.encrypt_value("Rotterdam")))
 
       # Commit the changes
       conn.commit()
