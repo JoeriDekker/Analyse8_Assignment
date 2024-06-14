@@ -39,7 +39,7 @@ import sqlite3
     # ● To define and add a new admin to the system. (complete)
     # ● To modify or update an existing admin’s account and profile. (complete)
     # ● To delete an existing admin’s account. (complete)
-    # ● To reset an existing admin’s password (a temporary password).
+    # ● To reset an existing admin’s password (a temporary password). (complete)
 
 
 class SuperAdmin(Admin):
@@ -264,4 +264,58 @@ class SuperAdmin(Admin):
 
 
     def reset_admin_password(self):
-        pass
+        conn = ConnectToDB()
+        c = conn.cursor()
+        c.execute("SELECT * FROM users")
+        admins = c.fetchall()
+        conn.close()
+
+        admin_user = input("Enter the username of the admin you want to reset the password for: ")
+        if not admin_user:
+            print("Cancelling password reset...")
+            return
+
+        if not admins:
+            print("No users in database.")
+            return
+        else:
+            for admin in admins:
+                if EncryptFunc.decrypt_value(admin[3]) == admin_user:
+                    if admin[4] == 2:
+                        admin_info = admin
+                        break
+                    else:
+                        print("User is not a consultant, try again")
+                        return
+
+        if admin_info == None:
+            print("Admin not found between users")
+            return
+
+        # displays consultant info
+        print("Current Admin Information:")
+        print("ID:", admin_info[0])
+        print("First Name:", EncryptFunc.decrypt_value(admin_info[1]))
+        print("Last Name:", EncryptFunc.decrypt_value(admin_info[2]))
+        print("Username:", EncryptFunc.decrypt_value(admin_info[3]))
+        print("Registration Date:", admin_info[6])
+
+        print("New password: ")    
+        password = Login.get_masked_password()
+        if not Checks.password_check(password):
+            print("Invalid password")
+            return
+        
+        print(f"Updating password for {admin_user}")
+        hashed_password = HashFunctions.hash_value(password)
+
+        conn = ConnectToDB()
+        conn.execute("UPDATE users SET password=? WHERE id=?", (hashed_password, admin_info[0]))
+
+        conn.commit()
+        conn.close()
+
+        print("Admin password reset successfully!")
+        print(f"New password: {password}")
+        LogFunc.append_to_file(f"{self.username}", "Admin password reset", f"{self.username} updated admin with Id: {admin_info[0]}", "no")
+        input("Press Enter to Continue")

@@ -85,6 +85,9 @@ def Login():
                         """)
                     LogFunc.append_to_file(f"{username}", "Succesful login", "", "no")
                     return found_user
+            
+            elif found_user is None:
+                print("Invalid username or password")
         else:
             print("Invalid username or password")
 
