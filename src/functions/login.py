@@ -76,13 +76,13 @@ def Login():
                     print("Login successful!")
                     # Show nice user and role
                     print(f"""
-                        ████████████████████████████████████████
-                        ██                                    ██                                   
-                                User: {found_user['username']}         
-                                                            
-                                Role: {found_user['level']}   
-                        ██                                    ██    
-                        ████████████████████████████████████████
+████████████████████████████████████████
+██                                    ██                                   
+        User: {found_user['username']}         
+                                    
+        Role: {found_user['level']}   
+██                                    ██    
+████████████████████████████████████████
                         """)
                     LogFunc.append_to_file(f"{username}", "Succesful login", "", "no")
                     return found_user
