@@ -62,3 +62,21 @@ class LogFunc:
                     print("| {:<5} | {:<12} | {:<10} | {:<15} | {:<30} | {:<30} | {:<10} |".format(*row))
                 print("-"*134)
         EncryptFunc.encrypt_file()
+
+    def check_sus_activity():
+        # Check if there are any suspicious activities in the log
+        EncryptFunc.decrypt_file()
+        if not os.path.exists('log.txt'):
+            print("Log file not found.")
+            return
+        
+        with open("log.txt", 'r') as file:
+            lines = file.readlines()
+            # Skip the header
+            for line in lines[1:]:
+                fields = line.strip().split(', ')
+                if fields[-1] == 'yes':
+                    EncryptFunc.encrypt_file()
+                    return True
+        EncryptFunc.encrypt_file()
+        return False

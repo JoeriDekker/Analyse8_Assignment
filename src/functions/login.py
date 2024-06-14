@@ -96,7 +96,7 @@ def Login():
             LogFunc.append_to_file("...", "Unsuccesful login", f"multiple login fails from single user", "yes")
             return None
         else:
-            LogFunc.append_to_file("...", "Unsuccesful login", f"username: '{EncryptFunc.decrypt_value(username)}' is used for a login attempt with a wrong password ", "no")
+            LogFunc.append_to_file("...", "Unsuccesful login", f"username: '{username}' is used for a login attempt with a wrong password ", "no")
         
         print("1. Try again")
         print("2. Return to menu")

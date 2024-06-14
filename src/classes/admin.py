@@ -37,6 +37,8 @@ import functions.login as Login
 
 class Admin(Consultant):
     def __init__(self, username, level):
+        self.Checked_log = False
+        self.LogSusActivity_Unread = LogFunc.check_sus_activity()
         super().__init__(username, level)
         admin_options = [
             "Check users", "Add consultant", "Update consultant", "Delete consultant",
@@ -51,6 +53,11 @@ class Admin(Consultant):
         self.menu_options += admin_options 
         self.menu_functions += admin_functions 
         self.menu = Menu(options=self.menu_options + ["Logout"], functions=self.menu_functions + [self.logout])
+
+        if self.LogSusActivity_Unread and not self.Checked_log:
+            print("!!! Suspicious activity detected in logs !!!")
+
+        
         
 
     def check_users(self):
@@ -309,6 +316,7 @@ class Admin(Consultant):
     def see_logs(self):
         # TODO: add log notifs when login
         LogFunc.read_log()
+        self.Checked_log = True
 
     def delete_member(self):
 
