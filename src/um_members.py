@@ -38,15 +38,15 @@ def authenticate():
     
 
     if user['level'] == 1:
-        user = Consultant(EncryptFunc.decrypt_value(user['username']), user['level'])
+        user = Consultant(user['username'], user['level'])
         while user.logged_in:
             user.display_menu()
     elif user['level'] == 2:
-        user = Admin(EncryptFunc.decrypt_value(user['username']), user['level'])
+        user = Admin(user['username'], user['level'])
         while user.logged_in:
             user.display_menu()
     elif user['level'] == 3:
-        user = SuperAdmin(EncryptFunc.decrypt_value(user['username']), user['level'])
+        user = SuperAdmin(user['username'], user['level'])
         while user.logged_in:
             user.display_menu()
     else:
@@ -96,14 +96,14 @@ def main():
         ===================================================================
           
           """)
-    # while True:
-    #     menu = Menu(["Login", "Exit"], [authenticate, exit])
-    #     menu.display()
-    #     menu.execute_choice()
+    while True:
+        menu = Menu(["Login", "Exit"], [authenticate, exit])
+        menu.display()
+        menu.execute_choice()
 
     easy_login()
     # LogFunc.append_to_file("...", "Unsuccesful login", f"username: 'ssdf' is used for a login attempt with a wrong password ", "no")
-    # LogFunc.read_log()
+    # # LogFunc.read_log()
     # input("Press Enter to Continue")
     # BackupFunc.CreateBackup()
     # LogFunc.read_log()
@@ -125,7 +125,7 @@ def main():
 
 
 if __name__ == "__main__":
-    # EncryptFunc.generate_key()
+    EncryptFunc.generate_key()
     conn = CreateDB()
 
 

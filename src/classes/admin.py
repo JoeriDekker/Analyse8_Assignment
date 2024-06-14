@@ -25,6 +25,7 @@ from functions.id_functions import IdFunc
 from functions.log_functions import LogFunc
 from functions.hash_functions import HashFunctions
 from functions.encrypt_functions import EncryptFunc
+from functions.backup_functions import BackupFunc
 
 
 from db.db_connection import ConnectToDB
@@ -182,7 +183,10 @@ class Admin(Consultant):
 
     # ● To make a backup of the system... 
     def backup_system(self):
-        pass
+        print("\n--- Backup System ---\n")
+        BackupFunc.CreateBackup()
+        LogFunc.append_to_file(self.username, "Backup system", f"{self.username} has created an backup of the system", "no")
+        input("Press Enter to Continue")
 
     # ...and restore a backup (members information and users’ data).
     def restore_backup(self):

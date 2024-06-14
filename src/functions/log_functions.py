@@ -7,8 +7,9 @@ import os
 class LogFunc:
     @staticmethod
     def append_to_file(username, activity, additional_info, suspicious):
-        
-        EncryptFunc.decrypt_file()
+
+        if os.path.exists('log.txt'):
+            EncryptFunc.decrypt_file()
 
         with open("log.txt", 'a+') as file:
             file.seek(0)
