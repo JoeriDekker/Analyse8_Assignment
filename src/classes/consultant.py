@@ -80,7 +80,7 @@ class Consultant:
             return
 
         # gets the new password
-        print("Constraints: - Must have a length of at least 12 characters.\n- Must be no longer than 30 characters.\n- Must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character.")
+        print("Constraints:\n- Must have a length of at least 12 characters.\n- Must be no longer than 30 characters.\n- Must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character.")
         print("New password: ")
         new_password = Login.get_masked_password()
         if not Checks.password_check(new_password):
