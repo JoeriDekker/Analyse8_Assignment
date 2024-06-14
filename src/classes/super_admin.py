@@ -39,7 +39,7 @@ import sqlite3
     # ● To define and add a new admin to the system. (complete)
     # ● To modify or update an existing admin’s account and profile. (complete)
     # ● To delete an existing admin’s account. (complete)
-    # ● To reset an existing admin’s password (a temporary password).
+    # ● To reset an existing admin’s password (a temporary password). (complete)
 
 
 class SuperAdmin(Admin):
