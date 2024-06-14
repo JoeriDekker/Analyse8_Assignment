@@ -23,7 +23,7 @@ import functions.login as Login
     # ● To modify or update the information of a member in the system.
     # ● To search and retrieve the information of a member.
 # (admin)
-    # ● To check the list of users and their roles.
+    # ● To check the list of users and their roles. (complete)
     # ● To define and add a new consultant to the system. (complete)
     # ● To modify or update an existing consultant’s account and profile. (complete)
     # ● To delete an existing consultant’s account. (complete)
@@ -79,17 +79,16 @@ class Admin(Consultant):
         users = c.fetchall()
         conn.close()
         
-        print("List of users:")
-        for user in users:
-            if user[2] == 0:
-                print(f"Name: {user[1]}, Role: Member")
-            elif user[2] == 1:
-                print(f"Name: {user[1]}, Role: Consultant")
-            elif user[2] == 2:
-                print(f"Name: {user[1]}, Role: Admin")
-            else:
-                print(f"Name: {user[1]}, Role: Super Admin")
-    
+        if users:
+            print("List of users:")
+            for user in users:
+                if user[2] == 1:
+                    print(f"Username: {EncryptFunc.decrypt_value(user[1])}\nRole: Consultant\n")
+                elif user[2] == 2:
+                    print(f"Username: {EncryptFunc.decrypt_value(user[1])}\nRole: Admin\n")
+        else:
+            print("no users found")
+            return
 
     def add_consultant(self):
 
