@@ -109,6 +109,7 @@ class Admin(Consultant):
         password = Login.get_masked_password()
         if not Checks.password_check(password):
             print("Invalid password")
+            return
 
 
         print("Now adding Consultant...")
@@ -276,7 +277,61 @@ class Admin(Consultant):
         input("Press Enter to Continue")
 
     def reset_consultant_password(self):
-        pass
+        conn = ConnectToDB()
+        c = conn.cursor()
+        c.execute("SELECT * FROM users")
+        consultants = c.fetchall()
+        conn.close()
+
+        consultant_user = input("Enter the username of the consultant you want to reset the password for: ")
+        if not consultant_user:
+            print("Cancelling password reset...")
+            return
+
+        if not consultants:
+            print("No users in database.")
+            return
+        else:
+            for consultant in consultants:
+                if EncryptFunc.decrypt_value(consultant[3]) == consultant_user:
+                    if consultant[4] == 1:
+                        consult_info = consultant
+                        break
+                    else:
+                        print("User is not a consultant, try again")
+                        return
+
+        if consult_info == None:
+            print("Consultant not found between users")
+            return
+
+        # displays consultant info
+        print("Current Consultant Information:")
+        print("ID:", consult_info[0])
+        print("First Name:", EncryptFunc.decrypt_value(consult_info[1]))
+        print("Last Name:", EncryptFunc.decrypt_value(consult_info[2]))
+        print("Username:", EncryptFunc.decrypt_value(consult_info[3]))
+        print("Registration Date:", consult_info[6])
+
+        print("New password: ")    
+        password = Login.get_masked_password()
+        if not Checks.password_check(password):
+            print("Invalid password")
+            return
+        
+        print(f"Updating password for {consultant_user}")
+        hashed_password = HashFunctions.hash_value(password)
+
+        conn = ConnectToDB()
+        conn.execute("UPDATE users SET password=? WHERE id=?", (hashed_password, consult_info[0]))
+
+        conn.commit()
+        conn.close()
+
+        print("Consultant password reset successfully!")
+        print(f"New password: {password}")
+        LogFunc.append_to_file(f"{self.username}", "Consultant password reset", f"{self.username} updated consultant with Id: {consult_info[0]}", "no")
+        input("Press Enter to Continue")
 
     def backup_system(self):
         print("\n--- Backup System ---\n")
