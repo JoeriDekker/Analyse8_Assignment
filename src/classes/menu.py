@@ -23,13 +23,6 @@ class Menu:
 
     def execute_choice(self):
         choice = self.get_user_choice()
-        self.clear_screen()
 
         function_to_execute = self.functions[choice - 1]
         function_to_execute()
-
-    def clear_screen(self):
-        if os.name == 'nt':
-            os.system('cls')
-        else:
-            os.system('clear')

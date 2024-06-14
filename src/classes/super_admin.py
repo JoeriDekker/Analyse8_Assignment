@@ -42,7 +42,6 @@ import sqlite3
     # ● To reset an existing admin’s password (a temporary password).
 
 
-
 class SuperAdmin(Admin):
     def __init__(self, username, level):
         super().__init__(username, level)
