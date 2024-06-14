@@ -12,24 +12,19 @@
 # STUDENT NUMBER:
 # ===================================
 
+
+
 from setup import Setup
-
-setup = Setup()
-setup.install_required_packages()
-    
-from db.db_connection import CreateDB, ConnectToDB, CreateSuperAdmin
-
+from db.db_connection import CreateDB
 from classes.consultant import Consultant
 from classes.admin import Admin
 from classes.super_admin import SuperAdmin
-
 from classes.menu import Menu
 from functions.login import Login
 from functions.encrypt_functions import EncryptFunc
-from functions.backup_functions import BackupFunc
-from functions.log_functions import LogFunc
-import datetime
 
+setup = Setup()
+setup.install_required_packages()
 
 def authenticate():
     user = Login()
@@ -77,7 +72,6 @@ def easy_login():
         input("Press Enter to Continue")
 
 def main():
-    Menu.clear_screen(Menu)
 
     print("""
         ░█████╗░███╗░░██╗░█████╗░██╗░░░░░██╗░░░██╗░██████╗███████╗  ░█████╗░
@@ -101,27 +95,7 @@ def main():
         menu.display()
         menu.execute_choice()
 
-    easy_login()
-    # LogFunc.append_to_file("...", "Unsuccesful login", f"username: 'ssdf' is used for a login attempt with a wrong password ", "no")
-    # # LogFunc.read_log()
-    # input("Press Enter to Continue")
-    # BackupFunc.CreateBackup()
-    # LogFunc.read_log()
-    # input("Press Enter to Continue")
-    # LogFunc.append_to_file("...", "Unsuccesful login", f"username: 'ssdf22' is used for a login attempt with a wrong password ", "no")
-    # LogFunc.read_log()
-    # input("Press Enter to Continue")
-    # BackupFunc.RestoreBackup()
-    # LogFunc.read_log()
-
-    
-    # FileFunc.generate_key()
-    # FileFunc.encrypt_file()
-    # input("Press Enter to Continue")
-    # FileFunc.decrypt_file()
-    # input("Press Enter to Continue")
-    # FileFunc.encrypt_file()
-    
+    easy_login()   
 
 
 if __name__ == "__main__":
