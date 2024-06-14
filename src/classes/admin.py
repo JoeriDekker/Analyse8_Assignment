@@ -34,6 +34,22 @@ import functions.login as Login
     # ● To delete a member's record from the database.
 
 
+import sqlite3
+from classes.menu import Menu
+from classes.consultant import Consultant
+from functions.input_checks import Checks
+from functions.id_functions import IdFunc
+from functions.log_functions import LogFunc
+from functions.hash_functions import HashFunctions
+from functions.encrypt_functions import EncryptFunc
+from functions.backup_functions import BackupFunc
+
+import os
+
+from db.db_connection import ConnectToDB
+import sqlite3
+
+
 class Admin(Consultant):
     def __init__(self, username, level):
         super().__init__(username, level)
@@ -282,7 +298,33 @@ class Admin(Consultant):
         input("Press Enter to Continue")
 
     def restore_backup(self):
-        pass
+        print("\n--- Restore Backup ---\n")
+        if not os.path.exists("backups"):
+            print("No backup found")
+            return
+        
+        # Show all available backups
+        backups = os.listdir("backups")
+        for i, backup in enumerate(backups):
+            print(f"{i+1}. {backup}")
+        # choose a backup to restore
+        backup_number = input("Enter the number of the backup you want to restore: ")
+
+        if not backup_number.isdigit():
+            print("Invalid input, please enter a number of the backup you want to restore")
+            return
+
+        if int(backup_number) < 1 or int(backup_number) > len(backups):
+            print("Invalid input, please enter a valid number of the backup you want to restore")
+            return
+        
+        backup_number = int(backup_number)
+        backup_file = backups[backup_number-1]
+        BackupFunc.RestoreBackup(backup_file)
+
+        LogFunc.append_to_file(self.username, "Restore backup", f"{self.username} has restored a backup of the system", "no")
+        input("Press Enter to Continue")
+        
 
     def see_logs(self):
         LogFunc.read_log()

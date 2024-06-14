@@ -3,59 +3,54 @@ import shutil
 import os
 import datetime as datetime
 
-DB_PATH = 'assignment.db'
-LOG_PATH = 'log.txt'
-BACKUP_PATH_TEMP = 'backup_temp'
-BACKUP_PATH = 'backups'
-BACKUP_NAME = f'backup-test'
-# BACKUP_NAME = f'backup-test-{datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}
 
 class BackupFunc:
 
-    num_files = 0
-
     def CreateBackup():
 
+        num_files = 0
         print("\n--- Creating Backup...  ---\n")
 
         # Create backup folder if it doesn't exist
-        if not os.path.exists(BACKUP_PATH_TEMP):
-            os.makedirs(BACKUP_PATH_TEMP)
+        if not os.path.exists('backup_temp'):
+            os.makedirs('backup_temp')
 
-        if not os.path.exists(BACKUP_PATH):
-            os.makedirs(BACKUP_PATH)
-        else:
-            # Count the number of files in the backups folder
-            for file in os.listdir(BACKUP_PATH):
-                if file.startswith(BACKUP_NAME):
-                    BackupFunc.num_files += 1
+        if not os.path.exists('backups'):
+            os.makedirs('backups')
 
         # Copy DB file to backup folder
-        shutil.copy(DB_PATH, BACKUP_PATH_TEMP)
-        shutil.copy(LOG_PATH, BACKUP_PATH_TEMP)
+        shutil.copy('assignment.db', 'backup_temp')
+        shutil.copy('log.txt', 'backup_temp')
 
-        
+        num_files = 0
+        if os.path.exists('backups'):
+            for file in os.listdir('backups'):
+                if file.startswith('system-backup'):
+                    num_files += 1
+
+        date = datetime.datetime.now().strftime('%d-%m-%Y')
         # Zip the backup folder and put in the backups folder
-        shutil.make_archive(f'{BACKUP_NAME}-{BackupFunc.num_files}', 'zip', BACKUP_PATH_TEMP)
+        shutil.make_archive(f'system-backup-{date}-{num_files}', 'zip', 'backup_temp')
 
         # Remove the backup folder
-        shutil.rmtree(BACKUP_PATH_TEMP)
+        shutil.rmtree('backup_temp')
 
         # Place backup in backups folder
-        shutil.move(f'{BACKUP_NAME}-{BackupFunc.num_files}.zip', BACKUP_PATH)
-        print(f"Backup created successfully: {BACKUP_NAME}-{BackupFunc.num_files}")
+        shutil.move(f'system-backup-{date}-{num_files}.zip', 'backups')
+        print(f"Backup created successfully: system-backup-{date}-{num_files}")
 
-    def RestoreBackup():
+    def RestoreBackup(file_name):
+        print("\n--- Restoring Backup...  ---\n")
         # Unpack the backup from the backups folder
-        with zipfile.ZipFile(f'{BACKUP_PATH}/{BACKUP_NAME}-1.zip', 'r') as zip_ref:
-            zip_ref.extractall(BACKUP_PATH_TEMP)
+        with zipfile.ZipFile(f'backups/{file_name}', 'r') as zip_ref:
+            zip_ref.extractall('backup_temp')
 
         # Copy the files back to the root folder
-        shutil.copy(f'{BACKUP_PATH_TEMP}/{DB_PATH}', '.')
-        shutil.copy(f'{BACKUP_PATH_TEMP}/{LOG_PATH}', '.')
+        shutil.copy(f'backup_temp/assignment.db', '.')
+        shutil.copy(f'backup_temp/log.txt', '.')
 
         # Remove the backup folder
-        shutil.rmtree(BACKUP_PATH_TEMP)
+        shutil.rmtree('backup_temp')
         
         
             
