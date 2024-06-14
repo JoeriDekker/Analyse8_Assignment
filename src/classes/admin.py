@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from classes.menu import Menu
 from classes.consultant import Consultant
@@ -28,26 +29,10 @@ import functions.login as Login
     # ● To modify or update an existing consultant’s account and profile. (complete)
     # ● To delete an existing consultant’s account. (complete)
     # ● To reset an existing consultant’s password (a temporary password).
-    # ● To make a backup of the system... 
-    # ...and restore a backup (members information and users’ data).
+    # ● To make a backup of the system... (complete)
+    # ...and restore a backup (members information and users’ data). (complete)
     # ● To see the logs file(s) of the system.
-    # ● To delete a member's record from the database.
-
-
-import sqlite3
-from classes.menu import Menu
-from classes.consultant import Consultant
-from functions.input_checks import Checks
-from functions.id_functions import IdFunc
-from functions.log_functions import LogFunc
-from functions.hash_functions import HashFunctions
-from functions.encrypt_functions import EncryptFunc
-from functions.backup_functions import BackupFunc
-
-import os
-
-from db.db_connection import ConnectToDB
-import sqlite3
+    # ● To delete a member's record from the database. (complete)
 
 
 class Admin(Consultant):
@@ -67,13 +52,9 @@ class Admin(Consultant):
         self.menu_functions += admin_functions 
         self.menu = Menu(options=self.menu_options + ["Logout"], functions=self.menu_functions + [self.logout])
         
-    @staticmethod
-    def connect_to_db():
-        return sqlite3.connect('assignment.db')
-
 
     def check_users(self):
-        conn = self.connect_to_db()
+        conn = ConnectToDB()
         c = conn.cursor()
         c.execute("SELECT id, username, level FROM users")
         users = c.fetchall()
@@ -326,7 +307,58 @@ class Admin(Consultant):
         
 
     def see_logs(self):
+        # TODO: add log notifs when login
         LogFunc.read_log()
 
     def delete_member(self):
-        pass
+
+        # asks member id  
+        id_input = input("Enter the id of the member you want to delete: ")
+        if not Checks.id_check(id_input):
+            print("invalid id input, try again.")
+            return
+
+        # gets all members
+        c = ConnectToDB().cursor()
+        c.execute("SELECT * FROM members")
+        members = c.fetchall()
+        c.close()
+
+        member_to_delete = None
+        
+        # searches member by id
+        if not members:
+            print("member not found in the database.")
+            return
+        else:
+            for member in members:
+                if member[0] == id_input:
+                    member_to_delete = member
+                    break
+
+
+        if member_to_delete == None:
+            print("member not found between members")
+            return
+        
+        # deletes the member
+        conn = ConnectToDB()
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute("DELETE FROM members WHERE id=?", (member_to_delete[0],))
+        conn.commit()
+        c.close()
+
+        # checks if the user is deleted
+        c = conn.cursor()
+        c.execute("SELECT id FROM members WHERE id=?", (member_to_delete[0],))
+        deleted_member = c.fetchone()
+        c.close()
+
+        if deleted_member:
+            print(f"Failed to delete member with Id '{id_input}'. Please try again.")
+            return
+        
+        print(f"Consultant with Id '{id_input}' has been deleted successfully.")
+        LogFunc.append_to_file(f"{self.username}", "Member deleted", f"{self.username} deleted member with Id: {id_input}", "no")
+        input("Press Enter to Continue")

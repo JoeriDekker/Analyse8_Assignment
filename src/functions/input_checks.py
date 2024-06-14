@@ -36,8 +36,7 @@ class Checks:
         # checks if username is already taken
         if usernames:
             for username in usernames:
-                if username == username_input:
-                    print("username already in use, try again")
+                if EncryptFunc.decrypt_value(username[0]) == username_input:
                     return False
         return True
         

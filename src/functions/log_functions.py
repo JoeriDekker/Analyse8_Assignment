@@ -5,7 +5,6 @@ from functions.encrypt_functions import EncryptFunc
 import os
 
 class LogFunc:
-    @staticmethod
     def append_to_file(username, activity, additional_info, suspicious):
 
         if os.path.exists('log.txt'):
@@ -24,7 +23,6 @@ class LogFunc:
         EncryptFunc.encrypt_file()
         return
 
-    @staticmethod
     def text_wrapper(text, width):
         lines = []
         while len(text) > width:
@@ -36,7 +34,6 @@ class LogFunc:
         lines.append(text)
         return lines
 
-    @staticmethod
     def read_log():
         EncryptFunc.decrypt_file()
         if not os.path.exists('log.txt'):
