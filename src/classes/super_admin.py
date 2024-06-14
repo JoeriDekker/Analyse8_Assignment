@@ -67,28 +67,29 @@ class SuperAdmin(Admin):
 
         first_name = input("First name: ")
         if not Checks.string_check(first_name):
-            print("first name too long or empty, try again.")
+            print("First name too long or empty, try again.")
             return
         
         last_name = input("Last name: ")
         if not Checks.string_check(last_name):
-            print("last name too long or empty, try again.")
+            print("Last name too long or empty, try again.")
             return
         
-        print("- between 8 and 10 characters\n- only letters, numbers and underscores")
+        print("Constraints:\n- Between 8 and 10 characters.\n- Only letters, numbers and underscores.")
         username = input("Username: ")
         if not Checks.username_check(username):
-            print("invalid username, try again.")
+            print("Invalid Username, try again.")
             return
         if not Checks.username_available_check(username):
-            print("username already in use, try again")
+            print("Username already in use, try again.")
             return
         
-        print("- must have a length of at least 12 characters\n- must be no longer than 30 characters\n- must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character")
+        print("Constraints:\n- Must have a length of at least 12 characters.\n- Must be no longer than 30 characters.\n- Must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character.")
         print("Enter password: ")
         password = Login.get_masked_password()
         if not Checks.password_check(password):
-            print("Invalid password")
+            print("Invalid password formatting.")
+            return
 
 
         print("Now adding Admin...")
@@ -106,7 +107,7 @@ class SuperAdmin(Admin):
         c.close()
 
         print("Adding Admin successful!")
-        LogFunc.append_to_file(f"{self.username}", "Admin added", f"{self.username} added Admin named: {first_name} {last_name}", "no")
+        LogFunc.append_to_file(f"{self.username}", "Admin added", f"{self.username} added Admin named: {first_name} {last_name}.", "no")
         input("Press Enter to Continue")
 
         
@@ -115,7 +116,7 @@ class SuperAdmin(Admin):
         # asks admin username  
         username_input = input("Enter the username of the admin you want to update: ")
         if not Checks.username_check(username_input):
-            print("invalid input username, try again.")
+            print("Invalid input username, try again.")
             return
 
         # gets all users
@@ -128,7 +129,7 @@ class SuperAdmin(Admin):
         
         # searches admin by username
         if not users:
-            print("user not found in the database.")
+            print("No users found in the database.")
             return
         else:
             for user in users:
@@ -137,11 +138,11 @@ class SuperAdmin(Admin):
                         admin_info = user
                         break
                     else:
-                        print("user is not an admin, try again")
+                        print("User is not an Admin, try again.")
                         return
 
         if admin_info == None:
-            print("user not found between users")
+            print("User not found.")
             return
 
         # displays admin info
@@ -153,31 +154,31 @@ class SuperAdmin(Admin):
         print("Registration Date:", admin_info[6])
 
         # asks for updated information
-        print("\nEnter the updated information (leave blank if not updating):")
+        print("\nEnter the updated information (leave blank if not updating).")
 
         updated_first_name = input("First name: ").strip()
         if updated_first_name:
             if not Checks.string_check(updated_first_name):
-                print("name too long or empty, try again.")
+                print("First name too long or empty, try again.")
                 return
             
         updated_last_name = input("Last name: ").strip()
         if updated_last_name:
             if not Checks.string_check(updated_last_name):
-                print("name too long or empty, try again.")
+                print("Last name too long or empty, try again.")
                 return
             
-        print("- between 8 and 10 characters\n- only letters, numbers and underscores")
+        print("Constraints:\n- Between 8 and 10 characters.\n- Only letters, numbers and underscores.")
         updated_username = input("Username: ").strip()
         if updated_username:
             if not Checks.username_check(updated_username):
-                print("invalid username, try again.")
+                print("Invalid username, try again.")
                 return
             if not Checks.username_available_check(updated_username):
-                print("username already in use, try again")
+                print("Username already in use, try again.")
                 return
 
-        print("Updating admin info...")
+        print("Updating Admin info...")
 
         # updates admin info in database
         c = ConnectToDB()
@@ -195,7 +196,7 @@ class SuperAdmin(Admin):
         c.close()
 
         print("Admin information updated successfully!")
-        LogFunc.append_to_file(f"{self.username}", "Admin updated", f"{self.username} updated admin with Id: {admin_info[0]}", "no")
+        LogFunc.append_to_file(f"{self.username}", "Admin updated", f"{self.username} updated admin with Id: {admin_info[0]}.", "no")
         input("Press Enter to Continue")
         
 
@@ -204,7 +205,7 @@ class SuperAdmin(Admin):
         # asks admin username  
         username_input = input("Enter the username of the admin you want to delete: ")
         if not Checks.username_check(username_input):
-            print("invalid input username, try again.")
+            print("Invalid username input, try again.")
             return
 
         # gets all users
@@ -217,7 +218,7 @@ class SuperAdmin(Admin):
         
         # searches admin by username
         if not users:
-            print("user not found in the database.")
+            print("No users found in the database.")
             return
         else:
             for user in users:
@@ -226,11 +227,11 @@ class SuperAdmin(Admin):
                         admin_to_delete = user
                         break
                     else:
-                        print("user is not an admin, try again")
+                        print("User is not an Admin, try again")
                         return
 
         if admin_to_delete == None:
-            print("user not found between users")
+            print("User not found.")
             return
         
         # deletes the admin
@@ -252,7 +253,7 @@ class SuperAdmin(Admin):
             return
         
         print(f"Admin '{username_input}' has been deleted successfully.")
-        LogFunc.append_to_file(f"{self.username}", "Admin deleted", f"{self.username} deleted admin: {username_input}", "no")
+        LogFunc.append_to_file(f"{self.username}", "Admin deleted", f"{self.username} deleted admin: {username_input}.", "no")
         input("Press Enter to Continue")
 
 
