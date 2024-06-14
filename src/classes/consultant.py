@@ -27,6 +27,7 @@ class Consultant:
         self.username = username
         self.level = level
         self.logged_in = True
+        self.wrong_attempts = 0
         self.menu_options = ["Update password", "Add member", "Update member", "Search member"]
         self.menu_functions = [self.update_password, self.add_member, self.update_member, self.search_member]
         self.menu = Menu(
@@ -71,8 +72,13 @@ class Consultant:
         hashed_password = user_info[5]
         if not HashFunctions.check_password(old_password, hashed_password):
             print("Old password does not match. Password update failed.")
+            self.wrong_attempts += 1
+            if self.wrong_attempts == 3:
+                LogFunc.append_to_file(f"{self.username}", "Unsuccesful password", f"multiple password fails from username: {self.username}", "yes")
+            else:
+                LogFunc.append_to_file(f"{self.username}", "Unsuccesful password", f"username: '{self.username}' tried to change is old password but his filled in old password is incorrect ", "no")
             return
-        
+
         # gets the new password
         print("- must have a length of at least 12 characters\n- must be no longer than 30 characters\n- must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character")
         print("New password: ")
