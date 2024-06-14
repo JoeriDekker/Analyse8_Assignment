@@ -264,7 +264,14 @@ class SuperAdmin(Admin):
         admins = c.fetchall()
         conn.close()
 
+        admin_info = None
+
         admin_user = input("Enter the username of the admin you want to reset the password for: ")
+
+        if not Checks.username_check(admin_user):
+            print("This is not an valid username. Try again.")
+            return
+
         if not admin_user:
             print("Cancelling password reset...")
             return

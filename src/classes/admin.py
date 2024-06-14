@@ -376,6 +376,7 @@ class Admin(Consultant):
     def see_logs(self):
         LogFunc.read_log()
         self.Checked_log = True
+        input("Press Enter to Continue")
 
     def delete_member(self):
 
