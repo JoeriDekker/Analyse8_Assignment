@@ -60,6 +60,8 @@ class Admin(Consultant):
 
         
     def check_users(self):
+        print("\n--- Check Users ---\n")
+
         conn = ConnectToDB()
         c = conn.cursor()
         c.execute("SELECT id, username, level FROM users")
@@ -81,6 +83,7 @@ class Admin(Consultant):
 
 
     def add_consultant(self):
+        print("\n--- Add Consultant ---\n")
 
         # asks consultant info
         print("Enter the info of the new Consultant:")
@@ -134,6 +137,7 @@ class Admin(Consultant):
 
 
     def update_consultant(self):
+        print("\n--- Update Consultant ---\n")
 
         # asks consultant username  
         username_input = input("Enter the username of the consultant you want to update: ")
@@ -223,6 +227,7 @@ class Admin(Consultant):
 
 
     def delete_consultant(self):
+        print("\n--- Delete Consultant ---\n")
 
         # asks consultant username  
         username_input = input("Enter the username of the consultant you want to delete: ")
@@ -279,6 +284,7 @@ class Admin(Consultant):
         input("Press Enter to Continue")
 
     def reset_consultant_password(self):
+        print("\n--- Reset Consultant Password ---\n")
 
         consultant_user = input("Enter the username of the consultant you want to delete: ")
         if not Checks.username_check(consultant_user):
@@ -340,12 +346,14 @@ class Admin(Consultant):
 
     def backup_system(self):
         print("\n--- Backup System ---\n")
+
         BackupFunc.CreateBackup()
         LogFunc.append_to_file(self.username, "Backup system", f"{self.username} has created an backup of the system", "no")
         input("Press Enter to Continue")
 
     def restore_backup(self):
         print("\n--- Restore Backup ---\n")
+
         if not os.path.exists("backups"):
             print("No backup found")
             return
@@ -374,11 +382,14 @@ class Admin(Consultant):
         
 
     def see_logs(self):
+        print("\n--- See Logs ---\n")
+
         LogFunc.read_log()
         self.Checked_log = True
         input("Press Enter to Continue")
 
     def delete_member(self):
+        print("\n--- Delete Member ---\n")
 
         # asks member id  
         id_input = input("Enter the id of the member you want to delete: ")

@@ -43,7 +43,8 @@ class Consultant:
 
 
     def update_password(self):
-    
+        print("\n--- Update Password ---\n")
+
         # gets all users
         c = ConnectToDB().cursor()
         c.execute("SELECT * FROM users")
@@ -104,6 +105,7 @@ class Consultant:
 
 
     def add_member(self):
+        print("\n--- Add Member ---\n")
 
         # asks member info and address
         print("Enter the info of the new Member:")
@@ -201,6 +203,7 @@ class Consultant:
 
 
     def update_member(self):
+        print("\n--- Update Member ---\n")
 
         # asks member id  
         id_input = input("Enter the ID of the member you want to update: ")
@@ -373,6 +376,7 @@ class Consultant:
 
 
     def search_member(self):
+        print("\n--- Search Member ---\n")
 
         # asks for search input
         search_input = input("Search: ")

@@ -59,7 +59,8 @@ class SuperAdmin(Admin):
 
 
     def add_admin(self):
-        
+        print("\n--- Add Admin ---\n")
+
         # asks admin info
         print("Enter the info of the new Admin:")
 
@@ -112,6 +113,7 @@ class SuperAdmin(Admin):
 
         
     def update_admin(self):   
+        print("\n--- Update Admin ---\n")
 
         # asks admin username  
         username_input = input("Enter the username of the admin you want to update: ")
@@ -201,6 +203,7 @@ class SuperAdmin(Admin):
         
 
     def delete_admin(self):
+        print("\n--- Delete Admin ---\n")
 
         # asks admin username  
         username_input = input("Enter the username of the admin you want to delete: ")
@@ -258,6 +261,8 @@ class SuperAdmin(Admin):
 
 
     def reset_admin_password(self):
+        print("\n--- Reset Admin Password ---\n")
+
         conn = ConnectToDB()
         c = conn.cursor()
         c.execute("SELECT * FROM users")
