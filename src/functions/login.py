@@ -27,7 +27,6 @@ def getch():
 
 # masks password while asking for input with asterisks
 def get_masked_password():
-    # TODO: if else statement with second part for unix based
     password = ''
     while True:
         ch = getch()
@@ -93,10 +92,10 @@ def Login():
         attempt_count += 1
         if attempt_count == 3:
             print("----------\nToo many failed login attempts. going back.\n----------")
-            LogFunc.append_to_file("...", "Unsuccesful login", f"multiple login fails from single user", "yes")
+            LogFunc.append_to_file("...", "Unsuccesful login", f"multiple login fails from single user.", "yes")
             return None
         else:
-            LogFunc.append_to_file("...", "Unsuccesful login", f"username: '{username}' is used for a login attempt with a wrong password ", "no")
+            LogFunc.append_to_file("...", "Unsuccesful login", f"username: '{username}' is used for a login attempt with a wrong password.", "no")
         
         print("1. Try again")
         print("2. Return to menu")

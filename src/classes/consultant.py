@@ -74,9 +74,9 @@ class Consultant:
             print("Old password does not match. Password update failed.")
             self.wrong_attempts += 1
             if self.wrong_attempts == 3:
-                LogFunc.append_to_file(f"{self.username}", "Unsuccesful password", f"multiple password fails from username: {self.username}", "yes")
+                LogFunc.append_to_file(f"{self.username}", "Unsuccesful password change", f"Multiple change password fails from username: {self.username}.", "yes")
             else:
-                LogFunc.append_to_file(f"{self.username}", "Unsuccesful password", f"username: '{self.username}' tried to change is old password but his filled in old password is incorrect ", "no")
+                LogFunc.append_to_file(f"{self.username}", "Unsuccesful password change", f"Username: '{self.username}' tried to change their old password but failed.", "no")
             return
 
         # gets the new password
