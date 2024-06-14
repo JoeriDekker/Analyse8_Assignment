@@ -16,3 +16,9 @@ src/classes/__pycache__
 *.pyc
 /src/db/__pycache__
 src/db/__pycache__/db_connection.cpython-312.pyc
+src/private_key.pem
+src/symmetric_key.pem
+src/public_key.pem
+src/log.txt
+src/encrypted_key.pem
+*.pem
