@@ -14,10 +14,10 @@ from functions.encrypt_functions import EncryptFunc
 # So, the minimum required functions of a consultant in the system are summarized as below:
 
 # FUNCTIONS TO DO:
-    # ● To update their own password (complete)
-    # ● To add a new member to the system (complete)
-    # ● To modify or update the information of a member in the system (complete)
-    # ● To search and retrieve the information of a member (complete)
+    # ● To update their own password. (complete)
+    # ● To add a new member to the system. (complete)
+    # ● To modify or update the information of a member in the system. (complete)
+    # ● To search and retrieve the information of a member. (complete)
 
 
 from db.db_connection import ConnectToDB
