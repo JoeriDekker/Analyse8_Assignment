@@ -31,7 +31,7 @@ import functions.login as Login
     # ● To reset an existing consultant’s password (a temporary password).
     # ● To make a backup of the system... (complete)
     # ...and restore a backup (members information and users’ data). (complete)
-    # ● To see the logs file(s) of the system.
+    # ● To see the logs file(s) of the system. (complete)
     # ● To delete a member's record from the database. (complete)
 
 
@@ -54,12 +54,11 @@ class Admin(Consultant):
         self.menu_functions += admin_functions 
         self.menu = Menu(options=self.menu_options + ["Logout"], functions=self.menu_functions + [self.logout])
 
+        # TODO: make notif disappear
         if self.LogSusActivity_Unread and not self.Checked_log:
             print("!!! Suspicious activity detected in logs !!!")
 
         
-        
-
     def check_users(self):
         conn = ConnectToDB()
         c = conn.cursor()
@@ -369,7 +368,6 @@ class Admin(Consultant):
         
 
     def see_logs(self):
-        # TODO: add log notifs when login
         LogFunc.read_log()
         self.Checked_log = True
 

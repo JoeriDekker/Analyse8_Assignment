@@ -44,6 +44,8 @@ import sqlite3
 
 class SuperAdmin(Admin):
     def __init__(self, username, level):
+        self.Checked_log = False
+        self.LogSusActivity_Unread = LogFunc.check_sus_activity()
         super().__init__(username, level)
         super_admin_options = [
             "Add admin", "Update admin", "Delete admin",
@@ -57,6 +59,10 @@ class SuperAdmin(Admin):
         self.menu_functions += super_admin_functions 
         self.menu = Menu(options=self.menu_options[1:] + ["Logout"], functions=self.menu_functions[1:] + [self.logout])
 
+
+        # TODO: make notif disappear
+        if self.LogSusActivity_Unread and not self.Checked_log:
+            print("!!! Suspicious activity detected in logs !!!")
 
     def add_admin(self):
         
