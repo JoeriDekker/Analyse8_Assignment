@@ -76,13 +76,21 @@ def Login():
             if not found_user is None:
                 if HashFunctions.check_password(password, found_user['password']):
                     print("Login successful!")
+                    role = ""
+                    if found_user['level'] == 1:
+                        role = "Consultant"
+                    elif found_user['level'] == 2:
+                        role = "Admin"
+                    elif found_user['level'] == 3:
+                        role = "Super Admin"
+                        
                     # Show nice user and role
                     print(f"""
 ████████████████████████████████████████
 ██                                    ██                                   
         User: {found_user['username']}         
                                     
-        Role: {found_user['level']}   
+        Role: {role}   
 ██                                    ██    
 ████████████████████████████████████████
                         """)
