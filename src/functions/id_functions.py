@@ -41,5 +41,4 @@ def is_valid_membership_id(id):
     if checksum != int(id[9]):
         return False
 
-    # If all checks passed, the ID is valid
     return True

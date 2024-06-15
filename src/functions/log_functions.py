@@ -6,10 +6,11 @@ import os
 
 class LogFunc:
     def append_to_file(username, activity, additional_info, suspicious):
-
+        # Check if log file exists
         if os.path.exists('log.txt'):
             EncryptFunc.decrypt_file()
 
+        # Write log in the file
         with open("log.txt", 'a+') as file:
             file.seek(0)
             if not file.readline().startswith('No.'):
@@ -33,7 +34,7 @@ class LogFunc:
             text = text[space_index:].strip()
         lines.append(text)
         return lines
-
+    
     def read_log():
         EncryptFunc.decrypt_file()
         if not os.path.exists('log.txt'):
@@ -42,7 +43,7 @@ class LogFunc:
         
         with open("log.txt", 'r') as file:
             lines = file.readlines()
-            # Define the headers manually
+            # Define width for each column
             widths = [5, 12, 10, 15, 30, 30, 10]
             for line in lines:
                 fields = line.strip().split(', ')
@@ -51,7 +52,7 @@ class LogFunc:
                 # Find the maximum number of lines for the current row
                 max_lines = max(len(field) for field in wrapped_fields)
                 
-                # Print each line of the wrapped text
+                # Print each line text
                 for i in range(max_lines):
                     row = []
                     for field in wrapped_fields:
@@ -64,12 +65,13 @@ class LogFunc:
         EncryptFunc.encrypt_file()
 
     def check_sus_activity():
-        # Check if there are any suspicious activities in the log
         EncryptFunc.decrypt_file()
+        # Check if log file exists
         if not os.path.exists('log.txt'):
             print("Log file not found.")
             return
         
+        # Read the log file and check if found a yes
         with open("log.txt", 'r') as file:
             lines = file.readlines()
             # Skip the header

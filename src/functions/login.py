@@ -49,11 +49,12 @@ def Login():
     attempt_count = 0
     while attempt_count < 3:
         print("Enter username: ")
-        username = input("")
+        username = input()
 
         print("Enter password: ")
         password = get_masked_password()
 
+        # Check if username and password are valid
         if Checks.username_check(username) and Checks.password_check(password) or username == "super_admin" and password == "Admin_123?":
             conn = sqlite3.connect('assignment.db')
             conn.row_factory = sqlite3.Row
@@ -64,12 +65,14 @@ def Login():
 
             found_user = None
 
+            # Check if user exists with the given username
             for user in users:
                 user_dict = dict(user)
                 user_dict['username'] = EncryptFunc.decrypt_value(user_dict['username'])
                 if user_dict['username'] == username:
                     found_user = user_dict
 
+            # Check if password is correct
             if not found_user is None:
                 if HashFunctions.check_password(password, found_user['password']):
                     print("Login successful!")
@@ -108,7 +111,8 @@ def Login():
         elif option == '2':
             return None
         else:
-            print("Invalid option. Please enter 1 or 2.")
+            print("Invalid option. Going back to menu.")
+            return None
                 
         
     

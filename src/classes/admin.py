@@ -365,7 +365,7 @@ class Admin(Consultant):
         # choose a backup to restore
         backup_number = input("Enter the number of the backup you want to restore: ")
 
-        if not backup_number.isdigit():
+        if not Checks.number_check(backup_number):
             print("Invalid input, please enter a number of the backup you want to restore")
             return
 

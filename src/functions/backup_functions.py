@@ -22,6 +22,7 @@ class BackupFunc:
         shutil.copy('assignment.db', 'backup_temp')
         shutil.copy('log.txt', 'backup_temp')
 
+        # Count existing backup files
         num_files = 0
         if os.path.exists('backups'):
             for file in os.listdir('backups'):
