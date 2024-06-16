@@ -12,12 +12,6 @@ def CreateDB():
       conn = sqlite3.connect('assignment.db')
       c = conn.cursor()
 
-      # Drop the table if it exists
-      c.execute("DROP TABLE IF EXISTS users")
-      c.execute("DROP TABLE IF EXISTS address")
-      c.execute("DROP TABLE IF EXISTS members")
-         
-      
       # Create the 'users' table
       c.execute('''CREATE TABLE IF NOT EXISTS users
                   (id TEXT PRIMARY KEY, 
