@@ -55,7 +55,7 @@ class Admin(Consultant):
         self.menu = Menu(options=self.menu_options + ["Logout"], functions=self.menu_functions + [self.logout])
 
         if self.LogSusActivity_Unread and not self.Checked_log:
-            print("!!! Suspicious activity detected in logs !!!")
+            print("\033[91m!!! Suspicious activity detected in logs !!!\033[0m")
 
         
     def check_users(self):
@@ -75,7 +75,7 @@ class Admin(Consultant):
                 elif user[2] == 2:
                     print(f"Username: {EncryptFunc.decrypt_value(user[1])}\nRole: Admin\n")
         else:
-            print("no users found")
+            print("No users found")
             return
         
         input("Press Enter to Continue")
@@ -91,21 +91,21 @@ class Admin(Consultant):
 
         first_name = input("First name: ")
         if not Checks.string_check(first_name):
-            print("first name too long or empty, try again.")
+            print("First name too long or empty, try again.")
             return
         
         last_name = input("Last name: ")
         if not Checks.string_check(last_name):
-            print("last name too long or empty, try again.")
+            print("Last name too long or empty, try again.")
             return
         
-        print("- between 8 and 10 characters\n- only letters, numbers and underscores")
+        print("Constraints:\n- Between 8 and 10 characters\n- Only letters, numbers and underscores")
         username = input("Username: ")
         if not Checks.username_check(username):
-            print("invalid username, try again.")
+            print("Invalid username, try again.")
             return
         if not Checks.username_available_check(username):
-            print("username already in use, try again")
+            print("Username already in use, try again")
             return
         
         print("- must have a length of at least 12 characters\n- must be no longer than 30 characters\n- must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character")
@@ -141,7 +141,7 @@ class Admin(Consultant):
         # asks consultant username  
         username_input = input("Enter the username of the consultant you want to update: ")
         if not Checks.username_check(username_input):
-            print("invalid input username, try again.")
+            print("Invalid input username, try again.")
             return
 
         # gets all users
@@ -154,7 +154,7 @@ class Admin(Consultant):
         
         # searches consultant by username
         if not users:
-            print("user not found in the database.")
+            print("User not found in the database.")
             return
         else:
             for user in users:
@@ -163,11 +163,11 @@ class Admin(Consultant):
                         consult_info = user
                         break
                     else:
-                        print("user is not an consultant, try again")
+                        print("User is not an consultant, try again")
                         return
 
         if consult_info == None:
-            print("user not found between users")
+            print("User not found between users")
             return
 
         # displays consultant info
@@ -184,23 +184,23 @@ class Admin(Consultant):
         updated_first_name = input("First name: ").strip()
         if updated_first_name:
             if not Checks.string_check(updated_first_name):
-                print("name too long or empty, try again.")
+                print("Name too long or empty, try again.")
                 return
             
         updated_last_name = input("Last name: ").strip()
         if updated_last_name:
             if not Checks.string_check(updated_last_name):
-                print("name too long or empty, try again.")
+                print("Name too long or empty, try again.")
                 return
             
-        print("- between 8 and 10 characters\n- only letters, numbers and underscores")
+        print("Constraints:\n- Between 8 and 10 characters\n- Only letters, numbers and underscores")
         updated_username = input("Username: ").strip()
         if updated_username:
             if not Checks.username_check(updated_username):
-                print("invalid username, try again.")
+                print("Invalid username, try again.")
                 return
             if not Checks.username_available_check(updated_username):
-                print("username already in use, try again")
+                print("Username already in use, try again")
                 return
 
         print("Updating consultant info...")
@@ -231,7 +231,7 @@ class Admin(Consultant):
         # asks consultant username  
         username_input = input("Enter the username of the consultant you want to delete: ")
         if not Checks.username_check(username_input):
-            print("invalid input username, try again.")
+            print("Invalid input username, try again.")
             return
 
         # gets all users
@@ -244,7 +244,7 @@ class Admin(Consultant):
         
         # searches consultant by username
         if not users:
-            print("user not found in the database.")
+            print("User not found in the database.")
             return
         else:
             for user in users:
@@ -253,11 +253,11 @@ class Admin(Consultant):
                         consult_to_delete = user
                         break
                     else:
-                        print("user is not an consultant, try again")
+                        print("User is not an consultant, try again")
                         return
 
         if consult_to_delete == None:
-            print("user not found between users")
+            print("User not found between users")
             return
         
         # deletes the consultant
@@ -287,7 +287,7 @@ class Admin(Consultant):
 
         consultant_user = input("Enter the username of the consultant you want to delete: ")
         if not Checks.username_check(consultant_user):
-            print("invalid input username, try again.")
+            print("Invalid input username, try again.")
             return
         
         conn = ConnectToDB()
@@ -384,7 +384,7 @@ class Admin(Consultant):
         # asks member id  
         id_input = input("Enter the id of the member you want to delete: ")
         if not Checks.id_check(id_input):
-            print("invalid id input, try again.")
+            print("Invalid id input, try again.")
             return
 
         # gets all members
@@ -397,7 +397,7 @@ class Admin(Consultant):
         
         # searches member by id
         if not members:
-            print("member not found in the database.")
+            print("Member not found in the database.")
             return
         else:
             for member in members:
@@ -407,7 +407,7 @@ class Admin(Consultant):
 
 
         if member_to_delete == None:
-            print("member not found between members")
+            print("Member not found between members")
             return
         
         # deletes the member
