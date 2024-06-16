@@ -108,7 +108,7 @@ class Admin(Consultant):
             print("Username already in use, try again")
             return
         
-        print("- must have a length of at least 12 characters\n- must be no longer than 30 characters\n- must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character")
+        print("Constraints:\n- must have a length of at least 12 characters\n- must be no longer than 30 characters\n- must have a combination of at least one lowercase letter, one uppercase letter, one digit, and one special character")
         print("Enter password: ")
         password = Login.get_masked_password()
         if not Checks.password_check(password):
