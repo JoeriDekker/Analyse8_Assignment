@@ -44,27 +44,6 @@ def authenticate():
     else:
         print("Something went wrong, please try again.")
         input("Press Enter to Continue")
-  
-
-def easy_login():
-    print("1. Consultant \n2. Admin \n3. Super Admin")
-    user = input("Enter level:")
-
-    if user == "1":
-        user = Consultant("Consultant", 1)
-        while user.logged_in:
-            user.display_menu()
-    elif user == "2":
-        user = Admin("admin", 2)
-        while user.logged_in:
-            user.display_menu()
-    elif user == "3":
-        user = SuperAdmin("super admin", 3)
-        while user.logged_in:
-            user.display_menu()
-    else:
-        print("Something went wrong, please try again.")
-        input("Press Enter to Continue")
 
 def main():
 
@@ -88,8 +67,6 @@ def main():
         menu = Menu(["Login", "Exit"], [authenticate, exit])
         menu.display()
         menu.execute_choice()
-
-    # easy_login()   
 
 
 if __name__ == "__main__":
