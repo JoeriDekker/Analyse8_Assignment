@@ -54,7 +54,6 @@ class Admin(Consultant):
         self.menu_functions += admin_functions 
         self.menu = Menu(options=self.menu_options + ["Logout"], functions=self.menu_functions + [self.logout])
 
-        # TODO: make notif disappear
         if self.LogSusActivity_Unread and not self.Checked_log:
             print("!!! Suspicious activity detected in logs !!!")
 
