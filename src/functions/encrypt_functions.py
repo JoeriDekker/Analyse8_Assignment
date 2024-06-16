@@ -35,12 +35,12 @@ class EncryptFunc:
                 ))
 
         # Create a symmetric key if none exists
-        if not os.path.exists('symmetric_key.pem'):
-            symmetric_key = Fernet.generate_key()
+        if not os.path.exists('secret_key.pem'):
+            secret_key = Fernet.generate_key()
 
             # Write the symmetric key to file
-            with open('symmetric_key.pem', 'wb') as filekey:
-                filekey.write(symmetric_key)
+            with open('secret_key.pem', 'wb') as filekey:
+                filekey.write(secret_key)
 
     @staticmethod
     def encrypt_file():
@@ -51,17 +51,17 @@ class EncryptFunc:
             )
 
         # Load the symmetric key
-        with open('symmetric_key.pem', 'rb') as filekey:
-            symmetric_key = filekey.read()
+        with open('secret_key.pem', 'rb') as filekey:
+            secret_key = filekey.read()
 
         # Encrypt the file with the symmetric key
-        cipher_suite = Fernet(symmetric_key)
+        cipher_suite = Fernet(secret_key)
         with open('log.txt', 'rb') as filekey:
             encrypted_file = cipher_suite.encrypt(filekey.read())
 
         # Encrypt the symmetric key with the public key
         encrypted_key = public_key.encrypt(
-            symmetric_key,
+            secret_key,
             padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
                 algorithm=hashes.SHA256(),
@@ -106,7 +106,7 @@ class EncryptFunc:
 
         # Use the private key to decrypt the symmetric key
         try:
-            symmetric_key = private_key.decrypt(
+            secret_key = private_key.decrypt(
                 encrypted_key,
                 padding.OAEP(
                     mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -119,7 +119,7 @@ class EncryptFunc:
             return
 
         # Use the symmetric key to decrypt the file content
-        cipher_suite = Fernet(symmetric_key)
+        cipher_suite = Fernet(secret_key)
         with open('log.txt', 'rb') as file:
             encrypted_data = file.read()
 
