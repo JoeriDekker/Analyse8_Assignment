@@ -101,7 +101,7 @@ class Checks:
         
     def email_check(email):
         # Regular expression for email validation
-        if re.fullmatch(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
+        if re.fullmatch(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,3}+$', email):
             return True
         return False
     
@@ -120,51 +120,4 @@ class Checks:
             return True
         return False
 
-    # print(zip_code_check("1234AB"))
-    # print(zip_code_check("A2342B"))
-    # print(zip_code_check("1234A"))
-    # print(zip_code_check("1234ABC"))
 
-    # print (phone_number_check("12345678"))
-    # print (phone_number_check("1345678"))
-    # print (phone_number_check("123456789292"))
-    # print (phone_number_check("1234awfsg5678"))
-    # print (phone_number_check("12c45678"))
-
-    # print(username_check("_hallo12'"))
-    # print(username_check("Hallo12_"))
-    # print(username_check("2hallo12@"))
-
-    # print("=================")
-
-    # print(password_check("Paswoord1234112232122!")) # True
-    # print(password_check("Paswoord1234112232122@")) # True
-    # print(password_check("Paswoord1234112232122#")) # True
-    # print(password_check("Paswoord1234112232122$")) # True 
-    # print(password_check("Paswoord1234112232122%")) # True
-    # print(password_check("Paswoord1234112232122&")) # True
-    # print(password_check("Paswoord1234112232122(")) # True
-    # print(password_check("Paswoord1234112232122)")) # True
-    # print(password_check("Paswoord1234112232122_")) # True
-    # print(password_check("Paswoord1234112232122+")) # True
-    # print(password_check("Paswoord1234112232122=")) # True
-    # print(password_check("Paswoord1234112232122[")) # True
-    # print(password_check("Paswoord1234112232122]")) # True
-    # print(password_check("Paswoord1234112232122{")) # True
-    # print(password_check("Paswoord1234112232122}")) # True
-    # print(password_check("Paswoord1234112232122;")) # True
-    # print(password_check("Paswoord1234112232122:")) # True
-    # print(password_check("Paswoord1234112232122'")) # True
-    # print(password_check("Paswoord1234112232122`")) # True
-    # print(password_check("Paswoord1234112232122~")) # True
-    # print(password_check("Paswoord1234112232122.")) # True
-    # print(password_check("Paswoord1234112232122,")) # True
-    # print(password_check("Paswoord1234112232122>")) # True
-    # print(password_check("Paswoord1234112232122<")) # True
-    # print(password_check("Paswoord1234112232122/")) # True
-    # print(password_check("Paswoord1234112232122?")) # True
-    # print(password_check("Paswoord1234112232122|")) # True
-    # print(password_check("Paswoord12341122321\we2")) # True
-
-    # password = input("Enter password: ")
-    # print(password_check(password))
