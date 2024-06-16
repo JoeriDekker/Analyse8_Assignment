@@ -1,5 +1,3 @@
-import os
-
 class Menu:
     def __init__(self, options, functions):
         self.options = options

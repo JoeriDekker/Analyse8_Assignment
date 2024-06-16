@@ -1,6 +1,5 @@
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.fernet import Fernet
@@ -15,7 +14,6 @@ class EncryptFunc:
         key = rsa.generate_private_key(
             public_exponent=65537,
             key_size=2048,
-            backend=default_backend()
         )
         
         # Create a private key if none exists
@@ -50,7 +48,6 @@ class EncryptFunc:
         with open('public_key.pem', 'rb') as filekey:
             public_key = serialization.load_pem_public_key(
                 filekey.read(),
-                backend=default_backend()
             )
 
         # Load the symmetric key
@@ -101,7 +98,6 @@ class EncryptFunc:
             private_key = serialization.load_pem_private_key(
                 key_file.read(),
                 password=None,
-                backend=default_backend()
             )
 
         # Load the encrypted symmetric key
@@ -142,7 +138,6 @@ class EncryptFunc:
         with open('public_key.pem', 'rb') as filekey:
             public_key = serialization.load_pem_public_key(
                 filekey.read(),
-                backend=default_backend()
             )
 
         # Convert value to sting if int
@@ -166,7 +161,6 @@ class EncryptFunc:
         with open('public_key.pem', 'rb') as filekey:
             public_key = serialization.load_pem_public_key(
                 filekey.read(),
-                backend=default_backend()
             )
 
         # Encrypt the value with the public key
@@ -187,9 +181,7 @@ class EncryptFunc:
             private_key = serialization.load_pem_private_key(
                 filekey.read(),
                 password=None,
-                backend=default_backend()
             )
-
 
         # Decrypt the value with the private key
         decrypted_value = private_key.decrypt(

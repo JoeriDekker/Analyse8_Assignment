@@ -1,18 +1,16 @@
 # ==========[CREATED BY]============
 # STUDENT 1
 # NAME: Joeri Dekker
-# STUDENT NUMBER:
+# STUDENT NUMBER: 1056428 
 
 # STUDENT 2
 # NAME: Alysha van Etten
-# STUDENT NUMBER: 
+# STUDENT NUMBER: 1023745 
 
 # STUDENT 3
 # NAME: Kim leeters
-# STUDENT NUMBER:
+# STUDENT NUMBER: 1039564 
 # ===================================
-
-
 
 from setup import Setup
 from db.db_connection import CreateDB

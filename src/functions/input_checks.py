@@ -67,6 +67,18 @@ class Checks:
         except ValueError:
             return False
         
+    def int_check(input):
+        # Check if length is not higher than 50 and if it is not negative
+        if len(input) >= 50:
+                return False
+        try:
+            input = int(input)
+            if input < 0:
+                return False
+            return True
+        except ValueError:
+            return False
+        
     def id_check(input):
         # Check if the length is correct and if it is not negative
         if len(input) != 10:

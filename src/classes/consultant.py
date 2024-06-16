@@ -7,7 +7,6 @@ from functions.hash_functions import HashFunctions
 import functions.login as Login
 from functions.encrypt_functions import EncryptFunc
 
-
 # Consultants are employees of the Unique Meal who are in direct contact with the members. 
 # They process the requests of the members. Hence, they need to be able to manage the member’s information and data. 
 # For this purpose, when a new client requests for membership, a consultant needs to register the client's information in the system. 
