@@ -12,7 +12,7 @@ class IdFunc:
       # Create 7 random digits
       random_digits = ''.join([str(random.randint(0, 9)) for _ in range(7)])
 
-      # calculate the checksum for last digit
+      # Calculate the checksum for last digit
       checksum = sum(int(digit) for digit in first_two_digits + random_digits) % 10
 
       # Return the membership ID

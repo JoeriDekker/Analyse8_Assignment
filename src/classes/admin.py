@@ -122,7 +122,7 @@ class Admin(Consultant):
         # encrypts all given data and adds to database
         encrypted_first_name = EncryptFunc.encrypt_value(first_name)
         encrypted_last_name = EncryptFunc.encrypt_value(last_name)
-        encrypted_username = EncryptFunc.encrypt_int_value(username)
+        encrypted_username = EncryptFunc.encrypt_value(username)
         hashed_password = HashFunctions.hash_value(password)
         
         c = ConnectToDB()
@@ -215,7 +215,7 @@ class Admin(Consultant):
             encrypted_last_name = EncryptFunc.encrypt_value(updated_last_name)
             c.execute("UPDATE users SET last_name=? WHERE id=?", (encrypted_last_name, consult_info[0]))
         if updated_username:
-            encrypted_username = EncryptFunc.encrypt_int_value(updated_username)
+            encrypted_username = EncryptFunc.encrypt_value(updated_username)
             c.execute("UPDATE users SET username=? WHERE id=?", (encrypted_username, consult_info[0]))
 
         c.commit()

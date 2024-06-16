@@ -332,25 +332,25 @@ class Consultant:
         c = ConnectToDB()
         if updated_first_name:
             encrypted_first_name = EncryptFunc.encrypt_value(updated_first_name)
-            c.execute("UPDATE members SET first_name=? WHERE last_name=?", (encrypted_first_name, member_info[2]))
+            c.execute("UPDATE members SET first_name=? WHERE id=?", (encrypted_first_name, member_info[0]))
         if updated_last_name:
             encrypted_last_name = EncryptFunc.encrypt_value(updated_last_name)
-            c.execute("UPDATE members SET last_name=? WHERE last_name=?", (encrypted_last_name, member_info[2]))
+            c.execute("UPDATE members SET last_name=? WHERE id=?", (encrypted_last_name, member_info[0]))
         if updated_age:
             encrypted_age = EncryptFunc.encrypt_int_value(updated_age)
-            c.execute("UPDATE members SET age=? WHERE last_name=?", (encrypted_age, member_info[2]))
+            c.execute("UPDATE members SET age=? WHERE id=?", (encrypted_age, member_info[0]))
         if updated_gender:
             encrypted_gender = EncryptFunc.encrypt_value(updated_gender)
-            c.execute("UPDATE members SET gender=? WHERE last_name=?", (encrypted_gender, member_info[2]))
+            c.execute("UPDATE members SET gender=? WHERE id=?", (encrypted_gender, member_info[0]))
         if updated_weight:
             encrypted_weight = EncryptFunc.encrypt_int_value(updated_weight)
-            c.execute("UPDATE members SET weight=? WHERE last_name=?", (encrypted_weight, member_info[2]))
+            c.execute("UPDATE members SET weight=? WHERE id=?", (encrypted_weight, member_info[0]))
         if updated_email:
             encrypted_email = EncryptFunc.encrypt_value(updated_email)
-            c.execute("UPDATE members SET email=? WHERE last_name=?", (encrypted_email, member_info[2]))
+            c.execute("UPDATE members SET email=? WHERE id=?", (encrypted_email, member_info[0]))
         if updated_phone_number:
             encrypted_phone_number = EncryptFunc.encrypt_value(updated_phone_number)
-            c.execute("UPDATE members SET phone_number=? WHERE last_name=?", (encrypted_phone_number, member_info[2]))
+            c.execute("UPDATE members SET phone_number=? WHERE id=?", (encrypted_phone_number, member_info[0]))
 
         # updates address info of member in database
         if updated_street:

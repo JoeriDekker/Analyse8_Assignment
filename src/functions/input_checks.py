@@ -106,10 +106,13 @@ class Checks:
         return False
     
     def city_check(input, cities):
-        choice = int(input)
-        if 1 <= choice <= len(cities):
-            return choice
-        else:
+        try:
+            choice = int(input)
+            if 1 <= choice <= len(cities):
+                return choice
+            else:
+                return -1
+        except ValueError:
             return -1
         
     def gender_check(input):
