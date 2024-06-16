@@ -298,14 +298,6 @@ class SuperAdmin(Admin):
             print("Admin not found between users")
             return
 
-        # displays consultant info
-        print("Current Admin Information:")
-        print("ID:", admin_info[0])
-        print("First Name:", EncryptFunc.decrypt_value(admin_info[1]))
-        print("Last Name:", EncryptFunc.decrypt_value(admin_info[2]))
-        print("Username:", EncryptFunc.decrypt_value(admin_info[3]))
-        print("Registration Date:", admin_info[6])
-
         print("New password: ")    
         password = Login.get_masked_password()
         if not Checks.password_check(password):
@@ -322,6 +314,5 @@ class SuperAdmin(Admin):
         conn.close()
 
         print("Admin password reset successfully!")
-        print(f"New password: {password}")
         LogFunc.append_to_file(f"{self.username}", "Admin password reset", f"{self.username} updated admin with Id: {admin_info[0]}", "no")
         input("Press Enter to Continue")

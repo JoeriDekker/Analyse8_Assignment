@@ -316,14 +316,6 @@ class Admin(Consultant):
             print("Consultant not found between users")
             return
 
-        # # displays consultant info (necessary)
-        # print("Current Consultant Information:")
-        # print("ID:", consult_info[0])
-        # print("First Name:", EncryptFunc.decrypt_value(consult_info[1]))
-        # print("Last Name:", EncryptFunc.decrypt_value(consult_info[2]))
-        # print("Username:", EncryptFunc.decrypt_value(consult_info[3]))
-        # print("Registration Date:", consult_info[6])
-
         print("New password: ")    
         password = Login.get_masked_password()
         if not Checks.password_check(password):
@@ -340,7 +332,6 @@ class Admin(Consultant):
         conn.close()
 
         print("Consultant password reset successfully!")
-        # print(f"New password: {password}")
         LogFunc.append_to_file(f"{self.username}", "Consultant password reset", f"{self.username} updated consultant with Id: {consult_info[0]}", "no")
         input("Press Enter to Continue")
 
